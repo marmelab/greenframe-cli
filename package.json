@@ -1,0 +1,125 @@
+{
+    "name": "greenframe-cli",
+    "description": "Official GreenFrame CLI",
+    "version": "1.3.7",
+    "author": "Marmelab",
+    "bin": {
+        "greenframe": "./bin/run"
+    },
+    "bugs": "https://github.com/marmelab/greenframe-cli/issues",
+    "dependencies": {
+        "@cliqz/adblocker-playwright": "^1.25.0",
+        "@kubernetes/client-node": "^0.17.0",
+        "@oclif/core": "^1.2.0",
+        "@sentry/node": "^6.13.3",
+        "axios": "^0.22.0",
+        "core-js-pure": "^3.24.0",
+        "cross-fetch": "^3.1.4",
+        "env-ci": "^5.0.2",
+        "js-yaml": "^4.1.0",
+        "listr2": "^3.12.2",
+        "lodash": "^4.17.21",
+        "mathjs": "^9.5.0",
+        "minimist": "^1.2.5",
+        "oclif": "^2.4.3",
+        "playwright": "~1.25.1",
+        "vm2": "3.9.3"
+    },
+    "devDependencies": {
+        "@aws-sdk/client-s3": "^3.36.0",
+        "@babel/core": "^7.15.8",
+        "@babel/eslint-parser": "^7.15.8",
+        "@types/axios": "^0.14.0",
+        "@types/babel__core": "^7.1.19",
+        "@types/debug": "^4.1.7",
+        "@types/env-ci": "^3.1.1",
+        "@types/eslint": "^8.4.5",
+        "@types/eslint-plugin-prettier": "^3.1.0",
+        "@types/jest": "^28.1.6",
+        "@types/js-yaml": "^4.0.5",
+        "@types/lodash": "^4.14.177",
+        "@types/mathjs": "~9.3.2",
+        "@types/minimist": "^1.2.2",
+        "@types/prettier": "^2.6.3",
+        "@types/wait-on": "^5.3.1",
+        "@typescript-eslint/eslint-plugin": "^5.30.6",
+        "@typescript-eslint/parser": "^5.30.6",
+        "aws-sdk": "^2.1005.0",
+        "eslint": "^8.19.0",
+        "eslint-config-oclif": "^4.0.0",
+        "eslint-config-oclif-typescript": "^1.0.2",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-jest": "^25.0.5",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-unicorn": "^43.0.2",
+        "globby": "^10.0.2",
+        "jest": "^28.1.3",
+        "prettier": "^2.4.1",
+        "trace-unhandled": "^2.0.1",
+        "ts-jest": "^28.0.7",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^4.7.4",
+        "wait-on": "^6.0.0",
+        "xo": "^0.52.3"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "files": [
+        "/bin",
+        "/npm-shrinkwrap.json",
+        "/oclif.manifest.json",
+        "/dist",
+        "/src/examples"
+    ],
+    "homepage": "https://github.com/marmelab/greenframe",
+    "keywords": [
+        "oclif"
+    ],
+    "license": "UNLICENSED",
+    "exports": {
+        ".": {
+            "default": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./model": {
+            "default": "./dist/model/index.js",
+            "types": "./dist/model/index.d.ts"
+        }
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "oclif": {
+        "commands": "./dist/commands",
+        "dirname": "greenframe",
+        "bin": "greenframe",
+        "additionalHelpFlags": [
+            "-h"
+        ],
+        "additionalVersionFlags": [
+            "-v"
+        ],
+        "update": {
+            "s3": {
+                "bucket": "assets.greenframe.io",
+                "host": "https://assets.greenframe.io"
+            }
+        }
+    },
+    "repository": "marmelab/greenframe",
+    "scripts": {
+        "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
+        "dev": "ts-node-dev src/index.js",
+        "postpack": "rm -f oclif.manifest.json",
+        "posttest": "eslint .",
+        "prepack": "yarn build && oclif manifest && oclif readme",
+        "test-unit": "jest ./src",
+        "test-watch": "yarn test-unit --watch",
+        "test-e2e": "wait-on http://localhost:3006 && jest ./e2e/index.js --testTimeout 120000",
+        "version": "oclif readme && git add README.md",
+        "pack": "oclif pack tarballs",
+        "analyze": "API_URL=http://localhost:3006 APP_URL=http://localhost:3003 ./bin/run analyze",
+        "upload-installation-scripts": "node ./scripts/uploadInstallScript.js",
+        "lint": "eslint ."
+    }
+}

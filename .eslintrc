@@ -1,0 +1,59 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "requireConfigFile": false,
+        "ecmaVersion": 2020
+    },
+    "extends": [
+        "oclif",
+        "oclif-typescript",
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "prettier",
+        "plugin:jest/recommended",
+        "plugin:jest/style",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": ["prettier", "@typescript-eslint"],
+    "settings": {
+        "jest": {
+            "version": 26
+        }
+    },
+    "rules": {
+        "no-return-await": "error",
+        "unicorn/filename-case": "off",
+        "node/no-extraneous-import": "off",
+        "unicorn/no-process-exit": "off",
+        "no-process-exit": "off",
+        "no-eq-null": "off",
+        "no-negated-condition": "off",
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "unicorn/prefer-logical-operator-over-ternary": "off",
+        "unicorn/no-array-reduce": "off",
+        // Check if we need this
+        "unicorn/consistent-destructuring": "off",
+        "no-await-in-loop": "off",
+        "unicorn/no-object-as-default-parameter": "off",
+        "default-param-last": "off",
+        "node/no-missing-import": "off",
+        "unicorn/prefer-spread": "off",
+        "prefer-promise-reject-errors": "off",
+        "camelcase": "off",
+        // Migration to TypeScript
+        "@typescript-eslint/no-var-requires": "off",
+        "node/no-missing-require": "off",
+        "unicorn/prefer-module": "off",
+        // Skipped for now
+        "unicorn/no-array-for-each": "off",
+        "array-callback-return": "off",
+        "unicorn/no-new-array": "off",
+        "unicorn/consistent-function-scoping": "off",
+        "unicorn/prefer-top-level-await": "off",
+        "no-promise-executor-return": "off"
+    }
+}

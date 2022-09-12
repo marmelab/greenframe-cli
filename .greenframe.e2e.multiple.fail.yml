@@ -1,0 +1,18 @@
+scenarios:
+    - path: './src/examples/greenframe.js'
+      name: 'Scenario 1'
+      threshold: 0.1
+    - path: './src/examples/greenframe2.js'
+      name: 'Scenario 2'
+      threshold: 0.05
+    - path: './src/examples/greenframeFail.js'
+      name: 'Scenario 3'
+      threshold: 0.05
+baseURL: 'https://greenframe.io'
+samples: 2
+distant: false
+projectName: 'GreenFrame'
+containers:
+    - 'enterprise_api'
+databaseContainers:
+    - 'enterprise_db'

@@ -1,0 +1,5 @@
+scenario: './src/examples/greenframe.js'
+baseURL: 'https://greenframe.io'
+samples: 2
+distant: true
+projectName: 'GreenFrame'
