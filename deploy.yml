@@ -1,0 +1,165 @@
+name: 🚀 Deploy
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request: {}
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: 🔬 Lint
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: 🔎 Type check
+        run: npm run typecheck --if-present
+
+  vitest:
+    name: ⚡ Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ⚡ Run vitest
+        run: npm run test -- --coverage
+
+  cypress:
+    name: ⚫️ Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🏄 Copy test env vars
+        run: cp .env.example .env
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: 🛠 Setup Database
+        run: npx prisma migrate reset --force
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: 🌳 Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          start: npm run start:mocks
+          wait-on: "http://localhost:8811"
+        env:
+          PORT: "8811"
+
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [lint, typecheck, vitest, cypress]
+    # only build/deploy main branch on pushes
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: 🗑️ Removing node modules
+        run: rm -rf node_modules/
+
+      - name: 📝 Add env file
+        run: echo "DATABASE_URL='file:/tmp/data.db?connection_limit=1'" > .env
+
+      - name: 🗜️ Generate deployment package
+        run: zip -rq deploy.zip . -x '*.git*'
+
+      - name: 🚀 Deploy Production
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: iad-programming-for-success
+          environment_name: iadprogrammingforsuccess-env
+          version_label: iad-programming-for-success-source-${{ github.run_number }}
+          region: eu-west-3
+          deployment_package: deploy.zip

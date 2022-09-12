@@ -4,9 +4,6 @@ enterprise-cli
 Official GreenFrame CLI
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/enterprise-cli.svg)](https://npmjs.org/package/enterprise-cli)
-[![Downloads/week](https://img.shields.io/npm/dw/enterprise-cli.svg)](https://npmjs.org/package/enterprise-cli)
-[![License](https://img.shields.io/npm/l/enterprise-cli.svg)](https://github.com/Clebiez/enterprise-cli/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)

@@ -1,0 +1,140 @@
+name: 🚀 Deploy
+on:
+    push:
+        branches:
+            - main
+            - dev
+    pull_request: {}
+permissions:
+    actions: write
+    contents: read
+
+jobs:
+    lint:
+        name: ⬣ ESLint
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
+
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
+
+            - name: ⎔ Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+
+            - name: 📥 Download deps
+              uses: bahmutov/npm-install@v1
+
+            - name: 🔬 Lint
+              uses: wearerequired/lint-action@v2
+              with:
+                  eslint: true
+                  prettier: true
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🔎 Type check
+        run: make typecheck
+
+    test:
+        name: 🔍 Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
+
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
+
+            - name: ⎔ Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+
+            - name: 📥 Download deps
+              uses: bahmutov/npm-install@v1
+
+            - name: 🔍 Run test
+              run: make test-unit
+
+    e2e:
+        name: ⚫️ E2E
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
+
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
+
+            - name: 🏄 Copy test env vars
+              run: cp .env.example .env
+
+            - name: ⎔ Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+
+            - name: 📥 Download deps
+              uses: bahmutov/npm-install@v1
+
+            - name: ⚙️ Build
+              run: yarn run build
+
+            - name: 🌳 E2E run
+              run: yarn test-e2e
+
+    deploy:
+        name: 🚀 Deploy
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        needs: [lint, typecheck, test, e2e]
+        # only build/deploy main branch on pushes
+        if: ${{ ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' ) && github.event_name == 'push' }}
+
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
+
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
+
+            - name: ⎔ Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+
+            - name: 📥 Download deps
+              uses: bahmutov/npm-install@v1
+              with:
+                  useLockFile: false
+
+            - name: ⚙️ Build
+              run: make build
+
+            - name: 🚀 Deploy Staging
+              run: make enterprise-cli-deploy-staging
+              if: ${{ github.ref == 'refs/heads/main' }}
+
+            - name: 🚀 Deploy Production
+              run: make enterprise-cli-deploy-production
+              if: ${{ github.ref == 'refs/heads/production' }}

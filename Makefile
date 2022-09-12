@@ -15,6 +15,9 @@ clean-dist: ## Remove dist folder
 compile: clean-dist ## Compile the project
 	yarn build
 
+typecheck: ## Typecheck the project
+	yarn tsc
+
 build: clean-dist ## Create tarballs of CLI
 	yarn build && yarn set version classic && npx oclif pack tarballs -t $(BUILD_TARGETS)
 	$(MAKE) generate-wsl-cli
@@ -29,14 +32,13 @@ upload: ## Upload tarballs to S3 bucket
 	npx oclif upload tarballs -t $(DEPLOY_TARGETS)
 
 promote-staging: ## Publish uploaded tarballs on a staging channel
-	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel staging -t $(DEPLOY_TARGETS) && yarn set version berry
+	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel staging -t $(DEPLOY_TARGETS) && yarn set version stable
 
 upload-installation-scripts: ## Publish on the bucket installion bash scripts
 	yarn upload-installation-scripts
 
 promote-production: upload-installation-scripts ## Publish uploaded tarballs on a stable channel
-	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS) && yarn set version berry
-
+	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS) && yarn set version stable
 
 test: test-unit test-e2e ## Launch all tests
 
@@ -49,3 +51,6 @@ test-e2e: ## Launch e2e test
 
 test-watch: ## Launch unit test in watch mode
 	yarn test-watch
+
+lint: ## Launch lint
+	yarn lint

@@ -121,5 +121,6 @@
         "analyze": "API_URL=http://localhost:3006 APP_URL=http://localhost:3003 ./bin/run analyze",
         "upload-installation-scripts": "node ./scripts/uploadInstallScript.js",
         "lint": "eslint ."
-    }
+    },
+    "packageManager": "yarn@3.2.3"
 }
