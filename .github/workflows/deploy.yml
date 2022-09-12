@@ -7,7 +7,7 @@ on:
     pull_request: {}
 permissions:
     actions: write
-    contents: read
+    contents: write
 
 jobs:
     lint:
