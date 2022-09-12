@@ -7,7 +7,7 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
             path: `/containers/${containerName}/json`,
             method: 'GET',
         };
-        if (dockerdOptions.dockerdHost) {
+        if (dockerdOptions && dockerdOptions.dockerdHost) {
             options.host = dockerdOptions.dockerdHost;
             options.port = dockerdOptions.dockerdPort || 2375;
         } else {
@@ -38,12 +38,13 @@ const getContainerStats = (containerName, dockerdOptions) => {
         path: `/containers/${containerName}/stats`,
         method: 'GET',
     };
-    if (dockerdOptions.dockerdHost) {
+    if (dockerdOptions && dockerdOptions.dockerdHost) {
         options.host = dockerdOptions.dockerdHost;
         options.port = dockerdOptions.dockerdPort || 2375;
     } else {
         options.socketPath = '/var/run/docker.sock';
     }
+
     const stats = [];
     const callback = (res) => {
         res.on('data', (data) => {
