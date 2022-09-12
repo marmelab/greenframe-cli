@@ -9,6 +9,10 @@ DEPLOY_TARGETS := $(BUILD_TARGETS),wsl-x64
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | gawk 'match($$0, /(makefile:)?(.*):.*?## (.*)/, a) {printf "\033[36m%-30s\033[0m %s\n", a[2], a[3]}'
 
+
+install: ## Install dependencies
+	yarn install
+
 clean-dist: ## Remove dist folder
 	rm -rf ./dist
 
