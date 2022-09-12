@@ -16,7 +16,7 @@ compile: clean-dist ## Compile the project
 	yarn build
 
 typecheck: ## Typecheck the project
-	yarn tsc
+	yarn typecheck
 
 build: clean-dist ## Create tarballs of CLI
 	yarn build && yarn set version classic && npx oclif pack tarballs -t $(BUILD_TARGETS)

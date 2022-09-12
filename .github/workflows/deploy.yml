@@ -32,6 +32,9 @@ jobs:
               uses: wearerequired/lint-action@v2
               with:
                   eslint: true
+                  continue_on_error: false
+                  auto_fix: true
+                  eslint_auto_fix: true
 
     typecheck:
         name: ʦ TypeScript
