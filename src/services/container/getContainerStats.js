@@ -17,6 +17,7 @@ const getIsContainerRunning = (containerName) => {
                     resolve();
                 }
             };
+
             const clientRequest = http.request(options, callback);
             clientRequest.end();
         } catch (error) {
