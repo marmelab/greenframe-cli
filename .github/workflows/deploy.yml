@@ -35,25 +35,25 @@ jobs:
                   prettier: true
 
     typecheck:
-      name: ʦ TypeScript
-      runs-on: ubuntu-latest
-      steps:
-        - name: 🛑 Cancel Previous Runs
-          uses: styfle/cancel-workflow-action@0.9.1
+        name: ʦ TypeScript
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
 
-        - name: ⬇️ Checkout repo
-          uses: actions/checkout@v3
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
 
-        - name: ⎔ Setup node
-          uses: actions/setup-node@v3
-          with:
-            node-version: 16
+            - name: ⎔ Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
 
-        - name: 📥 Download deps
-          uses: bahmutov/npm-install@v1
+            - name: 📥 Download deps
+              uses: bahmutov/npm-install@v1
 
-        - name: 🔎 Type check
-          run: make typecheck
+            - name: 🔎 Type check
+              run: make typecheck
 
     test:
         name: 🔍 Test
@@ -85,7 +85,6 @@ jobs:
 
             - name: ⬇️ Checkout repo
               uses: actions/checkout@v3
-
 
             - name: ⎔ Setup node
               uses: actions/setup-node@v3
@@ -130,9 +129,9 @@ jobs:
               run: make build
 
             - name: 🚀 Deploy Staging
-              run: make enterprise-cli-deploy-staging
+              run: make promotion-staging
               if: ${{ github.ref == 'refs/heads/main' }}
 
             - name: 🚀 Deploy Production
-              run: make enterprise-cli-deploy-production
+              run: make promotion-production
               if: ${{ github.ref == 'refs/heads/production' }}
