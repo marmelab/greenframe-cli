@@ -19,16 +19,15 @@ const createContainer = async (extraHosts = []) => {
         extraHosts.length > 0 ? ` -e EXTRA_HOSTS=${extraHosts.join(',')}` : '';
 
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
-
+    
     const dockerStatCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm -e HOSTIP=${HOSTIP}${extraHostsEnv} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.25.1-focal`;
-    debug(`dockerStatCommand: ${dockerStatCommand}`);
     await exec(dockerStatCommand);
+
     debug(`Container ${CONTAINER_DEVICE_NAME} created`);
 
     debug(`Copying greenframe files to container ${CONTAINER_DEVICE_NAME}`);
     // For some reason, mounting the volume when you're doing docker in docker doesn't work, but the copy command does.
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
-    debug(`dockerCopyCommand: ${dockerCopyCommand}`);
     await exec(dockerCopyCommand);
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };

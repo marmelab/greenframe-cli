@@ -1,13 +1,19 @@
 const http = require('node:http');
 const ConfigurationError = require('../errors/ConfigurationError');
 
-const getIsContainerRunning = (containerName) => {
+const getIsContainerRunning = (containerName, dockerdOptions) => {
     return new Promise((resolve, reject) => {
         const options = {
-            socketPath: '/var/run/docker.sock',
             path: `/containers/${containerName}/json`,
             method: 'GET',
         };
+        if (dockerdOptions.dockerdHost) {
+            options.host = dockerdOptions.dockerdHost;
+            options.port = dockerdOptions.dockerdPort || 2375;
+        } else {
+            options.socketPath = '/var/run/docker.sock';
+        }
+
         try {
             const callback = (res) => {
                 if (res.statusCode !== 200) {
@@ -27,12 +33,17 @@ const getIsContainerRunning = (containerName) => {
     });
 };
 
-const getContainerStats = (containerName) => {
+const getContainerStats = (containerName, dockerdOptions) => {
     const options = {
-        socketPath: '/var/run/docker.sock',
         path: `/containers/${containerName}/stats`,
         method: 'GET',
     };
+    if (dockerdOptions.dockerdHost) {
+        options.host = dockerdOptions.dockerdHost;
+        options.port = dockerdOptions.dockerdPort || 2375;
+    } else {
+        options.socketPath = '/var/run/docker.sock';
+    }
     const stats = [];
     const callback = (res) => {
         res.on('data', (data) => {
@@ -63,11 +74,12 @@ const getContainerStats = (containerName) => {
     return stopContainerStats;
 };
 
-const getContainerStatsIfRunning = async (containerName) => {
+const getContainerStatsIfRunning = async (containerName, dockerdOptions) => {
     try {
-        await getIsContainerRunning(containerName);
-        return getContainerStats(containerName);
-    } catch {
+        await getIsContainerRunning(containerName, dockerdOptions);
+        return getContainerStats(containerName, dockerdOptions);
+    } catch (error) {
+        console.log(error);
         throw new ConfigurationError(`${containerName} container is not running.`);
     }
 };
