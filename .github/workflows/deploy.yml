@@ -33,8 +33,8 @@ jobs:
               with:
                   eslint: true
                   continue_on_error: false
-                  auto_fix: "${{ ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' ) && github.event_name == 'push' ? 'false' : 'false' }}"
-                  eslint_auto_fix: "${{ ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' ) && github.event_name == 'push' ? 'false' : 'false' }}"
+                  auto_fix: ${{ ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' ) && github.event_name == 'push' }}
+                  eslint_auto_fix: ${{ ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production' ) && github.event_name == 'push' }}
 
     typecheck:
         name: ʦ TypeScript
