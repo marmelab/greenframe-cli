@@ -38,6 +38,9 @@ upload: ## Upload tarballs to S3 bucket
 promote-staging: ## Publish uploaded tarballs on a staging channel
 	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel staging -t $(DEPLOY_TARGETS) && yarn set version stable
 
+promote-prerelease: ## Publish uploaded tarballs on a prerelease channel
+	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel prerelease -t $(DEPLOY_TARGETS) && yarn set version stable
+
 upload-installation-scripts: ## Publish on the bucket installion bash scripts
 	yarn upload-installation-scripts
 
