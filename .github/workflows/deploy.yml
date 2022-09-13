@@ -8,7 +8,9 @@ on:
 permissions:
     actions: write
     contents: write
-
+    checks: write
+    pull-requests: write
+    
 jobs:
     lint:
         name: ⬣ ESLint
@@ -48,6 +50,15 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 16
+
+            - name: 📑 Yarn Lock Changes
+              uses: Simek/yarn-lock-changes@main
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  collapsibleThreshold: 25
+                  failOnDowngrade: false
+                  path: yarn.lock
+                  updateComment: true
 
             - name: 📥 Download deps
               uses: bahmutov/npm-install@v1

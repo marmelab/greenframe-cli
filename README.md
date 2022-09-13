@@ -25,23 +25,23 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`greenframe analyze [SCENARIO] [BASEURL]`](#greenframe-analyze-scenario-baseurl)
+* [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
 * [`greenframe kube-config`](#greenframe-kube-config)
 * [`greenframe open [SCENARIO] [BASEURL]`](#greenframe-open-scenario-baseurl)
 * [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
-## `greenframe analyze [SCENARIO] [BASEURL]`
+## `greenframe analyze [BASEURL] [SCENARIO]`
 
 Create an analysis on GreenFrame server.
 
 ```
 USAGE
-  $ greenframe analyze [SCENARIO] [BASEURL] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-f] [-a]
+  $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a]
 
 ARGUMENTS
-  SCENARIO  Path to your GreenFrame scenario
   BASEURL   Your baseURL website
+  SCENARIO  Path to your GreenFrame scenario
 
 FLAGS
   -C, --configFile=<value>     Path to config file
@@ -50,7 +50,6 @@ FLAGS
   -b, --branchName=<value>     Pass branch name manually
   -c, --commitMessage=<value>  Pass commit message manually
   -d, --distant                Run a distant analysis on GreenFrame Server instead of locally
-  -f, --free                   Run an analysis without sending results to GreenFrame Server
   -p, --projectName=<value>    Project name
   -s, --samples=<value>        Number of runs done for the score computation
   -t, --threshold=<value>      Consumption threshold
