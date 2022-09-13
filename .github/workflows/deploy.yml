@@ -9,7 +9,7 @@ permissions:
     actions: write
     contents: write
     checks: write
-    issues: write
+    pull_requests: write
     
 jobs:
     lint:
