@@ -23,12 +23,12 @@ import checkGreenFrameSecretToken from '../tasks/checkGreenFrameSecretToken';
 class AnalyzeCommand extends Command {
     static args = [
         {
-            name: 'scenario', // name of arg to show in help and reference with args[name]
-            description: 'Path to your GreenFrame scenario', // help description
-        },
-        {
             name: 'baseURL',
             description: 'Your baseURL website',
+        },
+        {
+            name: 'scenario', // name of arg to show in help and reference with args[name]
+            description: 'Path to your GreenFrame scenario', // help description
         },
     ];
 
