@@ -9,7 +9,8 @@ permissions:
     actions: write
     contents: write
     checks: write
-
+    issues: write
+    
 jobs:
     lint:
         name: ⬣ ESLint
