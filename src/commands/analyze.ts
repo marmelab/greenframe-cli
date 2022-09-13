@@ -81,6 +81,12 @@ class AnalyzeCommand extends Command {
             char: 'a',
             description: 'Use an adblocker during analysis',
         }),
+        dockerdHost: Flags.string({
+            description: 'Docker daemon host',
+        }),
+        dockerdPort: Flags.integer({
+            description: 'Docker daemon port',
+        }),
     };
 
     async run() {

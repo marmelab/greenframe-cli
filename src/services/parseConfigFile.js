@@ -25,6 +25,8 @@ const parseConfigFile = async (path) => {
                 kubeDatabaseContainers,
                 extraHosts,
                 kubeConfig,
+                dockerdHost,
+                dockerdPort,
             } = yaml.load(file);
             return {
                 args: {
