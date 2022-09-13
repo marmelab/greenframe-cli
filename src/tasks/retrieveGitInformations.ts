@@ -1,4 +1,7 @@
 import { retrieveGitInformations } from '../services/git';
+import initDebug from 'debug';
+
+const debug = initDebug('greenframe:tasks:retrieveGitInformations');
 
 export default async (ctx: any) => {
     try {
@@ -11,7 +14,10 @@ export default async (ctx: any) => {
             },
             ctx.project?.defaultBranch
         );
-    } catch (error: any) {
-        throw new Error('Failed to retrieve git information.', error);
+    } catch {
+        debug("The folder is not a git repository, we can't retrieve git informations");
+        ctx.gitInfos = {
+            commitMessage: `Analysis for ${ctx.args.baseURL}`,
+        };
     }
 };
