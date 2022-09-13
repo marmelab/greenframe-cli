@@ -128,7 +128,7 @@ jobs:
             - name: ⚙️ Build
               run: make build
 
-            - name: Uploading assets
+            - name: 📨 Uploading assets
               run: make upload
               env:
                   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
