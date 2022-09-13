@@ -79,7 +79,9 @@ class AnalyzeCommand extends Command {
         }),
         free: Flags.boolean({
             char: 'f',
-            description: 'Run an analysis without sending results to GreenFrame Server',
+            description:
+                'Run an analysis without sending results to GreenFrame server. Default true if GREENFRAME_SECRET_TOKEN is not set',
+            default: process.env.GREENFRAME_SECRET_TOKEN == null,
         }),
         useAdblock: Flags.boolean({
             char: 'a',
