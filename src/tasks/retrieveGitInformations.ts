@@ -1,6 +1,6 @@
 import { retrieveGitInformations } from '../services/git';
 
-export default async (ctx: any) => {
+export default async (ctx: any, task: any) => {
     try {
         const { flags } = ctx;
         ctx.gitInfos = await retrieveGitInformations(
@@ -11,7 +11,10 @@ export default async (ctx: any) => {
             },
             ctx.project?.defaultBranch
         );
-    } catch (error: any) {
-        throw new Error('Failed to retrieve git information.', error);
+    } catch {
+        task.title = 'The folder is not a git repository';
+        ctx.gitInfos = {
+            commitMessage: `Analysis for ${ctx.args.baseURL}`,
+        };
     }
 };
