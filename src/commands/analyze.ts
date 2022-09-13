@@ -77,10 +77,6 @@ class AnalyzeCommand extends Command {
             char: 'd',
             description: 'Run a distant analysis on GreenFrame Server instead of locally',
         }),
-        free: Flags.boolean({
-            char: 'f',
-            description: 'Run an analysis without sending results to GreenFrame Server',
-        }),
         useAdblock: Flags.boolean({
             char: 'a',
             description: 'Use an adblocker during analysis',
@@ -103,7 +99,7 @@ class AnalyzeCommand extends Command {
             );
 
             const isDistant = flags.distant;
-            const isFree = flags.free;
+            const isFree = process.env.GREENFRAME_SECRET_TOKEN == null;
             const tasks = new Listr(
                 [
                     {
