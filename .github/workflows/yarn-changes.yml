@@ -1,0 +1,25 @@
+name: 🚀 Deploy
+on:
+    pull_request: {}
+permissions:
+    pull-requests: write
+    
+jobs:
+    yarn-changes:
+        name: 📑 Yarn Lock Changes
+        runs-on: ubuntu-latest
+        steps:
+            - name: 🛑 Cancel Previous Runs
+              uses: styfle/cancel-workflow-action@0.9.1
+
+            - name: ⬇️ Checkout repo
+              uses: actions/checkout@v3
+
+            - name: 📑 Yarn Lock Changes
+              uses: Simek/yarn-lock-changes@main
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  collapsibleThreshold: 25
+                  failOnDowngrade: false
+                  path: yarn.lock
+                  updateComment: true
