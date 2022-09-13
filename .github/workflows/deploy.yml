@@ -8,6 +8,7 @@ on:
 permissions:
     actions: write
     contents: write
+    checks: write
 
 jobs:
     lint:
