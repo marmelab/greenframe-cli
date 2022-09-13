@@ -1,5 +1,4 @@
 import { retrieveGitInformations } from '../services/git';
-import initDebug from 'debug';
 
 export default async (ctx: any, task: any) => {
     try {
