@@ -1,7 +1,7 @@
-enterprise-cli
+GreenFrame CLI
 ==============
 
-Official GreenFrame CLI
+Estimate the carbon footprint of a user scenario on a web application. Full-stack analysis (browser, screen, network, server). 
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 
