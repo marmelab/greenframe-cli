@@ -1,4 +1,4 @@
-name: 🚀 Deploy
+name: 📑 Yarn Lock Changes
 on:
     pull_request: {}
 permissions:
