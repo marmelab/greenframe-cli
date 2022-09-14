@@ -1,9 +1,11 @@
-name: 🚀 Deploy
+name: 📑 Yarn Lock Changes
 on:
     pull_request: {}
 permissions:
+    actions: write
+    contents: write
     pull-requests: write
-    
+
 jobs:
     yarn-changes:
         name: 📑 Yarn Lock Changes

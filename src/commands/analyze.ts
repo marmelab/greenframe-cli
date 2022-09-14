@@ -29,6 +29,7 @@ class AnalyzeCommand extends Command {
         {
             name: 'scenario', // name of arg to show in help and reference with args[name]
             description: 'Path to your GreenFrame scenario', // help description
+            required: false,
         },
     ];
 
