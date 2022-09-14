@@ -149,3 +149,9 @@ jobs:
               env:
                   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
                   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+
+            - name: 📜 Update readme 
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                    file_pattern: README.md
+                    commit_message: Update README [skip ci]
