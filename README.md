@@ -14,7 +14,7 @@ $ npm install -g greenframe-cli
 $ greenframe COMMAND
 running command...
 $ greenframe (--version|-v)
-greenframe-cli/1.4.1 linux-x64 node-v16.17.0
+greenframe-cli/1.4.2 linux-x64 node-v16.17.0
 $ greenframe --help [COMMAND]
 USAGE
   $ greenframe COMMAND
@@ -25,7 +25,7 @@ USAGE
 <!-- commands -->
 * [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
 * [`greenframe kube-config`](#greenframe-kube-config)
-* [`greenframe open [SCENARIO] [BASEURL]`](#greenframe-open-scenario-baseurl)
+* [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
 * [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
 ## `greenframe analyze [BASEURL] [SCENARIO]`
@@ -59,7 +59,7 @@ DESCRIPTION
   Create an analysis on GreenFrame server.
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe/blob/v1.4.1/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe/blob/v1.4.2/dist/commands/analyze.ts)_
 
 ## `greenframe kube-config`
 
@@ -82,19 +82,19 @@ DESCRIPTION
   greenframe kube-config
 ```
 
-_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe/blob/v1.4.1/dist/commands/kube-config.ts)_
+_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe/blob/v1.4.2/dist/commands/kube-config.ts)_
 
-## `greenframe open [SCENARIO] [BASEURL]`
+## `greenframe open [BASEURL] [SCENARIO]`
 
 Open browser to develop your GreenFrame scenario
 
 ```
 USAGE
-  $ greenframe open [SCENARIO] [BASEURL] [-C <value>] [-a]
+  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a]
 
 ARGUMENTS
-  SCENARIO  Path to your GreenFrame scenario
   BASEURL   Your baseURL website
+  SCENARIO  Path to your GreenFrame scenario
 
 FLAGS
   -C, --configFile=<value>  Path to config file
@@ -108,7 +108,7 @@ DESCRIPTION
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe/blob/v1.4.1/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe/blob/v1.4.2/dist/commands/open.ts)_
 
 ## `greenframe update [CHANNEL]`
 
@@ -129,5 +129,5 @@ DESCRIPTION
   greenframe update
 ```
 
-_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe/blob/v1.4.1/dist/commands/update.ts)_
+_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe/blob/v1.4.2/dist/commands/update.ts)_
 <!-- commandsstop -->
