@@ -9,12 +9,13 @@ const { detectExecutablePath } = require('../services/detectExecutablePath');
 class OpenCommand extends Command {
     static args = [
         {
-            name: 'scenario', // name of arg to show in help and reference with args[name]
-            description: 'Path to your GreenFrame scenario', // help description
-        },
-        {
             name: 'baseURL', // name of arg to show in help and reference with args[name]
             description: 'Your baseURL website', // help description
+        },
+        {
+            name: 'scenario', // name of arg to show in help and reference with args[name]
+            description: 'Path to your GreenFrame scenario', // help description
+            required: false,
         },
     ];
 
