@@ -61,7 +61,14 @@ export default async (ctx: any) => {
     }
 
     const result = computeAnalysisResult(resultScenarios);
-    const { data: analysis } = await saveFinishedAnalysis(analysisId, result);
-
-    ctx.result = { analysis, scenarios: resultScenarios, computed: result };
+    if (!ctx.isFree) {
+        const { data: analysis } = await saveFinishedAnalysis(analysisId, result);
+        ctx.result = { analysis, scenarios: resultScenarios, computed: result };
+    } else {
+        ctx.result = {
+            analysis: undefined,
+            scenarios: resultScenarios,
+            computed: result,
+        };
+    }
 };

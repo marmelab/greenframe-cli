@@ -114,6 +114,7 @@ class AnalyzeCommand extends Command {
                             ctx.args = args;
                             ctx.flags = flags;
                             ctx.configFilePath = configFilePath;
+                            ctx.isFree = isFree;
                         },
                     },
                     {
