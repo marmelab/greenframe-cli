@@ -167,7 +167,6 @@ export const executeScenarioAndGetContainerStats = async ({
         return { allContainers, allMilestones };
     } catch (error) {
         debug('Error', error);
-        console.error('Error', error);
         throw error;
     } finally {
         await stopContainer();
