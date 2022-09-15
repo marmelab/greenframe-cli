@@ -77,7 +77,7 @@ const resolveParams = (
 
     // Check the baseURL for retrocompatibility ( SCENARIO arg was before BASE_URL arg)
     // If baseURL ends with ".js", it must be the scenario file, so we switch the args
-    if (args.baseURL.endsWith('.js')) {
+    if (args?.baseURL?.endsWith('.js')) {
         const scenario = args.baseURL;
         args.baseURL = args.scenario;
         args.scenario = scenario;
