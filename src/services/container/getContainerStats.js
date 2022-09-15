@@ -1,5 +1,8 @@
 const http = require('node:http');
 const ConfigurationError = require('../errors/ConfigurationError');
+const initDebug = require('debug');
+
+const debug = initDebug('greenframe:services:contaiener:getContainerStats');
 
 const getIsContainerRunning = (containerName, dockerdOptions) => {
     return new Promise((resolve, reject) => {
@@ -17,17 +20,20 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
         try {
             const callback = (res) => {
                 if (res.statusCode !== 200) {
-                    console.info(`\n${containerName} container is not running.`);
                     reject(`${containerName} container is not running.`);
                 } else {
                     resolve();
                 }
             };
 
-            const clientRequest = http.request(options, callback);
+            const clientRequest = http.request(options, callback).on('error', (error) => {
+                debug('Error whlie requesting docker api', error);
+                reject(
+                    `Could not connect to Docker daemon on ${options.host}:${options.port}`
+                );
+            });
             clientRequest.end();
         } catch (error) {
-            console.error(error);
             reject(error);
         }
     });
@@ -80,8 +86,7 @@ const getContainerStatsIfRunning = async (containerName, dockerdOptions) => {
         await getIsContainerRunning(containerName, dockerdOptions);
         return getContainerStats(containerName, dockerdOptions);
     } catch (error) {
-        console.log(error);
-        throw new ConfigurationError(`${containerName} container is not running.`);
+        throw new ConfigurationError(error);
     }
 };
 

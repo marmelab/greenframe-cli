@@ -46,6 +46,8 @@ const parseConfigFile = async (path) => {
                     kubeDatabaseContainers,
                     extraHosts,
                     kubeConfig,
+                    dockerdHost,
+                    dockerdPort,
                 },
             };
         }
