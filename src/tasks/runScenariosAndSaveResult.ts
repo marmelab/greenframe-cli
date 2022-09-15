@@ -31,6 +31,8 @@ export default async (ctx: any) => {
                     kubeContainers: flags.kubeContainers,
                     kubeDatabaseContainers: flags.kubeDatabaseContainers,
                     extraHosts: flags.extraHosts,
+                    dockerdHost: flags.dockerdHost,
+                    dockerdPort: flags.dockerdPort,
                 });
 
             const data = computeScenarioResult({
