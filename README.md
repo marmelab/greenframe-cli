@@ -14,7 +14,7 @@ $ npm install -g greenframe-cli
 $ greenframe COMMAND
 running command...
 $ greenframe (--version|-v)
-greenframe-cli/1.4.4 linux-x64 node-v14.19.1
+greenframe-cli/1.4.4 linux-x64 node-v16.17.0
 $ greenframe --help [COMMAND]
 USAGE
   $ greenframe COMMAND
