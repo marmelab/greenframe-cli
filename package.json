@@ -106,7 +106,7 @@
             }
         }
     },
-    "repository": "marmelab/greenframe",
+    "repository": "marmelab/greenframe-cli",
     "scripts": {
         "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
         "dev": "ts-node-dev src/index.js",
