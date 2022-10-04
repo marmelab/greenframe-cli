@@ -284,6 +284,8 @@ _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/
 
 ## License
 
-GreenFrame is dual licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license) and the Marmelab Commercial License.
+GreenFrame is licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license).
 
-This means you can use GreenFrame for free both in open-source projects and commercial projects for free. You can run GreenFrame in a private CI. But you cannot build a service that runs GreenFrame - for that, you need to [contact Marmelab](mailto:info@marmelab.com) to purchase a license.
+This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whetyher your project is open-source or commercial.
+
+But you cannot build a competitor to [greenframe.io](https://greenframe.io), i.e. a paid service that runs the GreenFrame CLI on demand.
