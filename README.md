@@ -7,21 +7,18 @@ Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenf
 
 # In A Nutshell
 
-Estimate the energy consumption and carbon emissions of a visit to a public web page by calling:
+Estimate the energy consumption and carbon emissions of a visit to a public web page by calling `greenframe analyze`:
 
-```sh
+```
 $ greenframe analyze https://marmelab.com
 ✔ Check configuration file
 ✔ The folder is not a git repository
 ✔ Analysis is in progress locally
   ✔ Docker version 20.10.13, build a224086
   ✔ Running 1 scenario(s)...
-
-Analysis complete !
+Analysis complete!
 
 Result summary:
-
-
 ✅ main scenario completed
 The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
 ```
@@ -30,7 +27,7 @@ The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
 
 To install GreenFrame CLI, type the following command in your favorite terminal:
 
-```sh
+```
 curl https://assets.greenframe.io/install.sh | bash
 ```
 
@@ -49,7 +46,7 @@ By default, GreenFrame runs a "visit" scenario on a public web page and computes
 
 You can run a custom scenario instead of the "visit" scenario by passing a scenario file to the `analyze` command:
 
-```sh
+```
 $ greenframe analyze https://marmelab.com ./my-scenario.js
 ```
 
@@ -67,6 +64,12 @@ async (page) => {
 
 Check [the PlayWright documentation on writing tests](https://playwright.dev/docs/writing-tests) for more information.
 
+You can test your scenario using the `greenframe open` command. It uses the local Chrome browser to run the scenario:
+
+```
+$ greenframe open https://marmelab.com ./my-scenario.js
+```
+
 You can write scenarios by hand, or use [the PlayWright Test Generator](https://playwright.dev/docs/codegen) to generate a scenario based on a user session. 
 
 ## Full-Stack Analysis
@@ -75,7 +78,7 @@ You can monitor the energy consumption of other docker containers while running 
 
 For instance, if you start a set of docker containers using `docker-compose`, containing the following services:
 
-```sh
+```
 $ docker ps
 CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS        PORTS                   NAMES
 d94f1c458c19   node:16      "docker-entrypoint.s…"   7 seconds ago   Up 7 seconds  0.0.0.0:3003->3000/tcp  enterprise_app
@@ -83,17 +86,19 @@ f024c10e666b   node:16      "docker-entrypoint.s…"   7 seconds ago   Up 7 seco
 b6b5f8eb9a6d   postgres:13  "docker-entrypoint.s…"   8 seconds ago   Up 8 seconds  0.0.0.0:5434->5432/tcp  enterprise_db
 ```
 
-You can run an analysis on the whole stack (the browser + the 3 server containers) by passing the --containers option:
+You can run an analysis on the full stack (the browser + the 3 server containers) by passing the `--containers` and `--databaseContainers` option:
 
 ```sh
 $ greenframe analyze https://localhost:3000/ ./my-scenario.js --containers="enterprise_app,enterprise_api" --databaseContainers="enterprise_db"
 ```
 
+GreenFrame needs to identify database containers because it computes the impact of network I/O differently between the client and the server, and within the server infrastructure.
+
 ## Using An Ad Blocker
 
 Third-party tags can be a significant source of energy consumption. When you use the `--useAdblock` option, GreenFrame uses an Ad Blocker to let you estimate that cost. 
 
-Run two analyses, a normal one than an ad-blocked one, and compare the results:
+Run two analyses, a normal one then an ad-blocked one, and compare the results:
 
 ```sh
 $ greenframe analyze https://adweek.com
@@ -118,7 +123,7 @@ In case of failed analysis, the CLI exits with exit code 1.
 
 ## Syncing With GreenFrame.io
 
-If you want to get more insights about your carbon footprint, you can sync your analysis with [GreenFrame.io](https://greenframe.io). This service will provide:
+If you want to get more insights about your carbon footprint, you can sync your analysis with [GreenFrame.io](https://greenframe.io). This service provides:
 
 - A dashboard to monitor your carbon footprint over time
 - A detailed analysis of your carbon footprint, with a breakdown by scenario, container, scenario step, and component
@@ -128,13 +133,13 @@ If you want to get more insights about your carbon footprint, you can sync your 
 
 To get started, [subscribe to GreenFrame.io](https://greenframe.io/#pricing) and create a new project. Then, get your token from the greenframe project page. Pass this token to each greenframe command using the `GREENFRAME_SECRET_TOKEN` environment variable:
 
-```sh
+```
 $ GREENFRAME_SECRET_TOKEN=your-token-here greenframe analyze https://marmelab.com
 ```
 
 Alternately, you can export this environment variable in your shell configuration file (`.bashrc`, `.zshrc`, etc.).
 
-```sh
+```
 export GREENFRAME_SECRET_TOKEN=your-token-here
 ```
 
@@ -162,13 +167,13 @@ Based on our research, the carbon footprint of a web page depends on:
 
 - The duration of the scenario
 - The size of the page (HTML, CSS, JS, images, fonts, etc.)
-- The amount of JS executed
+- The amount of JS executed on the browser
 - The number of third-party tags (ads, analytics, etc.)
 - The complexity of the page (number of DOM elements, number of layout changes, etc.)
 
 Server containers have a low impact on the carbon footprint (around 5% in most cases).
 
-This means that the lowest hanging fruit for optimizing the emissions of a web page is to use [Web Performance Optimization (WPO) techniques](https://developer.mozilla.org/en-US/docs/Web/Performance) to reduce the duration of the scenario.
+This means that the lowest hanging fruit for optimizing the emissions of a web page is to use [Web Performance Optimization (WPO) techniques](https://developer.mozilla.org/en-US/docs/Web/Performance).
 
 # Commands
 
