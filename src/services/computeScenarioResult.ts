@@ -22,6 +22,7 @@ export type ScenarioResult = {
     milestones?: Milestone[];
     errorCode?: string;
     errorMessage?: string;
+    estimatedVisitCount?: number;
 };
 
 export const computeScenarioResult = ({
@@ -31,6 +32,7 @@ export const computeScenarioResult = ({
     name,
     errorCode,
     errorMessage,
+    estimatedVisitCount,
 }: {
     allContainersStats?: Parameters<typeof getStats>[0];
     milestones?: Milestone[][];
@@ -38,6 +40,7 @@ export const computeScenarioResult = ({
     name: string;
     errorCode?: string;
     errorMessage?: string;
+    estimatedVisitCount?: number;
 }): ScenarioResult => {
     if (!errorCode && allContainersStats && milestones) {
         const stats = getStats(allContainersStats);
@@ -69,6 +72,7 @@ export const computeScenarioResult = ({
                 score: metricsPerContainer[container.name],
                 stats: getAverageStats(container.computedStats),
             })),
+            estimatedVisitCount,
         };
     }
 
@@ -78,5 +82,6 @@ export const computeScenarioResult = ({
         status: SCENARIO_STATUS.FAILED,
         errorCode,
         errorMessage,
+        estimatedVisitCount,
     };
 };

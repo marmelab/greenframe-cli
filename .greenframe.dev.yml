@@ -2,6 +2,7 @@ scenarios:
     - path: './src/examples/greenframe.js'
       name: 'Scenario 1'
       threshold: 0.1
+      estimatedVisitCount: 100
     - path: './src/examples/greenframe2.js'
       name: 'Scenario 2'
       threshold: 0.505
