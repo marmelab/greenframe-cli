@@ -124,6 +124,8 @@ If you want to get more insights about your carbon footprint, you can sync your 
 - A detailed analysis of your carbon footprint, with a breakdown by scenario, container, scenario step, and component
 - A comparison with previous analyses on the `main` branch (for Pull Request analysis)
 
+![image](https://user-images.githubusercontent.com/99944/193788309-447a3006-4f05-4330-aa13-ab27d3cd8522.png)
+
 To get started, [subscribe to GreenFrame.io](https://greenframe.io/#pricing) and create a new project. Then, get your token from the greenframe project page. Pass this token to each greenframe command using the `GREENFRAME_SECRET_TOKEN` environment variable:
 
 ```sh
