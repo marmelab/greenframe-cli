@@ -3,25 +3,175 @@ GreenFrame CLI
 
 Estimate the carbon footprint of a user scenario on a web application. Full-stack analysis (browser, screen, network, server). 
 
-<!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
-# Usage
-<!-- usage -->
-```sh-session
-$ npm install -g greenframe-cli
-$ greenframe COMMAND
-running command...
-$ greenframe (--version|-v)
-greenframe-cli/1.4.4 linux-x64 node-v16.17.0
-$ greenframe --help [COMMAND]
-USAGE
-  $ greenframe COMMAND
-...
+Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenframe.io](https://greenframe.io) service. 
+
+# In A Nutshell
+
+Estimate the energy consumption and carbon emissions of a visit to a public web page by calling:
+
+```sh
+$ greenframe analyze https://marmelab.com
+✔ Check configuration file
+✔ The folder is not a git repository
+✔ Analysis is in progress locally
+  ✔ Docker version 20.10.13, build a224086
+  ✔ Running 1 scenario(s)...
+
+Analysis complete !
+
+Result summary:
+
+
+✅ main scenario completed
+The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
 ```
-<!-- usagestop -->
+
+# Installation
+
+To install GreenFrame CLI, type the following command in your favorite terminal:
+
+```sh
+curl https://assets.greenframe.io/install.sh | bash
+```
+
+To verify that GreenFrame CLI has correctly been installed, type:
+
+```
+$ greenframe -v
+enterprise-cli/1.4.4 linux-x64 node-v16.14.0
+```
+
+# Usage
+
+By default, GreenFrame runs a "visit" scenario on a public web page and computes the energy consumption of the browser, the screen, and the public network. But it can go further.
+
+## Custom Scenario
+
+You can run a custom scenario instead of the "visit" scenario by passing a scenario file to the `analyze` command:
+
+```sh
+$ greenframe analyze https://marmelab.com ./my-scenario.js
+```
+
+GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. A custom PlayWright scenario looks like the following:
+
+```js
+// in my-scenario.js
+async (page) => {
+  await page.goto("", { waitUntil: "networkidle" }); // Go to the baseUrl
+  await page.waitForTimeout(3000); // Wait for 3 seconds
+  await page.scrollToElement("footer"); // Scroll to the footer (if present)
+  await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
+};
+```
+
+Check [the PlayWright documentation on writing tests](https://playwright.dev/docs/writing-tests) for more information.
+
+You can write scenarios by hand, or use [the PlayWright Test Generator](https://playwright.dev/docs/codegen) to generate a scenario based on a user session. 
+
+## Full-Stack Analysis
+
+You can monitor the energy consumption of other docker containers while running the scenario. This allows spawning an entire infrastructure and monitoring the energy consumption of the whole stack.
+
+For instance, if you start a set of docker containers using `docker-compose`, containing the following services:
+
+```sh
+$ docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED         STATUS        PORTS                   NAMES
+d94f1c458c19   node:16      "docker-entrypoint.s…"   7 seconds ago   Up 7 seconds  0.0.0.0:3003->3000/tcp  enterprise_app
+f024c10e666b   node:16      "docker-entrypoint.s…"   7 seconds ago   Up 7 seconds  0.0.0.0:3006->3006/tcp  enterprise_api
+b6b5f8eb9a6d   postgres:13  "docker-entrypoint.s…"   8 seconds ago   Up 8 seconds  0.0.0.0:5434->5432/tcp  enterprise_db
+```
+
+You can run an analysis on the whole stack (the browser + the 3 server containers) by passing the --containers option:
+
+```sh
+$ greenframe analyze https://localhost:3000/ ./my-scenario.js --containers="enterprise_app,enterprise_api" --databaseContainers="enterprise_db"
+```
+
+## Using An Ad Blocker
+
+Third-party tags can be a significant source of energy consumption. When you use the `--useAdblock` option, GreenFrame uses an Ad Blocker to let you estimate that cost. 
+
+Run two analyses, a normal one than an ad-blocked one, and compare the results:
+
+```sh
+$ greenframe analyze https://adweek.com
+The estimated footprint is 0.049 g eq. co2 ± 1% (0.112 Wh).
+$ greenframe analyze https://adweek.com --useAdblock
+The estimated footprint is 0.028 g eq. co2 ± 1.1% (0.063 Wh).
+```
+
+In this example, the cost of ads and analytics is 0.049g - 0.028g = 0.021g eq. co2 (42% of the total footprint).
+
+## Defining A Threshold
+
+The `greenframe` CLI was designed to be used in a CI/CD pipeline. You can define a threshold in `g eq. co2` to fail the build if the carbon footprint is too high:
+
+```sh
+$ greenframe analyze https://cnn.com --threshold=0.045
+❌ main scenario failed
+The estimated footprint at 0.05 g eq. co2 ± 1.3% (0.114 Wh) passes the limit configured at 0.045 g eq. co2.
+```
+
+In case of failed analysis, the CLI exits with exit code 1.
+
+## Syncing With GreenFrame.io
+
+If you want to get more insights about your carbon footprint, you can sync your analysis with [GreenFrame.io](https://greenframe.io). This service will provide:
+
+- A dashboard to monitor your carbon footprint over time
+- A detailed analysis of your carbon footprint, with a breakdown by scenario, container, scenario step, and component
+- A comparison with previous analyses on the `main` branch (for Pull Request analysis)
+
+![image](https://user-images.githubusercontent.com/99944/193788309-447a3006-4f05-4330-aa13-ab27d3cd8522.png)
+
+To get started, [subscribe to GreenFrame.io](https://greenframe.io/#pricing) and create a new project. Then, get your token from the greenframe project page. Pass this token to each greenframe command using the `GREENFRAME_SECRET_TOKEN` environment variable:
+
+```sh
+$ GREENFRAME_SECRET_TOKEN=your-token-here greenframe analyze https://marmelab.com
+```
+
+Alternately, you can export this environment variable in your shell configuration file (`.bashrc`, `.zshrc`, etc.).
+
+```sh
+export GREENFRAME_SECRET_TOKEN=your-token-here
+```
+
+## More Information / Troubleshooting
+
+Check the docs at greenframe.io:
+
+[https://docs.greenframe.io/](https://docs.greenframe.io/)
+
+# How Does GreenFrame Work?
+
+While running the scenario, GreenFrame uses `docker stats` to collect system metrics (CPU, memory, network and disk I/O, scenario duration) every second from the browser and containers.
+
+It then uses the [GreenFrame Model](./src/model/README.md) to convert each of these metrics into energy consumption in Watt.hours. GreenFrame sums up the energy of all containers over time, taking into account a theoretical datacenter PUE (set to 1.4, and configurable) for server containers. This energy consumption is then converted into CO2 emissions using a configurable "carbon cost of energy" parameter (set to 442g/kWh by default).
+
+GreenFrame repeats the scenario 3 times and computes the average energy consumption and CO2 emissions. It also computes the standard deviation of energy consumption and CO2 emissions to provide a confidence interval.
+
+For more details about the GreenFrame Model, check this article on the Marmelab blog:
+
+[GreenFrame.io: What is the carbon footprint of a web page?](https://marmelab.com/blog/2021/04/08/greenframe-io-website-carbon.html).
+
+# Which Factors Influence The Carbon Footprint?
+
+Based on our research, the carbon footprint of a web page depends on:
+
+- The duration of the scenario
+- The size of the page (HTML, CSS, JS, images, fonts, etc.)
+- The amount of JS executed
+- The number of third-party tags (ads, analytics, etc.)
+- The complexity of the page (number of DOM elements, number of layout changes, etc.)
+
+Server containers have a low impact on the carbon footprint (around 5% in most cases).
+
+This means that the lowest hanging fruit for optimizing the emissions of a web page is to use [Web Performance Optimization (WPO) techniques](https://developer.mozilla.org/en-US/docs/Web/Performance) to reduce the duration of the scenario.
+
 # Commands
+
 <!-- commands -->
 * [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
 * [`greenframe kube-config`](#greenframe-kube-config)
@@ -131,3 +281,11 @@ DESCRIPTION
 
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.4.4/dist/commands/update.ts)_
 <!-- commandsstop -->
+
+## License
+
+GreenFrame is licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license).
+
+This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whetyher your project is open-source or commercial.
+
+But you cannot build a competitor to [greenframe.io](https://greenframe.io), i.e. a paid service that runs the GreenFrame CLI on demand.
