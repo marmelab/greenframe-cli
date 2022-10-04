@@ -86,7 +86,7 @@ b6b5f8eb9a6d   postgres:13  "docker-entrypoint.s…"   8 seconds ago   Up 8 seco
 You can run an analysis on the whole stack (the browser + the 3 server containers) by passing the --containers option:
 
 ```sh
-$ greenframe analyze https://localhost:3000/ ./my-scenario.js --containers="enterprise_app,enterprise_api,enterprise_db"
+$ greenframe analyze https://localhost:3000/ ./my-scenario.js --containers="enterprise_app,enterprise_api" --databaseContainers="enterprise_db"
 ```
 
 ## Using An Ad Blocker
