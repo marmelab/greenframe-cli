@@ -47,8 +47,8 @@ export const executeScenarioAndGetContainerStats = async ({
     url: string;
     samples?: number;
     useAdblock?: boolean;
-    containers?: string[];
-    databaseContainers?: string[];
+    containers?: string[] | string;
+    databaseContainers?: string[] | string;
     kubeContainers?: string[];
     kubeDatabaseContainers?: string[];
     extraHosts?: string[];
@@ -75,6 +75,10 @@ export const executeScenarioAndGetContainerStats = async ({
             },
         ];
 
+        if (typeof containers === 'string') {
+            containers = containers.split(',');
+        }
+
         const allMilestones = [];
 
         allContainers = allContainers.concat(
@@ -84,6 +88,10 @@ export const executeScenarioAndGetContainerStats = async ({
                 dockerStats: [],
             }))
         );
+
+        if (typeof databaseContainers === 'string') {
+            databaseContainers = databaseContainers.split(',');
+        }
 
         allContainers = allContainers.concat(
             databaseContainers.map((container) => ({
