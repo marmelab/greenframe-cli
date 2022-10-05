@@ -11,15 +11,7 @@ Estimate the energy consumption and carbon emissions of a visit to a public web 
 
 ```
 $ greenframe analyze https://marmelab.com
-✔ Check configuration file
-✔ The folder is not a git repository
-✔ Analysis is in progress locally
-  ✔ Docker version 20.10.13, build a224086
-  ✔ Running 1 scenario(s)...
-Analysis complete!
-
 Result summary:
-✅ main scenario completed
 The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
 ```
 
