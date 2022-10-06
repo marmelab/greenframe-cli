@@ -11,7 +11,7 @@ Estimate the energy consumption and carbon emissions of a visit to a public web 
 
 ```
 $ greenframe analyze https://marmelab.com
-Result summary:
+✅ main scenario completed
 The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
 ```
 
@@ -127,6 +127,9 @@ To get started, [subscribe to GreenFrame.io](https://greenframe.io/#pricing) and
 
 ```
 $ GREENFRAME_SECRET_TOKEN=your-token-here greenframe analyze https://marmelab.com
+✅ main scenario completed
+The estimated footprint is 0.038 g eq. co2 ± 9.6% (0.086 Wh).
+Check the details of your analysis at https://app.greenframe.io/analyses/7d7b7777-600c-4399-842f-b70db9408f53
 ```
 
 Alternately, you can export this environment variable in your shell configuration file (`.bashrc`, `.zshrc`, etc.).
