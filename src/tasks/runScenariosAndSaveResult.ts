@@ -40,7 +40,7 @@ export default async (ctx: any) => {
                 milestones: allMilestones,
                 threshold: scenario.threshold,
                 name: scenario.name,
-                estimatedVisitCount: scenario.estimatedVisitCount,
+                executionCount: scenario.executionCount,
             });
             resultScenarios.push(data);
         } catch (error) {
@@ -57,7 +57,7 @@ export default async (ctx: any) => {
                     name: scenario.name,
                     errorCode: ERROR_CODES.SCENARIO_FAILED,
                     errorMessage: error.message,
-                    estimatedVisitCount: scenario.estimatedVisitCount,
+                    executionCount: scenario.executionCount,
                 });
                 resultScenarios.push(data);
             }

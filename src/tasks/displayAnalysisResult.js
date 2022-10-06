@@ -41,12 +41,12 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
                 );
             }
 
-            if (scenario.estimatedVisitCount) {
+            if (scenario.executionCount) {
                 console.info(
-                    `With your estimated number of visits (${
-                        scenario.estimatedVisitCount
-                    }) your footprint would rise ${formatTotalCo2(
-                        totalCo2 * scenario.estimatedVisitCount
+                    `For ${
+                        scenario.executionCount
+                    } scenario executions, this represents ${formatTotalCo2(
+                        totalCo2 * scenario.executionCount
                     )} eq. co2`
                 );
             }
