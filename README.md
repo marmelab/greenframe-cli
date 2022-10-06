@@ -132,6 +132,8 @@ The estimated footprint is 0.038 g eq. co2 ± 9.6% (0.086 Wh).
 Check the details of your analysis at https://app.greenframe.io/analyses/7d7b7777-600c-4399-842f-b70db9408f53
 ```
 
+When using a greenframe.io token, the `greenframe analyze` command generates an online report with much more details than the estimated footprint, and outputs its URL on the console.
+
 Alternately, you can export this environment variable in your shell configuration file (`.bashrc`, `.zshrc`, etc.).
 
 ```
