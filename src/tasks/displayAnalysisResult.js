@@ -4,6 +4,18 @@ const STATUS = require('../status').STATUS;
 const APP_BASE_URL = process.env.APP_URL ?? 'https://app.greenframe.io';
 
 const computeTotalMetric = (metric) => Math.round(metric * 1000) / 1000;
+const formatTotalCo2 = (total) => {
+    if (total >= 1_000_000) {
+        return `${computeTotalMetric(total / 1_000_000)} t`;
+    }
+
+    if (total <= 100_000 && total >= 1000) {
+        return `${computeTotalMetric(total / 1000)} kg`;
+    }
+
+    return `${computeTotalMetric(total)} g`;
+};
+
 const displayAnalysisResults = (result, isFree, isDistant) => {
     console.info('\nAnalysis complete !\n');
     console.info('Result summary:');
@@ -26,6 +38,16 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
             } else {
                 console.info(
                     `The estimated footprint is ${totalCo2} g eq. co2 ± ${precision}% (${totalMWh} Wh).`
+                );
+            }
+
+            if (scenario.executionCount) {
+                console.info(
+                    `For ${
+                        scenario.executionCount
+                    } scenario executions, this represents ${formatTotalCo2(
+                        totalCo2 * scenario.executionCount
+                    )} eq. co2`
                 );
             }
         } else {
