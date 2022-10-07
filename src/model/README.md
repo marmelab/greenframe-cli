@@ -1,6 +1,6 @@
-# GreenFrame - Model
+# GreenFrame Model
 
-Library for converting collected metrics into Wh
+Converting system metrics collected by `docker stats` metrics into W.h.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ make build
 
 ## Description of the model
 
-The GreenFrame model compute an energy consumption (Wh) from:
+The GreenFrame model computes an energy consumption (Wh) from:
 
 - collected metrics (cpu time, network traffic, etc.) on one or more usage scenarios.
 - knowledge of the infrastructure (number of servers, network traffic), users (number of requests).
@@ -25,9 +25,7 @@ energy consumed by each of the components/usages.
 
 ### From collected metrics to Measures used to calculate consumption in Wh
 
-Using a tools such as Docker or Prometheus we can collect technical metrics.
-These metrics are converted into a generic format that can be used by the GreenFrame model.
-Each metric of the generic format contains the following information:
+Using a tools such as Docker or Prometheus, we can collect technical metrics. These metrics are converted into a generic format that can be used by the GreenFrame model. Each metric of the generic format contains the following information:
 
 - `date`: date of the collected
 - `availableSystemCpuUsage`: corresponds to the time elapsed in seconds since previous collected metric
@@ -67,6 +65,36 @@ Note that this model is generic, meaning that the calculated values depend on an
 To use this model, you need to specify an energy-profile.
 By default we use the one described below.
 
+```js
+const energyProfile = {
+    CPU: 45,            // W, for Core-i7
+    MEM: 10 / 128,      // Wh/GB
+    DISK: 1.52 / 1000,  // Wh/GB, for SSD
+    NETWORK: 11,        // Wh/GB
+    PUE: 1.4,
+    SCREEN: 14,         // W, for a 14" screen
+};
+```
+
+These values were choses based on the scientific litterature. Here are the sources we considered for that model:
+
+* https://codeascraft.com/2020/04/23/cloud-jewels-estimating-kwh-in-the-cloud/
+* https://onlinelibrary.wiley.com/doi/epdf/10.1111/jiec.12630
+* https://www.mdpi.com/2071-1050/10/7/2494/pdf"
+* https://ark.intel.com/content/www/fr/fr/ark/products/67355/intel-core-i5-3210m-processor-3m-cache-up-to-3-10-ghz-rpga.html
+* http://www.kompulsa.com/much-power-computers-consume/
+* https://ark.intel.com/content/www/fr/fr/ark/products/191045/intel-core-i7-9750h-processor-12m-cache-up-to-4-50-ghz.html
+* https://ark.intel.com/content/www/fr/fr/ark/products/122589/intel-core-i7-8550u-processor-8m-cache-up-to-4-00-ghz.html
+* http://energyusecalculator.com/electricity_lcdleddisplay.htm
+* https://www.researchgate.net/publication/257768333_Efficiency_improvement_opportunities_for_personal_computer_monitors_Implications_for_market_transformation_programs
+* https://iswitch.com.sg/how-much-electricity-computer-consume/
+* http://energyusecalculator.com/electricity_wifirouter.htm
+* https://mydataball.com/wp-content/uploads/2018/10/DAMON17-MemPower.pdf
+* https://web.eecs.umich.edu/~zmao/Papers/RRC4G_mobisys2012.pdf
+* https://www.zora.uzh.ch/id/eprint/110005/
+* https://aws.amazon.com/fr/about-aws/sustainability/
+* https://www.google.com/about/datacenters/efficiency/
+
 An important value is the consumption (expressed in Wh/GB) for the `NETWORK`. Unfortunately there is not a unique value in the literature.
 This value ranges from 136000 Wh/GB to 6 Wh/GB. We have chosen a value which, according to several articles, appears to be realistic: 11 Wh/GB.
 
@@ -76,18 +104,42 @@ This value ranges from 136000 Wh/GB to 6 Wh/GB. We have chosen a value which, ac
 
 Moreover, experience showed us that `userTime` also varies according to the load. To have representative measurements it is thus necessary to perform the measurements on a machine not loaded
 
+## FAQ
+
+### This Model Is Wrong!
+
+You're right, it's easy to find one study that contradicts the parameters we've chosen for this model. And for one good reason: there is currently no scientific consensus over the energy consumption of a digital system. 
+
+So we had to make a choice. We hired a researcher from French CNRS to look for scientific publications that would be compatible with each other, and would result in a full-stack model. This is the result of his work.
+
+So again, our model is probably wrong - all models are. But we believe that our model is *less wrong than the others*, because we built it with a scientific approach.
+
+And besides, the result of a single measurement is not very relevant - see next question.
+
+### Is The Score for Website XXX Good or Bad?
+
+The Greenframe model estimates the energy consumtion of a user scenario on a given web system. Is the result good or bad? There is no answer to this question, because there is no large-scale benchmark of energy consumption of web systems, and because there is currently no regulation about it.
+
+So don't pay too much attention to the absolute value of the score. What matters is the comparison between two systems, or the comparison between two runs. We could veryfy experimentally that variations in the Greenframe score are correlated with variations in the energy consumption of the system.
+
+So even though GreenFrame's model is wrong, you can use it today to:
+
+- see how your website compares to competitors
+- see how a change in the code affects the energy consumption
+- test a good practice for reducing energy consumption
+
 ## Using the library
 
 ### Create computed stats from Docker metrics
 
-```
-    const meta = { container: containerName, sample: 1 };
-    const computedStats = readDockerStats(filename, meta);
+```js
+const meta = { container: containerName, sample: 1 };
+const computedStats = readDockerStats(filename, meta);
 ```
 
 with
 
-```
+```js
 const readStats = (filename: string, meta: Meta): ComputedStatWithMeta[] => {
     const rawdata = fs.readFileSync(filename, "utf8");
     const {
@@ -105,6 +157,7 @@ const readStats = (filename: string, meta: Meta): ComputedStatWithMeta[] => {
         meta,
     });
     return computedStats;
+};
 ```
 
 We assume that `filename` is a JSON file containing `{stats:[...], intervals:[...]}`, as generated by greenframe-cli.
@@ -116,33 +169,33 @@ in an interval of the timeline) are removed from our computed metrics.
 
 ### Create a store from computed stats
 
-```
-    const store = createStatStore(computedStats);
+```js
+const store = createStatStore(computedStats);
 ```
 
 `store` is an internal data-stucture used to compute energy consumption.
 
 ### Get energy consumption for an energy profile
 
-```
-    const consumption = {
-        HDD: 0.89,
-        SSD: 1.52,
-        NETWORK: 11,
-        CORE_I7: 45,
-        SCREEN_27: 30,
-        SCREEN_14: 14,
-        MEM_128: 10,
-    };
-    const energyProfile = {
-        CPU: consumption.CORE_I7,         // W
-        MEM: consumption.MEM_128 / 128,   // Wh/GB
-        DISK: consumption.SSD / 1000,     // Wh/GB
-        NETWORK: consumption.NETWORK,     // Wh/GB
-        PUE: 1.4,
-        SCREEN: consumption.SCREEN_14,    // W
-    };
+```js
+const consumption = {
+    HDD: 0.89,
+    SSD: 1.52,
+    NETWORK: 11,
+    CORE_I7: 45,
+    SCREEN_27: 30,
+    SCREEN_14: 14,
+    MEM_128: 10,
+};
+const energyProfile = {
+    CPU: consumption.CORE_I7,         // W
+    MEM: consumption.MEM_128 / 128,   // Wh/GB
+    DISK: consumption.SSD / 1000,     // Wh/GB
+    NETWORK: consumption.NETWORK,     // Wh/GB
+    PUE: 1.4,
+    SCREEN: consumption.SCREEN_14,    // W
+};
 
-    const revisionWh = getRevisionWh(store, energyProfile);
-    const containerWh = revisionWh[containerName];
+const revisionWh = getRevisionWh(store, energyProfile);
+const containerWh = revisionWh[containerName];
 ```

@@ -140,6 +140,45 @@ Alternately, you can export this environment variable in your shell configuratio
 export GREENFRAME_SECRET_TOKEN=your-token-here
 ```
 
+## Benchmarking Against Other Sites
+
+How does the carbon footprint of your site compare to other sites? 
+
+GreenFrame.io runs a "visit" scenario over many websites in several categories. This allows you to compare your site to other sites in the same category.
+
+If you're using a custom scenario, run the same scenario over another URL to compare the results.
+
+The problem is that a given "scenario" may need adaptations to run on another site. For instance, the "add to cart" scenario may need to click on a different button to add an item to the cart. So the hard part of benchmarking is to define a scenario for each site.
+
+## Diffing Against Previous Analyses
+
+If you're using GreenFrame.io, you can compare your analysis with the previous one on the `main` branch. This allows you to monitor the evolution of your carbon footprint over time.
+
+The greenframe CLI will automatically detect that you're in a git checkout, and store the commit hash in the analysis metadata. When run on a branch, it will also look for the latest analysis on the main branch, and compare the two. The results are visible on the analysis page on GreenFrame.io.
+
+**Tip**: You can customize the name of the main branch using the `.greenframe.yml` config file.
+
+## Using a Config File
+
+Instead of passing all options on the command line, you can use a `.greenframe.yml` file to configure the CLI. This file must be located in the same directory as the one where you run the `greenframe` CLI.
+
+```yaml
+baseURL: YOUR_APP_BASE_URL
+scenarios:
+  - path: PATH_TO_YOUR_SCENARIO_FILE
+    name: My first scenario
+    threshold: 0.1
+projectName: YOUR_PROJECT_NAME
+samples: 3
+distant: false
+useAdblock: true
+containers:
+  - "CONTAINER_NAME"
+  - "ANOTHER_CONTAINER_NAME"
+databaseContainers:
+  - "DATABASE_CONTAINER_NAME"
+```
+
 ## More Information / Troubleshooting
 
 Check the docs at greenframe.io:
