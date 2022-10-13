@@ -88,6 +88,12 @@ class AnalyzeCommand extends Command {
         dockerdPort: Flags.integer({
             description: 'Docker daemon port',
         }),
+        containers: Flags.string({
+            description: 'Pass containers manually',
+        }),
+        databaseContainers: Flags.string({
+            description: 'Pass database containers manually',
+        }),
     };
 
     async run() {
