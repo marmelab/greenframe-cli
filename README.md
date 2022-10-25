@@ -8,8 +8,8 @@ Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenf
 - [In A Nutshell](#in-a-nutshell)
 - [Installation](#installation)
 - [Usage](#usage)
-- [How Does GreenFrame Work?](#how-does-greenframe-work-)
-- [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint-)
+- [How Does GreenFrame Work?](#how-does-greenframe-work)
+- [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint)
 - [Commands](#commands)
 
 # In A Nutshell
