@@ -5,6 +5,13 @@ Estimate the carbon footprint of a user scenario on a web application. Full-stac
 
 Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenframe.io](https://greenframe.io) service. 
 
+- [In A Nutshell](#in-a-nutshell)
+- [Installation](#installation)
+- [Usage](#usage)
+- [How Does GreenFrame Work?](#how-does-greenframe-work-)
+- [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint-)
+- [Commands](#commands)
+
 # In A Nutshell
 
 Estimate the energy consumption and carbon emissions of a visit to a public web page by calling `greenframe analyze`:
@@ -330,6 +337,6 @@ _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/
 
 GreenFrame is licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license).
 
-This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whetyher your project is open-source or commercial.
+This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whether your project is open-source or commercial.
 
 But you cannot build a competitor to [greenframe.io](https://greenframe.io), i.e. a paid service that runs the GreenFrame CLI on demand.
