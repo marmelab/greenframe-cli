@@ -14,7 +14,13 @@ Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenf
 
 # In A Nutshell
 
-Estimate the energy consumption and carbon emissions of a visit to a public web page by calling `greenframe analyze`:
+The share of digital technologies in global greenhouse gas emissions has passed air transport, and will soon pass car transport ([source](https://theshiftproject.org/wp-content/uploads/2019/03/Executive-Summary_Lean-ICT-Report_EN_lowdef.pdf)). At 4% of total emissions, and with a growth rate of 9% per year, the digital sector is a major contributor to global warming. 
+
+How do developers adapt their practices to build less energy intensive web applications? 
+
+GreenFrame is a command-line tool that estimates the carbon footprint of web apps at every stage of the development process. Put it in your Continuous Integration workflow to get warned about "carbon leaks", and force a threshold of maximum emissions. 
+
+For instance, to estimate the energy consumption and carbon emissions of a visit to a public web page, call `greenframe analyze`:
 
 ```
 $ greenframe analyze https://marmelab.com
