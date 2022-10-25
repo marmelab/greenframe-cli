@@ -200,9 +200,11 @@ Check the docs at greenframe.io:
 
 # How Does GreenFrame Work?
 
+GreenFrame relies on a [scientific model](./src/model/README.md) of the energy consumption of a digital system built in collaboration with computer scientists at [Loria](https://www.loria.fr/en/). 
+
 While running the scenario, GreenFrame uses `docker stats` to collect system metrics (CPU, memory, network and disk I/O, scenario duration) every second from the browser and containers.
 
-It then uses the [GreenFrame Model](./src/model/README.md) to convert each of these metrics into energy consumption in Watt.hours. GreenFrame sums up the energy of all containers over time, taking into account a theoretical datacenter PUE (set to 1.4, and configurable) for server containers. This energy consumption is then converted into CO2 emissions using a configurable "carbon cost of energy" parameter (set to 442g/kWh by default).
+It then uses the GreenFrame Model to convert each of these metrics into energy consumption in Watt.hours. GreenFrame sums up the energy of all containers over time, taking into account a theoretical datacenter PUE (set to 1.4, and configurable) for server containers. This energy consumption is then converted into CO2 emissions using a configurable "carbon cost of energy" parameter (set to 442g/kWh by default).
 
 GreenFrame repeats the scenario 3 times and computes the average energy consumption and CO2 emissions. It also computes the standard deviation of energy consumption and CO2 emissions to provide a confidence interval.
 
