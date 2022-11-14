@@ -150,6 +150,16 @@ jobs:
                   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
                   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
 
+            - name: ⚙️ Build docker image
+              run: make build-docker-image
+
+            - name: 🚀 Push docker image
+              run: make push-docker-image
+              if: ${{ github.ref == 'refs/heads/production' }}
+              env:
+                  DOCKER_REGISTRY_USER: ${{secrets.DOCKER_REGISTRY_USER}}
+                  DOCKER_REGISTRY_PASS: ${{secrets.DOCKER_REGISTRY_PASS}}
+
             - name: 📜 Update readme
               uses: stefanzweifel/git-auto-commit-action@v4
               with:

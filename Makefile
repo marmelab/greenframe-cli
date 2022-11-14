@@ -47,9 +47,14 @@ upload-installation-scripts: ## Publish on the bucket installion bash scripts
 promote-production: upload-installation-scripts ## Publish uploaded tarballs on a stable channel
 	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS) && yarn set version stable
 
-create-docker-image: ## Create a docker image with the latest published version
-	DOCKER_BUILDKIT=1 docker build -t greenframe-cli:latest -t greenframe-cli:$(PACKAGE_VERSION) . --target base
-	DOCKER_BUILDKIT=1 docker build -t greenframe-cli:$(PACKAGE_VERSION)-gcp . --target gcp
+build-docker-image: ## Create a docker image with the latest published version
+	docker build -t marmelab/greenframe-cli .
+
+push-docker-image: ## Tag & push the docker image to the docker hub registry
+	docker login
+	docker tag marmelab/greenframe-cli marmelab/greenframe-cli:latest
+	docker tag marmelab/greenframe-cli marmelab/greenframe-cli:$(PACKAGE_VERSION)
+	docker push marmelab/greenframe-cli:latest marmelab/greenframe-cli:$(PACKAGE_VERSION)
 
 test: test-unit test-e2e ## Launch all tests
 
