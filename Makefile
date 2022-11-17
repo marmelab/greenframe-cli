@@ -48,13 +48,13 @@ promote-production: upload-installation-scripts ## Publish uploaded tarballs on 
 	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS) && yarn set version stable
 
 build-docker-image: ## Create a docker image with the latest published version
-	docker build -t marmelab/greenframe-cli .
+	docker build -t marmelab/greenframe .
 
 push-docker-image: ## Tag & push the docker image to the docker hub registry
 	docker login
-	docker tag marmelab/greenframe-cli marmelab/greenframe-cli:latest
-	docker tag marmelab/greenframe-cli marmelab/greenframe-cli:$(PACKAGE_VERSION)
-	docker push marmelab/greenframe-cli:latest marmelab/greenframe-cli:$(PACKAGE_VERSION)
+	docker tag marmelab/greenframe marmelab/greenframe:latest
+	docker tag marmelab/greenframe marmelab/greenframe:$(PACKAGE_VERSION)
+	docker push marmelab/greenframe:latest marmelab/greenframe:$(PACKAGE_VERSION)
 
 test: test-unit test-e2e ## Launch all tests
 

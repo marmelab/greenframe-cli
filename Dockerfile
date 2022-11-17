@@ -35,3 +35,6 @@ ENV PATH $PATH:/root/.local/bin
 RUN mkdir /app
 RUN git config --global --add safe.directory /app
 WORKDIR /app
+
+ENTRYPOINT ["greenframe"]
+CMD ["--version"]
