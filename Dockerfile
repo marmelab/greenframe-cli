@@ -22,11 +22,6 @@ RUN apt update && apt install -y \
         docker-compose-plugin \
     && rm -rf /var/lib/apt/lists/*
 
-# Install kubectl cli
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-RUN chmod +x ./kubectl
-RUN mv ./kubectl /usr/local/bin/kubectl
-
 # Install greenframe cli
 RUN cd /root \
         && curl https://assets.greenframe.io/install.sh | bash
