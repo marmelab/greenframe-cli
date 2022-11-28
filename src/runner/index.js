@@ -11,6 +11,7 @@ const executeScenario = require('./scenarioWrapper');
             hostIP: process.env.HOSTIP,
             extraHosts: process.env.EXTRA_HOSTS ? process.env.EXTRA_HOSTS.split(',') : [],
             useAdblock: args.useAdblock,
+            ignoreHTTPSErrors: args.ignoreHTTPSErrors,
         }
     );
     console.log('=====TIMELINES=====');
