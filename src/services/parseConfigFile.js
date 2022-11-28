@@ -27,6 +27,7 @@ const parseConfigFile = async (path) => {
                 kubeConfig,
                 dockerdHost,
                 dockerdPort,
+                ignoreHTTPSErrors,
             } = yaml.load(file);
             return {
                 args: {
@@ -48,6 +49,7 @@ const parseConfigFile = async (path) => {
                     kubeConfig,
                     dockerdHost,
                     dockerdPort,
+                    ignoreHTTPSErrors,
                 },
             };
         }

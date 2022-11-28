@@ -15,6 +15,7 @@ export type Analysis = {
     samples: any[];
     distant: boolean;
     useAdblock: boolean;
+    ignoreHTTPSErrors: boolean;
     projectName: string;
     gitInfos: {
         branchName: string;

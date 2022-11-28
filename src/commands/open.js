@@ -22,6 +22,7 @@ class OpenCommand extends Command {
     static defaultFlags = {
         configFile: './.greenframe.yml',
         useAdblock: false,
+        ignoreHTTPSErrors: false,
     };
 
     static flags = {
@@ -33,6 +34,9 @@ class OpenCommand extends Command {
         useAdblock: Flags.boolean({
             char: 'a',
             description: 'Use an adblocker during analysis',
+        }),
+        ignoreHTTPSErrors: Flags.boolean({
+            description: 'Ignore HTTPS errors during analysis',
         }),
     };
 
@@ -61,6 +65,7 @@ class OpenCommand extends Command {
                     executablePath,
                     useAdblock: flags.useAdblock,
                     extraHosts: args.extraHosts,
+                    ignoreHTTPSErrors: flags.ignoreHTTPSErrors,
                 });
                 console.info(
                     `✅ ${scenario.name}: ${

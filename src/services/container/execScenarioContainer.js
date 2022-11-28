@@ -41,7 +41,11 @@ const startContainer = async () => {
     return 'OK';
 };
 
-const execScenarioContainer = async (scenario, url, { useAdblock } = {}) => {
+const execScenarioContainer = async (
+    scenario,
+    url,
+    { useAdblock, ignoreHTTPSErrors } = {}
+) => {
     try {
         let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
             scenario
@@ -49,6 +53,10 @@ const execScenarioContainer = async (scenario, url, { useAdblock } = {}) => {
 
         if (useAdblock) {
             command += ` --useAdblock`;
+        }
+
+        if (ignoreHTTPSErrors) {
+            command += ` --ignoreHTTPSErrors`;
         }
 
         const { stdout, stderr } = await exec(command);
