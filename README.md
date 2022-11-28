@@ -242,8 +242,8 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--dockerdHost <value>]
-    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--dockerdHost <value>] [--dockerdPort <value>]
+    [--containers <value>] [--databaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
