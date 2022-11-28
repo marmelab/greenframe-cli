@@ -109,7 +109,7 @@
     "repository": "marmelab/greenframe-cli",
     "scripts": {
         "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
-        "dev": "ts-node-dev src/index.js",
+        "dev": "ts-node-dev src/index.ts",
         "postpack": "rm -f oclif.manifest.json",
         "posttest": "eslint .",
         "prepack": "yarn build && oclif manifest && oclif readme",
