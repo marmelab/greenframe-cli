@@ -22,7 +22,7 @@
         "mathjs": "^9.5.0",
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
-        "playwright": "~1.25.1",
+        "playwright": "^1.28.1",
         "vm2": "3.9.3"
     },
     "devDependencies": {
