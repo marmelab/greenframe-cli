@@ -3199,7 +3199,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-walk@npm:^8.1.1":
+"acorn-walk@npm:^8.1.1, acorn-walk@npm:^8.2.0":
   version: 8.2.0
   resolution: "acorn-walk@npm:8.2.0"
   checksum: 1715e76c01dd7b2d4ca472f9c58968516a4899378a63ad5b6c2d668bba8da21a71976c14ec5f5b75f887b6317c4ae0b897ab141c831d741dc76024d8745f1ad1
@@ -3212,6 +3212,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 7270ca82b242eafe5687a11fea6e088c960af712683756abf0791b68855ea9cace3057bd5e998ffcef50c944810c1e0ca1da526d02b32110e13c722aa959afdc
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.7.0":
+  version: 8.8.1
+  resolution: "acorn@npm:8.8.1"
+  bin:
+    acorn: bin/acorn
+  checksum: 4079b67283b94935157698831967642f24a075c52ce3feaaaafe095776dfbe15d86a1b33b1e53860fc0d062ed6c83f4284a5c87c85b9ad51853a01173da6097f
   languageName: node
   linkType: hard
 
@@ -6385,7 +6394,7 @@ __metadata:
     ts-jest: ^28.0.7
     ts-node-dev: ^2.0.0
     typescript: ^4.7.4
-    vm2: 3.9.3
+    vm2: 3.9.11
     wait-on: ^6.0.0
     xo: ^0.52.3
   bin:
@@ -11390,12 +11399,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vm2@npm:3.9.3":
-  version: 3.9.3
-  resolution: "vm2@npm:3.9.3"
+"vm2@npm:3.9.11":
+  version: 3.9.11
+  resolution: "vm2@npm:3.9.11"
+  dependencies:
+    acorn: ^8.7.0
+    acorn-walk: ^8.2.0
   bin:
     vm2: bin/vm2
-  checksum: 6367c213b2289c32831a10230dd16f31394c134fe269992071c49b26509c6e6145b379ff435c09cb28af8619c7a9f2f91e080d08d2f9a171b75869f3f34bc6ca
+  checksum: aab39e6e4b59146d24abacd79f490e854a6e058a8b23d93d2be5aca7720778e2605d2cc028ccc4a5f50d3d91b0c38be9a6247a80d2da1a6de09425cc437770b4
   languageName: node
   linkType: hard
 

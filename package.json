@@ -23,7 +23,7 @@
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
         "playwright": "^1.28.1",
-        "vm2": "3.9.3"
+        "vm2": "3.9.11"
     },
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.36.0",
