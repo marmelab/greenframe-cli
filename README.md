@@ -344,6 +344,19 @@ DESCRIPTION
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.1/dist/commands/update.ts)_
 <!-- commandsstop -->
 
+## Docker
+
+From version 1.5.1, the command line tool can be used in a docker container.
+
+```
+  $ docker run marmelab/greenframe --help
+```
+```
+  $ docker run marmelab/greenframe [COMMAND]
+```
+
+[All previous described commands](#commands) are available in the docker image.
+
 ## License
 
 GreenFrame is licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license).
