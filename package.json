@@ -1,7 +1,7 @@
 {
     "name": "greenframe-cli",
     "description": "Official GreenFrame CLI",
-    "version": "1.6.1",
+    "version": "1.6.0",
     "author": "Marmelab",
     "bin": {
         "greenframe": "./bin/run"
@@ -123,5 +123,5 @@
         "lint": "eslint .",
         "typecheck": "tsc --noEmit --pretty"
     },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "yarn@3.2.3"
 }
