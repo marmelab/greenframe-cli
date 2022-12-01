@@ -1,7 +1,7 @@
 {
     "name": "greenframe-cli",
     "description": "Official GreenFrame CLI",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "author": "Marmelab",
     "bin": {
         "greenframe": "./bin/run"
