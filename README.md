@@ -5,9 +5,22 @@ Estimate the carbon footprint of a user scenario on a web application. Full-stac
 
 Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenframe.io](https://greenframe.io) service. 
 
+- [In A Nutshell](#in-a-nutshell)
+- [Installation](#installation)
+- [Usage](#usage)
+- [How Does GreenFrame Work?](#how-does-greenframe-work)
+- [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint)
+- [Commands](#commands)
+
 # In A Nutshell
 
-Estimate the energy consumption and carbon emissions of a visit to a public web page by calling `greenframe analyze`:
+The share of digital technologies in global greenhouse gas emissions has passed air transport, and will soon pass car transport ([source](https://theshiftproject.org/wp-content/uploads/2019/03/Executive-Summary_Lean-ICT-Report_EN_lowdef.pdf)). At 4% of total emissions, and with a growth rate of 9% per year, the digital sector is a major contributor to global warming. 
+
+How do developers adapt their practices to build less energy intensive web applications? 
+
+GreenFrame is a command-line tool that estimates the carbon footprint of web apps at every stage of the development process. Put it in your Continuous Integration workflow to get warned about "carbon leaks", and force a threshold of maximum emissions. 
+
+For instance, to estimate the energy consumption and carbon emissions of a visit to a public web page, call `greenframe analyze`:
 
 ```
 $ greenframe analyze https://marmelab.com
@@ -172,6 +185,7 @@ projectName: YOUR_PROJECT_NAME
 samples: 3
 distant: false
 useAdblock: true
+ignoreHTTPSErrors: true
 containers:
   - "CONTAINER_NAME"
   - "ANOTHER_CONTAINER_NAME"
@@ -187,9 +201,11 @@ Check the docs at greenframe.io:
 
 # How Does GreenFrame Work?
 
+GreenFrame relies on a [scientific model](./src/model/README.md) of the energy consumption of a digital system built in collaboration with computer scientists at [Loria](https://www.loria.fr/en/). 
+
 While running the scenario, GreenFrame uses `docker stats` to collect system metrics (CPU, memory, network and disk I/O, scenario duration) every second from the browser and containers.
 
-It then uses the [GreenFrame Model](./src/model/README.md) to convert each of these metrics into energy consumption in Watt.hours. GreenFrame sums up the energy of all containers over time, taking into account a theoretical datacenter PUE (set to 1.4, and configurable) for server containers. This energy consumption is then converted into CO2 emissions using a configurable "carbon cost of energy" parameter (set to 442g/kWh by default).
+It then uses the GreenFrame Model to convert each of these metrics into energy consumption in Watt.hours. GreenFrame sums up the energy of all containers over time, taking into account a theoretical datacenter PUE (set to 1.4, and configurable) for server containers. This energy consumption is then converted into CO2 emissions using a configurable "carbon cost of energy" parameter (set to 442g/kWh by default).
 
 GreenFrame repeats the scenario 3 times and computes the average energy consumption and CO2 emissions. It also computes the standard deviation of energy consumption and CO2 emissions to provide a confidence interval.
 
@@ -226,7 +242,7 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [--dockerdHost <value>] [--dockerdPort <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--dockerdHost <value>] [--dockerdPort <value>]
     [--containers <value>] [--databaseContainers <value>]
 
 ARGUMENTS
@@ -240,6 +256,7 @@ FLAGS
   -b, --branchName=<value>      Pass branch name manually
   -c, --commitMessage=<value>   Pass commit message manually
   -d, --distant                 Run a distant analysis on GreenFrame Server instead of locally
+  -i, --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
   -p, --projectName=<value>     Project name
   -s, --samples=<value>         Number of runs done for the score computation
   -t, --threshold=<value>       Consumption threshold
@@ -284,7 +301,7 @@ Open browser to develop your GreenFrame scenario
 
 ```
 USAGE
-  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a]
+  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -293,6 +310,7 @@ ARGUMENTS
 FLAGS
   -C, --configFile=<value>  Path to config file
   -a, --useAdblock          Use an adblocker during analysis
+  --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
@@ -330,6 +348,6 @@ _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/
 
 GreenFrame is licensed under the [Elastic License v2.0](https://www.elastic.co/licensing/elastic-license).
 
-This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whetyher your project is open-source or commercial.
+This means you can use GreenFrame for free both in open-source projects and commercial projects. You can run GreenFrame in your CI, whether your project is open-source or commercial.
 
 But you cannot build a competitor to [greenframe.io](https://greenframe.io), i.e. a paid service that runs the GreenFrame CLI on demand.

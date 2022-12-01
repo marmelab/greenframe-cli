@@ -35,6 +35,7 @@ export const executeScenarioAndGetContainerStats = async ({
     url,
     samples = DEFAULT_SAMPLES,
     useAdblock,
+    ignoreHTTPSErrors,
     containers = [],
     databaseContainers = [],
     kubeContainers = [],
@@ -47,6 +48,7 @@ export const executeScenarioAndGetContainerStats = async ({
     url: string;
     samples?: number;
     useAdblock?: boolean;
+    ignoreHTTPSErrors?: boolean;
     containers?: string[] | string;
     databaseContainers?: string[] | string;
     kubeContainers?: string[];
@@ -128,6 +130,7 @@ export const executeScenarioAndGetContainerStats = async ({
 
             const { timelines, milestones } = await execScenarioContainer(scenario, url, {
                 useAdblock,
+                ignoreHTTPSErrors,
             });
 
             allMilestones.push(milestones);

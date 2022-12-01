@@ -38,6 +38,7 @@ class AnalyzeCommand extends Command {
         samples: DEFAULT_SAMPLES,
         distant: false,
         useAdblock: false,
+        ignoreHTTPSErrors: false,
     };
 
     static flags = {
@@ -81,6 +82,10 @@ class AnalyzeCommand extends Command {
         useAdblock: Flags.boolean({
             char: 'a',
             description: 'Use an adblocker during analysis',
+        }),
+        ignoreHTTPSErrors: Flags.boolean({
+            char: 'i',
+            description: 'Ignore HTTPS errors during analysis',
         }),
         dockerdHost: Flags.string({
             description: 'Docker daemon host',

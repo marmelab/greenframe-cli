@@ -22,8 +22,8 @@
         "mathjs": "^9.5.0",
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
-        "playwright": "~1.25.1",
-        "vm2": "3.9.3"
+        "playwright": "^1.28.1",
+        "vm2": "3.9.11"
     },
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.36.0",
@@ -109,7 +109,7 @@
     "repository": "marmelab/greenframe-cli",
     "scripts": {
         "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
-        "dev": "ts-node-dev src/index.js",
+        "dev": "ts-node-dev src/index.ts",
         "postpack": "rm -f oclif.manifest.json",
         "posttest": "eslint .",
         "prepack": "yarn build && oclif manifest && oclif readme",
