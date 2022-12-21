@@ -110,6 +110,12 @@ const getScenarioConsumption = (
         }
     }
 
+    // addMetricsContainer computes the sum of all metrics for all containers.
+    // The totalTime should contain the average time for the scenario across all containers
+    // not the sum of the time spent on all containers.
+    // eslint-disable-next-line operator-assignment
+    totalScore.s.totalTime =
+        totalScore.s.totalTime / Object.keys(metricsPerContainer).length;
     const precision = getStandardError(totalWhPerSamples, totalScore.wh.total);
 
     return { totalScore, precision, metricsPerContainer };
