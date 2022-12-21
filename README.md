@@ -341,6 +341,7 @@ DESCRIPTION
 ```
 
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.2/dist/commands/update.ts)_
+
 <!-- commandsstop -->
 
 ## Development
