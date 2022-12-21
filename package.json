@@ -1,7 +1,7 @@
 {
     "name": "greenframe-cli",
     "description": "Official GreenFrame CLI",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "author": "Marmelab",
     "bin": {
         "greenframe": "./bin/run"
@@ -108,6 +108,7 @@
     },
     "repository": "marmelab/greenframe-cli",
     "scripts": {
+        "watch": "rm -rf ./dist && cp -r ./src/bash ./dist && tsc --watch",
         "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
         "dev": "ts-node-dev src/index.ts",
         "postpack": "rm -f oclif.manifest.json",
