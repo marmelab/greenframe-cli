@@ -1,24 +1,23 @@
-GreenFrame CLI
-==============
+# GreenFrame CLI
 
-Estimate the carbon footprint of a user scenario on a web application. Full-stack analysis (browser, screen, network, server). 
+Estimate the carbon footprint of a user scenario on a web application. Full-stack analysis (browser, screen, network, server).
 
-Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenframe.io](https://greenframe.io) service. 
+Can be used standalone, in a CI/CD pipeline, and in conjunction with the [greenframe.io](https://greenframe.io) service.
 
-- [In A Nutshell](#in-a-nutshell)
-- [Installation](#installation)
-- [Usage](#usage)
-- [How Does GreenFrame Work?](#how-does-greenframe-work)
-- [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint)
-- [Commands](#commands)
+-   [In A Nutshell](#in-a-nutshell)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [How Does GreenFrame Work?](#how-does-greenframe-work)
+-   [Which Factors Influence The Carbon Footprint?](#which-factors-influence-the-carbon-footprint)
+-   [Commands](#commands)
 
 # In A Nutshell
 
-The share of digital technologies in global greenhouse gas emissions has passed air transport, and will soon pass car transport ([source](https://theshiftproject.org/wp-content/uploads/2019/03/Executive-Summary_Lean-ICT-Report_EN_lowdef.pdf)). At 4% of total emissions, and with a growth rate of 9% per year, the digital sector is a major contributor to global warming. 
+The share of digital technologies in global greenhouse gas emissions has passed air transport, and will soon pass car transport ([source](https://theshiftproject.org/wp-content/uploads/2019/03/Executive-Summary_Lean-ICT-Report_EN_lowdef.pdf)). At 4% of total emissions, and with a growth rate of 9% per year, the digital sector is a major contributor to global warming.
 
-How do developers adapt their practices to build less energy intensive web applications? 
+How do developers adapt their practices to build less energy intensive web applications?
 
-GreenFrame is a command-line tool that estimates the carbon footprint of web apps at every stage of the development process. Put it in your Continuous Integration workflow to get warned about "carbon leaks", and force a threshold of maximum emissions. 
+GreenFrame is a command-line tool that estimates the carbon footprint of web apps at every stage of the development process. Put it in your Continuous Integration workflow to get warned about "carbon leaks", and force a threshold of maximum emissions.
 
 For instance, to estimate the energy consumption and carbon emissions of a visit to a public web page, call `greenframe analyze`:
 
@@ -60,10 +59,10 @@ GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. A custom
 ```js
 // in my-scenario.js
 async (page) => {
-  await page.goto("", { waitUntil: "networkidle" }); // Go to the baseUrl
-  await page.waitForTimeout(3000); // Wait for 3 seconds
-  await page.scrollToElement("footer"); // Scroll to the footer (if present)
-  await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
+    await page.goto('', { waitUntil: 'networkidle' }); // Go to the baseUrl
+    await page.waitForTimeout(3000); // Wait for 3 seconds
+    await page.scrollToElement('footer'); // Scroll to the footer (if present)
+    await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
 };
 ```
 
@@ -75,7 +74,7 @@ You can test your scenario using the `greenframe open` command. It uses the loca
 $ greenframe open https://marmelab.com ./my-scenario.js
 ```
 
-You can write scenarios by hand, or use [the PlayWright Test Generator](https://playwright.dev/docs/codegen) to generate a scenario based on a user session. 
+You can write scenarios by hand, or use [the PlayWright Test Generator](https://playwright.dev/docs/codegen) to generate a scenario based on a user session.
 
 ## Full-Stack Analysis
 
@@ -101,7 +100,7 @@ GreenFrame needs to identify database containers because it computes the impact 
 
 ## Using An Ad Blocker
 
-Third-party tags can be a significant source of energy consumption. When you use the `--useAdblock` option, GreenFrame uses an Ad Blocker to let you estimate that cost. 
+Third-party tags can be a significant source of energy consumption. When you use the `--useAdblock` option, GreenFrame uses an Ad Blocker to let you estimate that cost.
 
 Run two analyses, a normal one then an ad-blocked one, and compare the results:
 
@@ -130,9 +129,9 @@ In case of failed analysis, the CLI exits with exit code 1.
 
 If you want to get more insights about your carbon footprint, you can sync your analysis with [GreenFrame.io](https://greenframe.io). This service provides:
 
-- A dashboard to monitor your carbon footprint over time
-- A detailed analysis of your carbon footprint, with a breakdown by scenario, container, scenario step, and component
-- A comparison with previous analyses on the `main` branch (for Pull Request analysis)
+-   A dashboard to monitor your carbon footprint over time
+-   A detailed analysis of your carbon footprint, with a breakdown by scenario, container, scenario step, and component
+-   A comparison with previous analyses on the `main` branch (for Pull Request analysis)
 
 ![image](https://user-images.githubusercontent.com/99944/193788309-447a3006-4f05-4330-aa13-ab27d3cd8522.png)
 
@@ -155,7 +154,7 @@ export GREENFRAME_SECRET_TOKEN=your-token-here
 
 ## Benchmarking Against Other Sites
 
-How does the carbon footprint of your site compare to other sites? 
+How does the carbon footprint of your site compare to other sites?
 
 GreenFrame.io runs a "visit" scenario over many websites in several categories. This allows you to compare your site to other sites in the same category.
 
@@ -178,19 +177,19 @@ Instead of passing all options on the command line, you can use a `.greenframe.y
 ```yaml
 baseURL: YOUR_APP_BASE_URL
 scenarios:
-  - path: PATH_TO_YOUR_SCENARIO_FILE
-    name: My first scenario
-    threshold: 0.1
+    - path: PATH_TO_YOUR_SCENARIO_FILE
+      name: My first scenario
+      threshold: 0.1
 projectName: YOUR_PROJECT_NAME
 samples: 3
 distant: false
 useAdblock: true
 ignoreHTTPSErrors: true
 containers:
-  - "CONTAINER_NAME"
-  - "ANOTHER_CONTAINER_NAME"
+    - 'CONTAINER_NAME'
+    - 'ANOTHER_CONTAINER_NAME'
 databaseContainers:
-  - "DATABASE_CONTAINER_NAME"
+    - 'DATABASE_CONTAINER_NAME'
 ```
 
 ## More Information / Troubleshooting
@@ -201,7 +200,7 @@ Check the docs at greenframe.io:
 
 # How Does GreenFrame Work?
 
-GreenFrame relies on a [scientific model](./src/model/README.md) of the energy consumption of a digital system built in collaboration with computer scientists at [Loria](https://www.loria.fr/en/). 
+GreenFrame relies on a [scientific model](./src/model/README.md) of the energy consumption of a digital system built in collaboration with computer scientists at [Loria](https://www.loria.fr/en/).
 
 While running the scenario, GreenFrame uses `docker stats` to collect system metrics (CPU, memory, network and disk I/O, scenario duration) every second from the browser and containers.
 
@@ -217,11 +216,11 @@ For more details about the GreenFrame Model, check this article on the Marmelab 
 
 Based on our research, the carbon footprint of a web page depends on:
 
-- The duration of the scenario
-- The size of the page (HTML, CSS, JS, images, fonts, etc.)
-- The amount of JS executed on the browser
-- The number of third-party tags (ads, analytics, etc.)
-- The complexity of the page (number of DOM elements, number of layout changes, etc.)
+-   The duration of the scenario
+-   The size of the page (HTML, CSS, JS, images, fonts, etc.)
+-   The amount of JS executed on the browser
+-   The number of third-party tags (ads, analytics, etc.)
+-   The complexity of the page (number of DOM elements, number of layout changes, etc.)
 
 Server containers have a low impact on the carbon footprint (around 5% in most cases).
 
@@ -230,10 +229,11 @@ This means that the lowest hanging fruit for optimizing the emissions of a web p
 # Commands
 
 <!-- commands -->
-* [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
-* [`greenframe kube-config`](#greenframe-kube-config)
-* [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
-* [`greenframe update [CHANNEL]`](#greenframe-update-channel)
+
+-   [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
+-   [`greenframe kube-config`](#greenframe-kube-config)
+-   [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
+-   [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
 ## `greenframe analyze [BASEURL] [SCENARIO]`
 
@@ -342,7 +342,34 @@ DESCRIPTION
 ```
 
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.1/dist/commands/update.ts)_
+
 <!-- commandsstop -->
+
+## Development
+
+The GreenFrame CLI is written in Node.js. Install depencencies with:
+
+```sh
+yarn
+```
+
+To run the CLI locally, you must compile the TypeScript files with:
+
+```sh
+$ yarn build
+```
+
+Then you can run the CLI:
+
+```sh
+$ ./bin/run analyze https://greenframe.io ./src/examples/visit.js
+```
+
+While developing, instead of running `yarn build` each time you make a change, you can watch for changes and automatically recompile with:
+
+```sh
+$ yarn watch
+```
 
 ## License
 
