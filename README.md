@@ -229,11 +229,10 @@ This means that the lowest hanging fruit for optimizing the emissions of a web p
 # Commands
 
 <!-- commands -->
-
--   [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
--   [`greenframe kube-config`](#greenframe-kube-config)
--   [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
--   [`greenframe update [CHANNEL]`](#greenframe-update-channel)
+* [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
+* [`greenframe kube-config`](#greenframe-kube-config)
+* [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
+* [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
 ## `greenframe analyze [BASEURL] [SCENARIO]`
 
@@ -342,7 +341,6 @@ DESCRIPTION
 ```
 
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.1/dist/commands/update.ts)_
-
 <!-- commandsstop -->
 
 ## Development
