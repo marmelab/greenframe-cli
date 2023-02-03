@@ -100,7 +100,7 @@ jobs:
               run: yarn run build
 
             - name: 🌳 E2E run
-              run: echo "e2e disabled for now" || yarn test-e2e
+              run: yarn test-e2e
 
     deploy:
         name: 🚀 Deploy
