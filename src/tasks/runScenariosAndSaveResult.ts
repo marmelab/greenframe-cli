@@ -33,6 +33,7 @@ export default async (ctx: any) => {
                     extraHosts: flags.extraHosts,
                     dockerdHost: flags.dockerdHost,
                     dockerdPort: flags.dockerdPort,
+                    ignoreHTTPSErrors: flags.ignoreHTTPSErrors,
                 });
 
             const data = computeScenarioResult({
