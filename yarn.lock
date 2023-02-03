@@ -6388,7 +6388,7 @@ __metadata:
     mathjs: ^9.5.0
     minimist: ^1.2.5
     oclif: ^2.4.3
-    playwright: ^1.29.0
+    playwright: 1.30.0
     prettier: ^2.4.1
     trace-unhandled: ^2.0.1
     ts-jest: ^28.0.7
@@ -9391,23 +9391,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.29.0":
-  version: 1.29.0
-  resolution: "playwright-core@npm:1.29.0"
+"playwright-core@npm:1.30.0":
+  version: 1.30.0
+  resolution: "playwright-core@npm:1.30.0"
   bin:
     playwright: cli.js
-  checksum: 5e4b690b0b449ed27ab7f7d7c9bf778db53e6c6b37a8e7258fb070fe6e96f147ad5d66221a3953c9e4d0b2044b701c493d7a0708d7bdb6486e38a3518f62fdce
+  checksum: 4c5693f27245a1168f94708ecd8e1eb0d200de435b25cc07cfa25b97a094633818954dc00baf24e0ff551825f672050b83d1309362c1f97213fe8ebd2a147ed9
   languageName: node
   linkType: hard
 
-"playwright@npm:^1.29.0":
-  version: 1.29.0
-  resolution: "playwright@npm:1.29.0"
+"playwright@npm:1.30.0":
+  version: 1.30.0
+  resolution: "playwright@npm:1.30.0"
   dependencies:
-    playwright-core: 1.29.0
+    playwright-core: 1.30.0
   bin:
     playwright: cli.js
-  checksum: e3b7dcefde55e53d62fab26d8c069bf76c93e7a2572272ea4d19e4fb6aa7451d386541faedf1140ba45e3f69f3e37b510492f5433cfbe084d4020d61722e103e
+  checksum: 1987446ed07e25c0c6dedce8314209b49536eb4c7fa82e57e7fea9bd8128bacd08e49f9e89af30a647839bf2603b8c8321f50e23e334a11c1c29eedb838a81a3
   languageName: node
   linkType: hard
 

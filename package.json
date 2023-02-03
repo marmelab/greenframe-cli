@@ -22,7 +22,7 @@
         "mathjs": "^9.5.0",
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
-        "playwright": "^1.29.0",
+        "playwright": "1.30.0",
         "vm2": "3.9.11"
     },
     "devDependencies": {
@@ -108,8 +108,8 @@
     },
     "repository": "marmelab/greenframe-cli",
     "scripts": {
-        "watch": "rm -rf ./dist && cp -r ./src/bash ./dist && tsc --watch",
-        "build": "rm -rf ./dist && tsc && cp -r ./src/bash ./dist",
+        "watch": "rm -rf ./dist && mkdir -p ./dist/bash && cp -R ./src/bash ./dist/ && tsc --watch",
+        "build": "rm -rf ./dist && tsc && mkdir -p ./dist/bash &&cp -R ./src/bash ./dist/",
         "dev": "ts-node-dev src/index.ts",
         "postpack": "rm -f oclif.manifest.json",
         "posttest": "eslint .",
