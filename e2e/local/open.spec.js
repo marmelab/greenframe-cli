@@ -4,7 +4,7 @@ const exec = util.promisify(require('node:child_process').exec);
 
 const BASE_COMMAND = `./bin/run open`;
 
-describe.skip('[LOCAL] greenframe open', () => {
+describe('[LOCAL] greenframe open', () => {
     describe('single page', () => {
         it('should run correctly', async () => {
             const { error, stdout } = await exec(`${BASE_COMMAND} https://greenframe.io`);

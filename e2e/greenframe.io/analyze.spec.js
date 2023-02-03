@@ -176,7 +176,9 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
             it('should fail because "container_broken" is not a running container', async () => {
                 expect.assertions(2);
                 try {
-                    await exec(`${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.broken.yml`);
+                    await exec(
+                        `${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.broken.yml`
+                    );
                 } catch (error) {
                     expect(error.stderr).toContain('❌ Failed!');
                     expect(error.stderr).toContain(
@@ -213,7 +215,9 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
             it('should fail because distant mode is not compatible with multi containers', async () => {
                 expect.assertions(2);
                 try {
-                    await exec(`${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.yml -d -s 2`);
+                    await exec(
+                        `${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.yml -d -s 2`
+                    );
                 } catch (error) {
                     expect(error.stderr).toContain('❌ Failed!');
                     expect(error.stderr).toContain(
