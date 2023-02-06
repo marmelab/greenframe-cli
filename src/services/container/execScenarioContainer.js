@@ -20,7 +20,7 @@ const createContainer = async (extraHosts = []) => {
 
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
 
-    const dockerStatCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm -e HOSTIP=${HOSTIP}${extraHostsEnv} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.29.0-focal`;
+    const dockerStatCommand = `docker rm -f ${CONTAINER_DEVICE_NAME} && docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm -e HOSTIP=${HOSTIP}${extraHostsEnv} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
     await exec(dockerStatCommand);
 
     debug(`Container ${CONTAINER_DEVICE_NAME} created`);

@@ -34,7 +34,7 @@ Using a tools such as Docker or Prometheus, we can collect technical metrics. Th
 - `network.currentReceived` and `network.currentTransmitted`: expressed in GB
 - `memory.usage`: max memory usage expressed in GB
 
-Given theses data when can we can comupte cumulative data (`cpu.totalUsageInUserMode`, `cpu.totalUsageInKernelMode`, `io.totalBytes`, `network.totalReceived`, and `network.totalTransmitted`) as well as the time elapsed since the application was launched:
+Given theses data when can we can compute cumulative data (`cpu.totalUsageInUserMode`, `cpu.totalUsageInKernelMode`, `io.totalBytes`, `network.totalReceived`, and `network.totalTransmitted`) as well as the time elapsed since the application was launched:
 
 - `time`: is based on the differences of `date` values and corresponds to the time elapsed in seconds since the application was launched. It is real time (_i.e._ our time)
 - `userTime`: is based on the differences of `date` values but taking into account only the periods which correspond to a test activity of the usage scenario. This data is a duration expressed in seconds. It is real time, without the periods corresponding to the test setup (it does not include the chrome loading times for example).
