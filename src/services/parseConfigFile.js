@@ -28,6 +28,8 @@ const parseConfigFile = async (path) => {
                 dockerdHost,
                 dockerdPort,
                 ignoreHTTPSErrors,
+                locale,
+                timezoneId,
             } = yaml.load(file);
             return {
                 args: {
@@ -50,6 +52,8 @@ const parseConfigFile = async (path) => {
                     dockerdHost,
                     dockerdPort,
                     ignoreHTTPSErrors,
+                    locale,
+                    timezoneId,
                 },
             };
         }

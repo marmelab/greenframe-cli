@@ -26,6 +26,17 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(stdout).toContain('✅ main scenario completed');
             });
 
+            it('should set greenframe browser locale right', async () => {
+                const { stdout: enStdout } = await exec(
+                    `${BASE_COMMAND} -C ./e2e/.greenframe.single.en.yml`
+                );
+                expect(enStdout).toContain('✅ main scenario completed');
+                const { stdout: frStdout } = await exec(
+                    `${BASE_COMMAND} -C ./e2e/.greenframe.single.fr.yml`
+                );
+                expect(frStdout).toContain('✅ main scenario completed');
+            });
+
             it('should run an analysis command with adblocker', async () => {
                 const { error, stdout } = await exec(
                     `${BASE_COMMAND} -C ./e2e/.greenframe.adblock.yml`

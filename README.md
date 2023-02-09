@@ -185,6 +185,8 @@ samples: 3
 distant: false
 useAdblock: true
 ignoreHTTPSErrors: true
+locale: 'fr-FR',
+timezoneId: 'Europe/Paris',
 containers:
     - 'CONTAINER_NAME'
     - 'ANOTHER_CONTAINER_NAME'
@@ -241,8 +243,8 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--dockerdHost <value>] [--dockerdPort <value>]
-    [--containers <value>] [--databaseContainers <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [--dockerdHost <value>]
+    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -264,6 +266,8 @@ FLAGS
   --databaseContainers=<value>  Pass database containers manually
   --dockerdHost=<value>         Docker daemon host
   --dockerdPort=<value>         Docker daemon port
+  --locale                      Set greenframe browser locale
+  --timezoneId                  Set greenframe browser timezoneId
 
 DESCRIPTION
   Create an analysis on GreenFrame server.
@@ -300,7 +304,7 @@ Open browser to develop your GreenFrame scenario
 
 ```
 USAGE
-  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors]
+  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors] [--locale] [--timezoneId]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -310,6 +314,8 @@ FLAGS
   -C, --configFile=<value>  Path to config file
   -a, --useAdblock          Use an adblocker during analysis
   --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
+  --locale                  Set greenframe browser locale
+  --timezoneId              Set greenframe browser timezoneId
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
