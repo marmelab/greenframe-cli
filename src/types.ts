@@ -16,6 +16,8 @@ export type Analysis = {
     distant: boolean;
     useAdblock: boolean;
     ignoreHTTPSErrors: boolean;
+    locale: string;
+    timezoneId: string;
     projectName: string;
     gitInfos: {
         branchName: string;

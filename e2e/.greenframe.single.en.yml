@@ -1,0 +1,7 @@
+scenario: '../src/examples/marmelab.en.js'
+baseURL: 'https://marmelab.com'
+samples: 2
+projectName: 'Marmelab'
+distant: false
+useAdblock: true
+locale: en-US

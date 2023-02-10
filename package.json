@@ -1,7 +1,7 @@
 {
     "name": "greenframe-cli",
     "description": "Official GreenFrame CLI",
-    "version": "1.6.4",
+    "version": "1.6.5",
     "author": "Marmelab",
     "bin": {
         "greenframe": "./bin/run"
@@ -116,7 +116,7 @@
         "prepack": "yarn build && oclif manifest && oclif readme",
         "test-unit": "jest ./src",
         "test-watch": "yarn test-unit --watch",
-        "test-e2e": "jest ./e2e --testTimeout 120000",
+        "test-e2e": "jest ./e2e --testTimeout 500000",
         "version": "oclif readme && git add README.md",
         "pack": "oclif pack tarballs",
         "analyze": "API_URL=http://localhost:3006 APP_URL=http://localhost:3003 ./bin/run analyze",

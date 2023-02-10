@@ -87,6 +87,12 @@ class AnalyzeCommand extends Command {
             char: 'i',
             description: 'Ignore HTTPS errors during analysis',
         }),
+        locale: Flags.boolean({
+            description: 'Set greenframe browser locale',
+        }),
+        timezoneId: Flags.boolean({
+            description: 'Set greenframe browser timezoneId',
+        }),
         dockerdHost: Flags.string({
             description: 'Docker daemon host',
         }),
