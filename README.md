@@ -185,6 +185,8 @@ samples: 3
 distant: false
 useAdblock: true
 ignoreHTTPSErrors: true
+locale: 'fr-FR',
+timezoneId: 'Europe/Paris',
 containers:
     - 'CONTAINER_NAME'
     - 'ANOTHER_CONTAINER_NAME'
@@ -241,8 +243,8 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--dockerdHost <value>] [--dockerdPort <value>]
-    [--containers <value>] [--databaseContainers <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [--dockerdHost <value>]
+    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -264,12 +266,14 @@ FLAGS
   --databaseContainers=<value>  Pass database containers manually
   --dockerdHost=<value>         Docker daemon host
   --dockerdPort=<value>         Docker daemon port
+  --locale                      Set greenframe browser locale
+  --timezoneId                  Set greenframe browser timezoneId
 
 DESCRIPTION
   Create an analysis on GreenFrame server.
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.4/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.5/dist/commands/analyze.ts)_
 
 ## `greenframe kube-config`
 
@@ -292,7 +296,7 @@ DESCRIPTION
   greenframe kube-config
 ```
 
-_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.4/dist/commands/kube-config.ts)_
+_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.5/dist/commands/kube-config.ts)_
 
 ## `greenframe open [BASEURL] [SCENARIO]`
 
@@ -300,7 +304,7 @@ Open browser to develop your GreenFrame scenario
 
 ```
 USAGE
-  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors]
+  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors] [--locale] [--timezoneId]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -310,6 +314,8 @@ FLAGS
   -C, --configFile=<value>  Path to config file
   -a, --useAdblock          Use an adblocker during analysis
   --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
+  --locale                  Set greenframe browser locale
+  --timezoneId              Set greenframe browser timezoneId
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
@@ -319,7 +325,7 @@ DESCRIPTION
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.4/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.5/dist/commands/open.ts)_
 
 ## `greenframe update [CHANNEL]`
 
@@ -340,7 +346,7 @@ DESCRIPTION
   greenframe update
 ```
 
-_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.4/dist/commands/update.ts)_
+_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.5/dist/commands/update.ts)_
 <!-- commandsstop -->
 
 ## Development
