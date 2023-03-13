@@ -22,6 +22,9 @@ const createNewAnalysis = async (ctx) => {
             samples: flags.samples,
             distant: flags.distant,
             useAdblock: flags.useAdblock,
+            locale: flags.locale,
+            timezoneId: flags.timezoneId,
+            ignoreHTTPSErrors: flags.ignoreHTTPSErrors,
             projectName: ctx.projectName,
             gitInfos: ctx.gitInfos,
         });
