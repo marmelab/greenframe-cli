@@ -14,6 +14,9 @@ export const createAnalysis = async ({
     useAdblock,
     projectName,
     gitInfos,
+    locale,
+    timezoneId,
+    ignoreHTTPSErrors,
 }: Analysis) => {
     const { commitMessage, branchName, commitId, defaultBranchCommitReference } =
         gitInfos;
@@ -30,6 +33,9 @@ export const createAnalysis = async ({
         gitBranchName: branchName,
         gitCommitId: commitId,
         gitDefaultBranchCommitReference: defaultBranchCommitReference,
+        locale,
+        timezoneId,
+        ignoreHTTPSErrors,
     });
 };
 
