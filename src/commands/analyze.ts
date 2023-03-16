@@ -105,6 +105,12 @@ class AnalyzeCommand extends Command {
         databaseContainers: Flags.string({
             description: 'Pass database containers manually',
         }),
+        kubeContainers: Flags.string({
+            description: 'Pass kubebernetes containers manually',
+        }),
+        kubeDatabaseContainers: Flags.string({
+            description: 'Pass kubebernetes database containers manually',
+        }),
     };
 
     async run() {
