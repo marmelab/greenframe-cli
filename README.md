@@ -24,7 +24,7 @@ For instance, to estimate the energy consumption and carbon emissions of a visit
 ```
 $ greenframe analyze https://marmelab.com
 ✅ main scenario completed
-The estimated footprint is 0.038 g eq. co2 ± 10.3% (0.085 Wh).
+The estimated footprint is 0.038 g eq. co2 ± 1.3% (0.085 Wh).
 ```
 
 # Installation
