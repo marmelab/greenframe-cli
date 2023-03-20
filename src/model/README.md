@@ -42,11 +42,11 @@ Given theses data when can we can compute cumulative data (`cpu.totalUsageInUser
 
 ### Formulas to convert times or volumes in Wh
 
-- cpuWh = `pue` _ avg(`cpu.totalUsageInUserMode` + `cpu.totalUsageInKernelMode`) _ `config.CPU` / 3600
-- memWh = `pue` _ avg(`memory.usage`) _ `config.MEM` \* `totalTime` / 3600
-- diskWh = `pue` _ avg(`io.totalByte`) _ `config.DISK`
-- networkWh = avg(`network.totalReceived` + `network.totalTransmitted`) \* `config.NETWORK` / 2
-- screenWh = avg(`userTime`) \* `config.SCREEN` / 3600
+- cpuWh = `pue` * avg(`cpu.totalUsageInUserMode` + `cpu.totalUsageInKernelMode`) * `config.CPU` / 3600
+- memWh = `pue` * avg(`memory.usage`) * `config.MEM` * `totalTime` / 3600
+- diskWh = `pue` * avg(`io.totalByte`) * `config.DISK`
+- networkWh = avg(`network.totalReceived` + `network.totalTransmitted`) * `config.NETWORK` / 2
+- screenWh = avg(`userTime`) * `config.SCREEN` / 3600
 
 When several measurements are made, the average of the measurements is used.
 
