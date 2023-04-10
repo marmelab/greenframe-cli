@@ -120,7 +120,7 @@ And besides, the result of a single measurement is not very relevant - see next 
 
 The Greenframe model estimates the energy consumtion of a user scenario on a given web system. Is the result good or bad? There is no answer to this question, because there is no large-scale benchmark of energy consumption of web systems, and because there is currently no regulation about it.
 
-So don't pay too much attention to the absolute value of the score. What matters is the comparison between two systems, or the comparison between two runs. We could veryfy experimentally that variations in the Greenframe score are correlated with variations in the energy consumption of the system.
+So don't pay too much attention to the absolute value of the score. What matters is the comparison between two systems, or the comparison between two runs. We could verify experimentally that variations in the Greenframe score are correlated with variations in the energy consumption of the system.
 
 So even though GreenFrame's model is wrong, you can use it today to:
 
