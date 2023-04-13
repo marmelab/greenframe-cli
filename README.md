@@ -244,30 +244,33 @@ Create an analysis on GreenFrame server.
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
     [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [--dockerdHost <value>]
-    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
+    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>] [--kubeContainers <value>]
+    [--kubeDatabaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
   SCENARIO  Path to your GreenFrame scenario
 
 FLAGS
-  -C, --configFile=<value>      Path to config file
-  -K, --kubeConfig=<value>      Path to kubernetes client config file
-  -a, --useAdblock              Use an adblocker during analysis
-  -b, --branchName=<value>      Pass branch name manually
-  -c, --commitMessage=<value>   Pass commit message manually
-  -d, --distant                 Run a distant analysis on GreenFrame Server instead of locally
-  -i, --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
-  -p, --projectName=<value>     Project name
-  -s, --samples=<value>         Number of runs done for the score computation
-  -t, --threshold=<value>       Consumption threshold
-  --commitId=<value>            Pass commit id manually
-  --containers=<value>          Pass containers manually
-  --databaseContainers=<value>  Pass database containers manually
-  --dockerdHost=<value>         Docker daemon host
-  --dockerdPort=<value>         Docker daemon port
-  --locale                      Set greenframe browser locale
-  --timezoneId                  Set greenframe browser timezoneId
+  -C, --configFile=<value>          Path to config file
+  -K, --kubeConfig=<value>          Path to kubernetes client config file
+  -a, --useAdblock                  Use an adblocker during analysis
+  -b, --branchName=<value>          Pass branch name manually
+  -c, --commitMessage=<value>       Pass commit message manually
+  -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
+  -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
+  -p, --projectName=<value>         Project name
+  -s, --samples=<value>             Number of runs done for the score computation
+  -t, --threshold=<value>           Consumption threshold
+  --commitId=<value>                Pass commit id manually
+  --containers=<value>              Pass containers manually
+  --databaseContainers=<value>      Pass database containers manually
+  --dockerdHost=<value>             Docker daemon host
+  --dockerdPort=<value>             Docker daemon port
+  --kubeContainers=<value>          Pass kubebernetes containers manually
+  --kubeDatabaseContainers=<value>  Pass kubebernetes database containers manually
+  --locale                          Set greenframe browser locale
+  --timezoneId                      Set greenframe browser timezoneId
 
 DESCRIPTION
   Create an analysis on GreenFrame server.
