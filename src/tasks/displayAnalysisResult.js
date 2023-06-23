@@ -49,8 +49,8 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
                 console.info(
                     `For ${
                         scenario.executionCount
-                    } scenario executions, this represents ${computeTotalMetric(
-                        scenario.score.co2.total * scenario.executionCount,
+                    } scenario executions, this represents ${formatTotal(
+                        (scenario.score?.co2?.total || 0) * scenario.executionCount,
                         'g'
                     )} eq. co2`
                 );
