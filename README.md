@@ -293,9 +293,7 @@ FLAGS
 
 DESCRIPTION
   Configure kubernetes cluster to collect greenframe metrics
-
   ...
-
   greenframe kube-config
 ```
 
@@ -322,9 +320,7 @@ FLAGS
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
-
   ...
-
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
@@ -343,9 +339,7 @@ ARGUMENTS
 
 DESCRIPTION
   Update GreenFrame to the latest version
-
   ...
-
   greenframe update
 ```
 

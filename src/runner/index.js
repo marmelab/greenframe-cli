@@ -4,18 +4,16 @@ const executeScenario = require('./scenarioWrapper');
 
 (async () => {
     const args = minimist(process.argv.slice(2));
-    const { timelines, milestones } = await executeScenario(
-        decodeURIComponent(args.scenario),
-        {
-            baseUrl: decodeURIComponent(args.url),
-            hostIP: process.env.HOSTIP,
-            extraHosts: process.env.EXTRA_HOSTS ? process.env.EXTRA_HOSTS.split(',') : [],
-            useAdblock: args.useAdblock,
-            ignoreHTTPSErrors: args.ignoreHTTPSErrors,
-            locale: args.locale,
-            timezoneId: args.timezoneId,
-        }
-    );
+    const scenarioFileContent = require(decodeURIComponent(args.scenario));
+    const { timelines, milestones } = await executeScenario(scenarioFileContent, {
+        baseUrl: decodeURIComponent(args.url),
+        hostIP: process.env.HOSTIP,
+        extraHosts: process.env.EXTRA_HOSTS ? process.env.EXTRA_HOSTS.split(',') : [],
+        useAdblock: args.useAdblock,
+        ignoreHTTPSErrors: args.ignoreHTTPSErrors,
+        locale: args.locale,
+        timezoneId: args.timezoneId,
+    });
     console.log('=====TIMELINES=====');
     console.log(JSON.stringify(timelines));
     console.log('=====TIMELINES=====');

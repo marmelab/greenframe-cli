@@ -1,6 +1,5 @@
 const { Command, Flags } = require('@oclif/core');
 
-const { readFileToString } = require('../services/readFileToString');
 const { parseConfigFile, resolveParams } = require('../services/parseConfigFile');
 
 const executeScenario = require('../runner/scenarioWrapper.js');
@@ -63,7 +62,7 @@ class OpenCommand extends Command {
         console.info(`Running ${args.scenarios.length} scenarios...`);
         for (let index = 0; index < args.scenarios.length; index++) {
             const scenario = args.scenarios[index];
-            const scenarioFile = await readFileToString(configFilePath, scenario.path);
+            const scenarioFile = require(scenario.path);
             try {
                 const { timelines } = await executeScenario(scenarioFile, {
                     debug: true,

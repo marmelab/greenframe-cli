@@ -22,8 +22,7 @@
         "mathjs": "^9.5.0",
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
-        "playwright": "1.30.0",
-        "vm2": "3.9.16"
+        "playwright": "1.30.0"
     },
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.36.0",
@@ -120,9 +119,10 @@
         "version": "oclif readme && git add README.md",
         "pack": "oclif pack tarballs",
         "analyze": "API_URL=http://localhost:3006 APP_URL=http://localhost:3003 ./bin/run analyze",
+        "open": "API_URL=http://localhost:3006 APP_URL=http://localhost:3003 ./bin/run open",
         "upload-installation-scripts": "node ./scripts/uploadInstallScript.js",
         "lint": "eslint .",
         "typecheck": "tsc --noEmit --pretty"
     },
-    "packageManager": "yarn@3.2.3"
+    "packageManager": "yarn@1.22.19"
 }

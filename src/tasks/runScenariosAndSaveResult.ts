@@ -17,12 +17,11 @@ export default async (ctx: any) => {
         const scenario = args.scenarios[index];
 
         debug(`Running scenario ${scenario.path}...`);
-        const scenarioFileContent = await readFileToString(configFilePath, scenario.path);
 
         try {
             const { allContainers, allMilestones } =
                 await executeScenarioAndGetContainerStats({
-                    scenario: scenarioFileContent,
+                    scenario: scenario.path,
                     url: args.baseURL,
                     samples: flags.samples,
                     useAdblock: flags.useAdblock,

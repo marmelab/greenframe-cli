@@ -1,6 +1,5 @@
 const fs = require('node:fs');
 const yaml = require('js-yaml');
-const path = require('node:path');
 const util = require('node:util');
 const ConfigurationError = require('./errors/ConfigurationError');
 
@@ -104,7 +103,7 @@ const resolveParams = (
     if (!args.scenarios) {
         args.scenarios = [
             {
-                path: path.resolve(__dirname, '..', '..', 'src', 'examples', 'visit.js'),
+                path: '../../src/examples/visit.js',
                 name: 'main scenario',
                 threshold: flags.threshold,
             },
