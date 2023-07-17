@@ -5,12 +5,6 @@ const executeScenario = require('./scenarioWrapper');
 
 (async () => {
     const args = minimist(process.argv.slice(2));
-    /*const scenarioPath = path.resolve(
-        __dirname,
-        '..',
-        '..',
-        decodeURIComponent(args.scenario)
-    );*/
     const scenarioPath = decodeURIComponent(args.scenario);
     const scenarioFileContent = require(scenarioPath);
     const { timelines, milestones } = await executeScenario(scenarioFileContent, {

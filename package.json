@@ -124,5 +124,5 @@
         "lint": "eslint .",
         "typecheck": "tsc --noEmit --pretty"
     },
-    "packageManager": "yarn@1.22.19"
+    "packageManager": "yarn@3.2.3"
 }
