@@ -1,4 +1,4 @@
-async (page) => {
+const moviedb = async (page) => {
     await page.goto('', {
         waitUntil: 'networkidle',
     });
@@ -7,3 +7,5 @@ async (page) => {
     await page.click('text="Luca"');
     await page.waitForTimeout(3000);
 };
+
+module.exports = moviedb;

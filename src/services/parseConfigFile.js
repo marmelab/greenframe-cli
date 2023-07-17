@@ -103,7 +103,7 @@ const resolveParams = (
     if (!args.scenarios) {
         args.scenarios = [
             {
-                path: '../../src/examples/visit.js',
+                path: './src/examples/visit.js',
                 name: 'main scenario',
                 threshold: flags.threshold,
             },
