@@ -1,5 +1,7 @@
+const fs = require('node:fs');
 const util = require('node:util');
 const path = require('node:path');
+const { parse } = require('envfile');
 const exec = util.promisify(require('node:child_process').exec);
 const { CONTAINER_DEVICE_NAME } = require('../../constants');
 const ScenarioError = require('../errors/ScenarioError');
@@ -8,7 +10,13 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = []) => {
+const readFile = util.promisify(fs.readFile);
+
+const createContainer = async (
+    extraHosts = [],
+    customEnvVars = [],
+    customEnvVarsFile = ''
+) => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -18,9 +26,19 @@ const createContainer = async (extraHosts = []) => {
     const extraHostsEnv =
         extraHosts.length > 0 ? ` -e EXTRA_HOSTS=${extraHosts.join(',')}` : '';
 
+    const envVars =
+        customEnvVars.length > 0
+            ? await buildEnvVarList(customEnvVars, customEnvVarsFile)
+            : '';
+
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
 
-    const dockerStatCommand = `docker rm -f ${CONTAINER_DEVICE_NAME} && docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm -e HOSTIP=${HOSTIP}${extraHostsEnv} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
+    const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envVars}`;
+    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm ${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
+
+    const dockerStatCommand = `${dockerCleanPreviousCommand} && ${dockerCreateCommand}`;
+    debug(`Docker command ${dockerStatCommand}`);
     await exec(dockerStatCommand);
 
     debug(`Container ${CONTAINER_DEVICE_NAME} created`);
@@ -96,6 +114,28 @@ const stopContainer = async () => {
     }
 
     return 'OK';
+};
+
+const buildEnvVarList = async (customEnvVars, customEnvVarsFile) => {
+    const fileEnvVars = await parseEnvFile(customEnvVarsFile);
+    let uniqueEnvVars = [...new Set(customEnvVars.concat(fileEnvVars))];
+    return uniqueEnvVars.reduce((list, envVarName) => {
+        const envVarValue = process.env[envVarName];
+        return `${list} -e ${envVarName}=${envVarValue} `;
+    }, '');
+};
+
+const parseEnvFile = async (path) => {
+    try {
+        const file = await readFile(path, 'utf8');
+        if (file) {
+            const vars = parse(file);
+
+            return Object.keys(vars);
+        }
+    } catch {
+        // Do Nothing
+    }
 };
 
 module.exports = {

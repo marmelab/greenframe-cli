@@ -1,6 +1,5 @@
 import initDebug from 'debug';
 import { saveFinishedAnalysis } from '../services/api/analyses';
-import { readFileToString } from '../services/readFileToString';
 
 import { computeScenarioResult, ScenarioResult } from '../services/computeScenarioResult';
 import { executeScenarioAndGetContainerStats } from '../services/container';
@@ -11,7 +10,7 @@ import { computeAnalysisResult } from '../services/computeAnalysisResult';
 const debug = initDebug('greenframe:tasks:runScenarioAndSaveResults');
 
 export default async (ctx: any) => {
-    const { analysisId, configFilePath, args, flags } = ctx;
+    const { analysisId, args, flags } = ctx;
     const resultScenarios: ScenarioResult[] = [];
     for (let index = 0; index < args.scenarios.length; index++) {
         const scenario = args.scenarios[index];
@@ -30,6 +29,8 @@ export default async (ctx: any) => {
                     kubeContainers: flags.kubeContainers,
                     kubeDatabaseContainers: flags.kubeDatabaseContainers,
                     extraHosts: flags.extraHosts,
+                    customEnvVars: flags.customEnvVars,
+                    customEnvVarsFile: flags.customEnvVarsFile,
                     dockerdHost: flags.dockerdHost,
                     dockerdPort: flags.dockerdPort,
                     ignoreHTTPSErrors: flags.ignoreHTTPSErrors,

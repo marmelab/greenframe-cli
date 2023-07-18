@@ -1,0 +1,10 @@
+scenarios:
+    - path: '../../src/examples/visit.js'
+      name: 'Visit'
+      threshold: 0.03
+baseURL: 'https://www.google.fr'
+customEnvVars:
+    - GREENFRAME_MY_VAR_ONE
+    - GREENFRAME_MY_VAR_TWO
+customEnvVarsFile: './.env'
+projectName: 'test'
