@@ -26,9 +26,16 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(stdout).toContain('✅ main scenario completed');
             });
 
-            it('should work with env vars', async () => {
+            it('should work with env vars inline command', async () => {
                 const { stdout } = await exec(
                     `GREENFRAME_MY_VAR_ONE=inline_value_one GREENFRAME_MY_VAR_TWO=inline_value_two ${BASE_COMMAND} https://www.google.fr ../../src/examples/envvar.inline.isolated.js -e GREENFRAME_MY_VAR_ONE -e GREENFRAME_MY_VAR_TWO`
+                );
+                expect(stdout).toContain('✅ main scenario completed');
+            });
+
+            it('should work with env file inline command', async () => {
+                const { stdout } = await exec(
+                    `${BASE_COMMAND} https://www.google.fr ../../src/examples/envvar.inline.envfile.js -E ./src/examples/.envfile`
                 );
                 expect(stdout).toContain('✅ main scenario completed');
             });
