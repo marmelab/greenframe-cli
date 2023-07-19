@@ -17,7 +17,6 @@
         "core-js-pure": "^3.24.0",
         "cross-fetch": "^3.1.4",
         "env-ci": "^5.0.2",
-        "envfile": "^6.18.0",
         "js-yaml": "^4.1.0",
         "listr2": "^3.12.2",
         "lodash": "^4.17.21",

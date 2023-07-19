@@ -1,7 +1,6 @@
 const fs = require('node:fs');
 const util = require('node:util');
 const path = require('node:path');
-const { parse } = require('envfile');
 const exec = util.promisify(require('node:child_process').exec);
 const { CONTAINER_DEVICE_NAME } = require('../../constants');
 const ScenarioError = require('../errors/ScenarioError');
@@ -9,8 +8,6 @@ const initDebug = require('debug');
 
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
-
-const readFile = util.promisify(fs.readFile);
 
 const createContainer = async (
     extraHosts = [],
@@ -117,25 +114,19 @@ const stopContainer = async () => {
 };
 
 const buildEnvVarList = async (customEnvVars, customEnvVarsFile) => {
-    const fileEnvVars = await parseEnvFile(customEnvVarsFile);
-    let uniqueEnvVars = [...new Set(customEnvVars.concat(fileEnvVars))];
-    return uniqueEnvVars.reduce((list, envVarName) => {
+    let uniqueEnvVars = [...new Set(customEnvVars)];
+    const uniqueEnvVarsString = uniqueEnvVars.reduce((list, envVarName) => {
+        if (envVarName.includes('=')) {
+            return `${list} -e ${envVarName} `;
+        }
+
         const envVarValue = process.env[envVarName];
         return `${list} -e ${envVarName}=${envVarValue} `;
     }, '');
-};
 
-const parseEnvFile = async (path) => {
-    try {
-        const file = await readFile(path, 'utf8');
-        if (file) {
-            const vars = parse(file);
+    const envVarFileString = customEnvVarsFile ? ` --env-file ${customEnvVarsFile}` : '';
 
-            return Object.keys(vars);
-        }
-    } catch {
-        // Do Nothing
-    }
+    return `${uniqueEnvVarsString} ${envVarFileString}`;
 };
 
 module.exports = {

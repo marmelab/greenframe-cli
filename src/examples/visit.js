@@ -1,11 +1,10 @@
-const { Page } = require('playwright');
-const { test, expect } = require('@playwright/test');
-const maVar1 = process.env.GREENFRAME_MA_VAR;
-const maVar2 = process.env.GREENFRAME_MA_VAR_DEUZE;
+const { expect } = require('@playwright/test');
+const myVar1 = process.env.GREENFRAME_MY_VAR_ONE;
+const myVar2 = process.env.GREENFRAME_MY_VAR_TWO;
 
 const visit = async (page) => {
-    expect(maVar1).toBe('bip');
-    expect(maVar2).toBe('bop');
+    expect(myVar1).toBe('bip');
+    expect(myVar2).toBe('blop');
     await page.goto('', {
         waitUntil: 'networkidle',
     });
