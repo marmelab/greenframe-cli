@@ -11,7 +11,7 @@
         "@cliqz/adblocker-playwright": "^1.25.0",
         "@kubernetes/client-node": "^0.17.0",
         "@oclif/core": "^1.2.0",
-        "@playwright/test": "^1.36.1",
+        "@playwright/test": "^1.30.0",
         "@sentry/node": "^6.13.3",
         "axios": "^0.22.0",
         "core-js-pure": "^3.24.0",

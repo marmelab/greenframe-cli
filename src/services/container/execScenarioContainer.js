@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const util = require('node:util');
 const path = require('node:path');
 const exec = util.promisify(require('node:child_process').exec);
@@ -9,11 +8,7 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (
-    extraHosts = [],
-    customEnvVars = [],
-    customEnvVarsFile = ''
-) => {
+const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -23,15 +18,12 @@ const createContainer = async (
     const extraHostsEnv =
         extraHosts.length > 0 ? ` -e EXTRA_HOSTS=${extraHosts.join(',')}` : '';
 
-    const envVars =
-        customEnvVars.length > 0
-            ? await buildEnvVarList(customEnvVars, customEnvVarsFile)
-            : '';
+    const envString = await buildEnvVarList(envVars, envFile);
 
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
 
     const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
-    const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envVars}`;
+    const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
     const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm ${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
 
     const dockerStatCommand = `${dockerCleanPreviousCommand} && ${dockerCreateCommand}`;
@@ -113,20 +105,22 @@ const stopContainer = async () => {
     return 'OK';
 };
 
-const buildEnvVarList = async (customEnvVars, customEnvVarsFile) => {
-    let uniqueEnvVars = [...new Set(customEnvVars)];
-    const uniqueEnvVarsString = uniqueEnvVars.reduce((list, envVarName) => {
-        if (envVarName.includes('=')) {
-            return `${list} -e ${envVarName} `;
-        }
+const buildEnvVarList = async (envVars, envFile) => {
+    const envVarString =
+        envVars.length > 0
+            ? envVars.reduce((list, envVarName) => {
+                  if (envVarName.includes('=')) {
+                      return `${list} -e ${envVarName} `;
+                  }
 
-        const envVarValue = process.env[envVarName];
-        return `${list} -e ${envVarName}=${envVarValue} `;
-    }, '');
+                  const envVarValue = process.env[envVarName];
+                  return `${list} -e ${envVarName}=${envVarValue} `;
+              }, '')
+            : '';
 
-    const envVarFileString = customEnvVarsFile ? ` --env-file ${customEnvVarsFile}` : '';
+    const envVarFileString = envFile ? ` --env-file ${envFile}` : '';
 
-    return `${uniqueEnvVarsString} ${envVarFileString}`;
+    return `${envVarString} ${envVarFileString}`;
 };
 
 module.exports = {

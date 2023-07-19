@@ -93,13 +93,13 @@ class AnalyzeCommand extends Command {
         timezoneId: Flags.boolean({
             description: 'Set greenframe browser timezoneId',
         }),
-        customEnvVars: Flags.string({
+        envVar: Flags.string({
             char: 'e',
             description: 'List of environment vars to read in the scenarios',
             required: false,
             multiple: true,
         }),
-        customEnvVarsFile: Flags.string({
+        envFile: Flags.string({
             char: 'E',
             description: 'File of environment vars',
             required: false,
