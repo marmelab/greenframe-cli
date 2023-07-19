@@ -40,6 +40,20 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(stdout).toContain('✅ main scenario completed');
             });
 
+            it('should work with env vars and config file', async () => {
+                const { stdout } = await exec(
+                    `GREENFRAME_MY_VAR_ONE=inline_value_one GREENFRAME_MY_VAR_TWO=inline_value_two ${BASE_COMMAND} https://www.google.fr -C ../../src/examples/envvar.config.isolated.yml`
+                );
+                expect(stdout).toContain('✅ main scenario completed');
+            });
+
+            it('should work with env file and config file', async () => {
+                const { stdout } = await exec(
+                    `${BASE_COMMAND} https://www.google.fr -C ../../src/examples/envvar.config.envfile.yml`
+                );
+                expect(stdout).toContain('✅ main scenario completed');
+            });
+
             it('should set greenframe browser locale right', async () => {
                 const { stdout: enStdout } = await exec(
                     `${BASE_COMMAND} -C ./e2e/.greenframe.single.en.yml`
