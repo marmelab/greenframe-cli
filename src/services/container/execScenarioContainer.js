@@ -18,13 +18,13 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const extraHostsEnv =
         extraHosts.length > 0 ? ` -e EXTRA_HOSTS=${extraHosts.join(',')}` : '';
 
-    const envString = await buildEnvVarList(envVars, envFile);
+    const envString = buildEnvVarList(envVars, envFile);
 
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
 
     const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
     const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
-    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm ${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
 
     const dockerStatCommand = `${dockerCleanPreviousCommand} && ${dockerCreateCommand}`;
     debug(`Docker command ${dockerStatCommand}`);
@@ -105,25 +105,26 @@ const stopContainer = async () => {
     return 'OK';
 };
 
-const buildEnvVarList = async (envVars, envFile) => {
+const buildEnvVarList = (envVars = [], envFile = '') => {
     const envVarString =
         envVars.length > 0
             ? envVars.reduce((list, envVarName) => {
                   if (envVarName.includes('=')) {
-                      return `${list} -e ${envVarName} `;
+                      return `${list} -e ${envVarName}`;
                   }
 
                   const envVarValue = process.env[envVarName];
-                  return `${list} -e ${envVarName}=${envVarValue} `;
+                  return `${list} -e ${envVarName}=${envVarValue}`;
               }, '')
             : '';
 
     const envVarFileString = envFile ? ` --env-file ${envFile}` : '';
 
-    return `${envVarString} ${envVarFileString}`;
+    return `${envVarString}${envVarFileString ? envVarFileString : ''}`;
 };
 
 module.exports = {
+    buildEnvVarList,
     createContainer,
     startContainer,
     execScenarioContainer,
