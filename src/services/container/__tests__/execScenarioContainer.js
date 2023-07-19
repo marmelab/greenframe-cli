@@ -90,6 +90,24 @@ describe('#createContainer', () => {
         );
     });
 
+    it('Should call exec with env vars', async () => {
+        exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
+        await createContainer([], ['VAR_ONE=one', 'VAR_TWO=two']);
+        expect(exec).toHaveBeenCalledTimes(3);
+        expect(exec.mock.calls[1][0]).toContain(
+            'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP -e VAR_ONE=one -e VAR_TWO=two '
+        );
+    });
+
+    it('Should call exec with env file', async () => {
+        exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
+        await createContainer([], [], './.env.local');
+        expect(exec).toHaveBeenCalledTimes(3);
+        expect(exec.mock.calls[1][0]).toContain(
+            'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP --env-file ./.env.local '
+        );
+    });
+
     afterEach(() => {
         exec.mockClear();
     });
