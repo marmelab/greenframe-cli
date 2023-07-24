@@ -1,11 +1,20 @@
 const minimist = require('minimist');
-const path = require('node:path');
 
 const executeScenario = require('./scenarioWrapper');
 
+const getScenarioPath = (scenario) => {
+    const scenarioPath = decodeURIComponent(scenario);
+
+    if (scenarioPath.startsWith('./')) {
+        return scenarioPath.replace('.', '/scenarios');
+    }
+
+    return scenarioPath;
+};
+
 (async () => {
     const args = minimist(process.argv.slice(2));
-    const scenarioPath = decodeURIComponent(args.scenario);
+    const scenarioPath = getScenarioPath(args.scenario);
     const scenarioFileContent = require(scenarioPath);
     const { timelines, milestones } = await executeScenario(scenarioFileContent, {
         baseUrl: decodeURIComponent(args.url),

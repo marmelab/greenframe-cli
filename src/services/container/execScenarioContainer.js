@@ -24,10 +24,11 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
 
     const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
     const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
-    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    const volumeString = '-v "$(pwd)":/scenarios';
+    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
 
-    const dockerStatCommand = `${dockerCleanPreviousCommand} && ${dockerCreateCommand}`;
-    debug(`Docker command ${dockerStatCommand}`);
+    const dockerStatCommand = `${dockerCleanPreviousCommand} &&  ${dockerCreateCommand}`;
+    debug(`Docker command: ${dockerStatCommand}`);
     await exec(dockerStatCommand);
 
     debug(`Container ${CONTAINER_DEVICE_NAME} created`);
