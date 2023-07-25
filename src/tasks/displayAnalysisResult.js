@@ -4,16 +4,20 @@ const STATUS = require('../status').STATUS;
 const APP_BASE_URL = process.env.APP_URL ?? 'https://app.greenframe.io';
 
 const computeTotalMetric = (metric) => Math.round(metric * 1000) / 1000;
-const formatTotalCo2 = (total) => {
-    if (total >= 1_000_000) {
+const formatTotal = (total, unit) => {
+    if (total >= 1_000_000 && unit === 'g') {
         return `${computeTotalMetric(total / 1_000_000)} t`;
     }
 
     if (total <= 100_000 && total >= 1000) {
-        return `${computeTotalMetric(total / 1000)} kg`;
+        return `${computeTotalMetric(total / 1000)} k${unit}`;
     }
 
-    return `${computeTotalMetric(total)} g`;
+    if (total < 1) {
+        return `${computeTotalMetric(total * 1000)} m${unit}`;
+    }
+
+    return `${computeTotalMetric(total)} ${unit}`;
 };
 
 const displayAnalysisResults = (result, isFree, isDistant) => {
@@ -22,8 +26,8 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
     let maximumPrecision = 0;
     for (const scenario of result.scenarios) {
         console.info('\n');
-        const totalCo2 = computeTotalMetric(scenario.score?.co2?.total);
-        const totalMWh = computeTotalMetric(scenario.score?.wh?.total);
+        const totalCo2 = formatTotal(scenario.score?.co2?.total, 'g');
+        const totalMWh = formatTotal(scenario.score?.wh?.total, 'Wh');
         const precision = Math.round(scenario.precision * 10) / 10;
         if (precision > maximumPrecision) {
             maximumPrecision = precision;
@@ -33,11 +37,11 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
             console.info(`✅ ${scenario.name} completed`);
             if (scenario.threshold) {
                 console.info(
-                    `The estimated footprint at ${totalCo2} g eq. co2 ± ${precision}% (${totalMWh} Wh) is under the limit configured at ${scenario.threshold} g eq. co2.`
+                    `The estimated footprint at ${totalCo2} eq. co2 ± ${precision}% (${totalMWh}) is under the limit configured at ${scenario.threshold} g eq. co2.`
                 );
             } else {
                 console.info(
-                    `The estimated footprint is ${totalCo2} g eq. co2 ± ${precision}% (${totalMWh} Wh).`
+                    `The estimated footprint is ${totalCo2} eq. co2 ± ${precision}% (${totalMWh}).`
                 );
             }
 
@@ -45,8 +49,9 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
                 console.info(
                     `For ${
                         scenario.executionCount
-                    } scenario executions, this represents ${formatTotalCo2(
-                        totalCo2 * scenario.executionCount
+                    } scenario executions, this represents ${formatTotal(
+                        (scenario.score?.co2?.total || 0) * scenario.executionCount,
+                        'g'
                     )} eq. co2`
                 );
             }
@@ -56,12 +61,12 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
                 case ERROR_CODES.SCENARIO_FAILED:
                     console.error(`This scenario fail during the execution:
 ${scenario.errorMessage}
-                    
+
 Use greenframe open command to run your scenario in debug mode.`);
                     break;
                 case ERROR_CODES.THRESHOLD_EXCEEDED:
                     console.error(
-                        `The estimated footprint at ${totalCo2} g eq. co2 ± ${precision}% (${totalMWh} Wh) passes the limit configured at ${scenario.threshold} g eq. co2.`
+                        `The estimated footprint at ${totalCo2} eq. co2 ± ${precision}% (${totalMWh}) passes the limit configured at ${scenario.threshold} g eq. co2.`
                     );
                     break;
             }
@@ -69,11 +74,11 @@ Use greenframe open command to run your scenario in debug mode.`);
     }
 
     if (!isDistant && result.scenarios.length > 1) {
-        const totalCo2 = computeTotalMetric(result.computed.score?.co2?.total);
-        const totalMWh = computeTotalMetric(result.computed.score?.wh?.total);
+        const totalCo2 = formatTotal(result.computed.score?.co2?.total, 'g');
+        const totalMWh = formatTotal(result.computed.score?.wh?.total, 'Wh');
 
         console.info(
-            `\nThe sum of estimated footprint is ${totalCo2} g eq. co2 ± ${maximumPrecision}% (${totalMWh} Wh).`
+            `\nThe sum of estimated footprint is ${totalCo2} eq. co2 ± ${maximumPrecision}% (${totalMWh}).`
         );
     }
 
