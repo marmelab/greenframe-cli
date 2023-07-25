@@ -20,7 +20,9 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
         try {
             const callback = (res) => {
                 if (res.statusCode !== 200) {
-                    reject(`${containerName} container is not running.`);
+                    reject(
+                        `${containerName} container may has encountered an issue. Status code:${res.statusCode}. Status message:${res.statusMessage}`
+                    );
                 } else {
                     resolve();
                 }
