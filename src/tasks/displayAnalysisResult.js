@@ -59,7 +59,7 @@ const displayAnalysisResults = (result, isFree, isDistant) => {
             console.error(`❌ ${scenario.name} failed`);
             switch (scenario.errorCode) {
                 case ERROR_CODES.SCENARIO_FAILED:
-                    console.error(`This scenario fail during the execution:
+                    console.error(`This scenario failed during the execution:
 ${scenario.errorMessage}
 
 Use greenframe open command to run your scenario in debug mode.`);
