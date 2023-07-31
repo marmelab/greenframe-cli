@@ -1,4 +1,4 @@
-async (page) => {
+const playstation = async (page) => {
     // Go to https://www.playstation.com/fr-fr/
     await page.goto('/fr-fr/', {
         waitUntil: 'networkidle',
@@ -59,3 +59,5 @@ async (page) => {
         page.click('text=À propos'),
     ]);
 };
+
+module.exports = playstation;

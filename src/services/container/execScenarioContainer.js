@@ -8,7 +8,7 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = []) => {
+const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -18,9 +18,17 @@ const createContainer = async (extraHosts = []) => {
     const extraHostsEnv =
         extraHosts.length > 0 ? ` -e EXTRA_HOSTS=${extraHosts.join(',')}` : '';
 
+    const envString = buildEnvVarList(envVars, envFile);
+
     debug(`Creating container ${CONTAINER_DEVICE_NAME} with extraHosts: ${extraHosts}`);
 
-    const dockerStatCommand = `docker rm -f ${CONTAINER_DEVICE_NAME} && docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm -e HOSTIP=${HOSTIP}${extraHostsEnv} --add-host localhost:${HOSTIP} ${extraHostsFlags} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
+    const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
+    const volumeString = '-v "$(pwd)":/scenarios';
+    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
+
+    const dockerStatCommand = `${dockerCleanPreviousCommand} &&  ${dockerCreateCommand}`;
+    debug(`Docker command: ${dockerStatCommand}`);
     await exec(dockerStatCommand);
 
     debug(`Container ${CONTAINER_DEVICE_NAME} created`);
@@ -98,7 +106,26 @@ const stopContainer = async () => {
     return 'OK';
 };
 
+const buildEnvVarList = (envVars = [], envFile = '') => {
+    const envVarString =
+        envVars.length > 0
+            ? envVars.reduce((list, envVarName) => {
+                  if (envVarName.includes('=')) {
+                      return `${list} -e ${envVarName}`;
+                  }
+
+                  const envVarValue = process.env[envVarName];
+                  return `${list} -e ${envVarName}=${envVarValue}`;
+              }, '')
+            : '';
+
+    const envVarFileString = envFile ? ` --env-file ${envFile}` : '';
+
+    return `${envVarString}${envVarFileString ? envVarFileString : ''}`;
+};
+
 module.exports = {
+    buildEnvVarList,
     createContainer,
     startContainer,
     execScenarioContainer,

@@ -29,7 +29,7 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
             };
 
             const clientRequest = http.request(options, callback).on('error', (error) => {
-                debug('Error whlie requesting docker api', error);
+                debug('Error while requesting docker api', error);
                 reject(
                     `Could not connect to Docker daemon on ${options.host}:${options.port}`
                 );

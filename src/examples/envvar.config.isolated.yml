@@ -1,0 +1,9 @@
+scenarios:
+    - path: '../../src/examples/envvar.config.isolated.js'
+      name: 'Visit'
+      threshold: 0.03
+baseURL: 'https://www.google.fr'
+envVar:
+    - GREENFRAME_MY_VAR_ONE
+    - GREENFRAME_MY_VAR_TWO=${GREENFRAME_MY_VAR_TWO}
+projectName: 'test_visit'

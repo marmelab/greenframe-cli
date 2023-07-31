@@ -1,4 +1,4 @@
-async (page) => {
+const laneuvelotte = async (page) => {
     await page.goto('', {
         waitUntil: 'networkidle',
     });
@@ -22,3 +22,5 @@ async (page) => {
         page.click('text=Voir tous les articles par Yann GENSOLLEN'),
     ]);
 };
+
+module.exports = laneuvelotte;

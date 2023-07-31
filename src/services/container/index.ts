@@ -43,6 +43,8 @@ export const executeScenarioAndGetContainerStats = async ({
     kubeContainers = [],
     kubeDatabaseContainers = [],
     extraHosts = [],
+    envVars = [],
+    envFile = '',
     dockerdHost,
     dockerdPort,
 }: {
@@ -58,13 +60,15 @@ export const executeScenarioAndGetContainerStats = async ({
     kubeContainers?: string[];
     kubeDatabaseContainers?: string[];
     extraHosts?: string[];
+    envVars?: string[];
+    envFile?: string;
     dockerdHost?: string;
     dockerdPort?: number;
 }) => {
     try {
         debug('Starting container');
         await stopContainer();
-        await createContainer(extraHosts);
+        await createContainer(extraHosts, envVars, envFile);
         await startContainer();
         debug('Container started');
         let allContainers: {

@@ -58,12 +58,14 @@ GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. A custom
 
 ```js
 // in my-scenario.js
-async (page) => {
+const scenario = async (page) => {
     await page.goto('', { waitUntil: 'networkidle' }); // Go to the baseUrl
     await page.waitForTimeout(3000); // Wait for 3 seconds
     await page.scrollToElement('footer'); // Scroll to the footer (if present)
     await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
 };
+
+module.exports = scenario;
 ```
 
 Check [the PlayWright documentation on writing tests](https://playwright.dev/docs/writing-tests) for more information.
@@ -243,9 +245,9 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [--dockerdHost <value>]
-    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>] [--kubeContainers <value>]
-    [--kubeDatabaseContainers <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
+    [--dockerdHost <value>] [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
+    [--kubeContainers <value>] [--kubeDatabaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -253,11 +255,13 @@ ARGUMENTS
 
 FLAGS
   -C, --configFile=<value>          Path to config file
+  -E, --customEnvVarsFile=<value>   File of environment vars
   -K, --kubeConfig=<value>          Path to kubernetes client config file
   -a, --useAdblock                  Use an adblocker during analysis
   -b, --branchName=<value>          Pass branch name manually
   -c, --commitMessage=<value>       Pass commit message manually
   -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
+  -e, --customEnvVars=<value>...    List of environment vars to read in the scenarios
   -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
   -p, --projectName=<value>         Project name
   -s, --samples=<value>             Number of runs done for the score computation
@@ -293,9 +297,7 @@ FLAGS
 
 DESCRIPTION
   Configure kubernetes cluster to collect greenframe metrics
-
   ...
-
   greenframe kube-config
 ```
 
@@ -322,9 +324,7 @@ FLAGS
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
-
   ...
-
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
@@ -343,9 +343,7 @@ ARGUMENTS
 
 DESCRIPTION
   Update GreenFrame to the latest version
-
   ...
-
   greenframe update
 ```
 

@@ -1,4 +1,4 @@
-scenario: '../src/examples/marmelab.fr.js'
+scenario: '../../src/examples/marmelab.fr.js'
 baseURL: 'https://marmelab.com'
 samples: 2
 projectName: 'Marmelab'
