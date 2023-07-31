@@ -255,13 +255,13 @@ ARGUMENTS
 
 FLAGS
   -C, --configFile=<value>          Path to config file
-  -E, --customEnvVarsFile=<value>   File of environment vars
+  -E, --envFile=<value>             File of environment vars
   -K, --kubeConfig=<value>          Path to kubernetes client config file
   -a, --useAdblock                  Use an adblocker during analysis
   -b, --branchName=<value>          Pass branch name manually
   -c, --commitMessage=<value>       Pass commit message manually
   -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
-  -e, --customEnvVars=<value>...    List of environment vars to read in the scenarios
+  -e, --envVar=<value>...           List of environment vars to read in the scenarios
   -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
   -p, --projectName=<value>         Project name
   -s, --samples=<value>             Number of runs done for the score computation
@@ -280,7 +280,7 @@ DESCRIPTION
   Create an analysis on GreenFrame server.
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/analyze.ts)_
 
 ## `greenframe kube-config`
 
@@ -301,7 +301,7 @@ DESCRIPTION
   greenframe kube-config
 ```
 
-_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/kube-config.ts)_
+_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/kube-config.ts)_
 
 ## `greenframe open [BASEURL] [SCENARIO]`
 
@@ -328,7 +328,7 @@ DESCRIPTION
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/open.ts)_
 
 ## `greenframe update [CHANNEL]`
 
@@ -347,7 +347,7 @@ DESCRIPTION
   greenframe update
 ```
 
-_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/update.ts)_
+_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/update.ts)_
 <!-- commandsstop -->
 
 ## Development
