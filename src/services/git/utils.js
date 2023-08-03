@@ -7,7 +7,7 @@ const getCommitMessage = async () => {
 };
 
 const getBranchName = async () => {
-    const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
+    const { stdout } = await exec('git branch --show-current');
 
     return stdout.trim();
 };
