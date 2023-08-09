@@ -3,6 +3,7 @@ const yaml = require('js-yaml');
 const util = require('node:util');
 const ConfigurationError = require('./errors/ConfigurationError');
 const analyze = require('../commands/analyze');
+const FILE_NOT_FOUND = 'ENOENT';
 
 const readFile = util.promisify(fs.readFile);
 
@@ -73,7 +74,7 @@ const parseConfigFile = async (path) => {
             };
         }
     } catch (error) {
-        if (path !== analyze.DEFAULT_CONFIG_FILE) {
+        if (path !== analyze.DEFAULT_CONFIG_FILE || error.code !== FILE_NOT_FOUND) {
             throw error;
         }
     }
