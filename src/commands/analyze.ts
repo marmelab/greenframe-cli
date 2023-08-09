@@ -9,6 +9,7 @@ import ERROR_CODES from '../services/errors/errorCodes';
 import logErrorOnSentry from '../services/errors/Sentry';
 
 import { DEFAULT_SAMPLES } from '../constants';
+export const DEFAULT_CONFIG_FILE = './.greenframe.yml';
 
 import createNewAnalysis from '../tasks/createNewAnalysis';
 import detectDockerVersion from '../tasks/detectDockerVersion';
@@ -34,7 +35,7 @@ class AnalyzeCommand extends Command {
     ];
 
     static defaultFlags = {
-        configFile: './.greenframe.yml',
+        configFile: DEFAULT_CONFIG_FILE,
         samples: DEFAULT_SAMPLES,
         distant: false,
         useAdblock: false,

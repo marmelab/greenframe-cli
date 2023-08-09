@@ -2,13 +2,24 @@ const fs = require('node:fs');
 const yaml = require('js-yaml');
 const util = require('node:util');
 const ConfigurationError = require('./errors/ConfigurationError');
+const analyze = require('../commands/analyze');
 
 const readFile = util.promisify(fs.readFile);
 
 const parseConfigFile = async (path) => {
     try {
         const file = await readFile(path, 'utf8');
+        let fileContent;
+
         if (file) {
+            fileContent = yaml.load(file);
+        }
+
+        if (typeof fileContent !== 'object') {
+            throw new TypeError(`${path} is not a valid yaml`);
+        }
+
+        if (fileContent) {
             const {
                 scenario,
                 scenarios,
@@ -31,7 +42,8 @@ const parseConfigFile = async (path) => {
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
-            } = yaml.load(file);
+            } = fileContent;
+
             return {
                 args: {
                     scenarios,
@@ -60,8 +72,10 @@ const parseConfigFile = async (path) => {
                 },
             };
         }
-    } catch {
-        // Do Nothing
+    } catch (error) {
+        if (path !== analyze.DEFAULT_CONFIG_FILE) {
+            throw error;
+        }
     }
 };
 
