@@ -7,6 +7,10 @@ const FILE_NOT_FOUND = 'ENOENT';
 
 const readFile = util.promisify(fs.readFile);
 
+const isMissingDefaultConfigFile = (path, error) => {
+    return path === analyze.DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;
+};
+
 const parseConfigFile = async (path) => {
     try {
         const file = await readFile(path, 'utf8');
@@ -74,7 +78,7 @@ const parseConfigFile = async (path) => {
             };
         }
     } catch (error) {
-        if (path !== analyze.DEFAULT_CONFIG_FILE || error.code !== FILE_NOT_FOUND) {
+        if (!isMissingDefaultConfigFile(path, error)) {
             throw error;
         }
     }
