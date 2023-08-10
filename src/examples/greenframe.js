@@ -7,8 +7,8 @@ const greenframe = async (page) => {
         page.waitForNavigation({
             /* url: 'https://greenframe.io/', */ waitUntil: 'networkidle',
         }),
-        page.scrollToElement('text=Try for free'),
-        page.click('text=Try for free'),
+        page.scrollToElement('text=Try it for free'),
+        page.click('text=Try it for free'),
     ]);
     await page.addMilestone('Go Back home');
 
