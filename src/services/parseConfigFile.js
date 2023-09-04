@@ -2,13 +2,29 @@ const fs = require('node:fs');
 const yaml = require('js-yaml');
 const util = require('node:util');
 const ConfigurationError = require('./errors/ConfigurationError');
+const analyze = require('../commands/analyze');
+const FILE_NOT_FOUND = 'ENOENT';
 
 const readFile = util.promisify(fs.readFile);
+
+const isMissingDefaultConfigFile = (path, error) => {
+    return path === analyze.DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;
+};
 
 const parseConfigFile = async (path) => {
     try {
         const file = await readFile(path, 'utf8');
+        let fileContent;
+
         if (file) {
+            fileContent = yaml.load(file);
+        }
+
+        if (typeof fileContent !== 'object') {
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
+        }
+
+        if (fileContent) {
             const {
                 scenario,
                 scenarios,
@@ -31,7 +47,8 @@ const parseConfigFile = async (path) => {
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
-            } = yaml.load(file);
+            } = fileContent;
+
             return {
                 args: {
                     scenarios,
@@ -60,8 +77,12 @@ const parseConfigFile = async (path) => {
                 },
             };
         }
-    } catch {
-        // Do Nothing
+    } catch (error) {
+        if (error.name === 'YAMLException') {
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
+        } else if (!isMissingDefaultConfigFile(path, error)) {
+            throw error;
+        }
     }
 };
 
