@@ -21,7 +21,7 @@ const parseConfigFile = async (path) => {
         }
 
         if (typeof fileContent !== 'object') {
-            throw new TypeError(`${path} is not a valid yaml`);
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
         }
 
         if (fileContent) {
@@ -78,7 +78,9 @@ const parseConfigFile = async (path) => {
             };
         }
     } catch (error) {
-        if (!isMissingDefaultConfigFile(path, error)) {
+        if (error.name === 'YAMLException') {
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
+        } else if (!isMissingDefaultConfigFile(path, error)) {
             throw error;
         }
     }
