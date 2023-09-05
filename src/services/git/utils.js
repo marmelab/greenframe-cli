@@ -2,8 +2,13 @@ const util = require('node:util');
 const exec = util.promisify(require('node:child_process').exec);
 
 const getCommitMessage = async () => {
-    const { stdout } = await exec('git log -1 --pretty=%B');
-    return stdout.trim();
+    try {
+        const { stdout } = await exec('git log -1 --pretty=%B');
+        return stdout.trim();
+    } catch (error) {
+        console.warn('getCommitMessage:', error.message);
+        return 'defaultAnalyseName';
+    }
 };
 
 const getBranchName = async () => {
@@ -13,9 +18,13 @@ const getBranchName = async () => {
 };
 
 const getCommitId = async () => {
-    const { stdout } = await exec('git rev-parse HEAD');
-
-    return stdout.trim();
+    try {
+        const { stdout } = await exec('git rev-parse HEAD');
+        return stdout.trim();
+    } catch (error) {
+        console.warn('getCommitId:', error.message);
+        return 'empty-----------------------------------';
+    }
 };
 
 const getDirectCommitAncestor = async () => {
