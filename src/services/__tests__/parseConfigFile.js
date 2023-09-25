@@ -107,10 +107,10 @@ describe('#resolveParams', () => {
                     scenarios: [{ path: 'PATH_TO_SCENARIO' }],
                     baseURL: 'YOUR_BASE_URL',
                 },
-                flags: { samples: 4, distant: true },
+                flags: { samples: 4 },
             },
             {
-                flags: { distant: false },
+                flags: {},
                 args: {
                     baseURL: 'ANOTHER_BASE_URL',
                 },
@@ -120,7 +120,6 @@ describe('#resolveParams', () => {
         expect(flags).toEqual({
             default: 'DEFAULT',
             samples: 4,
-            distant: false,
         });
 
         expect(args).toEqual({

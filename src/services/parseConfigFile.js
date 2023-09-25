@@ -30,7 +30,6 @@ const parseConfigFile = async (path) => {
                 scenarios,
                 baseURL,
                 samples,
-                distant,
                 useAdblock,
                 threshold,
                 projectName,
@@ -57,7 +56,6 @@ const parseConfigFile = async (path) => {
                 },
                 flags: {
                     samples,
-                    distant,
                     useAdblock,
                     threshold,
                     projectName,
@@ -137,24 +135,6 @@ const resolveParams = (
 
     if (!args.baseURL) {
         throw new ConfigurationError('You must provide a "baseURL" argument.');
-    }
-
-    if (flags.free && flags.distant) {
-        throw new ConfigurationError(
-            'You cannot use both "free" and "distant" flags at the same time.'
-        );
-    }
-
-    if (
-        Boolean(flags.distant) &&
-        (flags.containers ||
-            flags.databaseContainers ||
-            flags.kubeContainers ||
-            flags.kubeDatabaseContainers)
-    ) {
-        throw new ConfigurationError(
-            '"distant" mode is incompatible with parameters "containers" or "databaseContainers" or "kubeContainers" or "kubeDatabaseContainers".'
-        );
     }
 
     return { flags, args };

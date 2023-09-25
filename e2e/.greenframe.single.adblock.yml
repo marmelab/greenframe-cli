@@ -2,5 +2,4 @@ scenario: '../../src/examples/greenframe.js'
 baseURL: 'https://greenframe.io'
 samples: 2
 projectName: 'GreenFrame'
-distant: false
 useAdblock: true
