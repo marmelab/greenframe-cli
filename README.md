@@ -194,10 +194,10 @@ containers:
     - 'ANOTHER_CONTAINER_NAME'
 databaseContainers:
     - 'DATABASE_CONTAINER_NAME',
-envFile: PATH_TO_YOUR_ENVIRONNEMENT_VAR_FILE
+envFile: PATH_TO_YOUR_ENVIRONMENT_VAR_FILE
 envVar:
-    - envVarA: 'An environement variable needed for the scenario (ie : a secret-key)',
-    - envVarB: 'Another environement variable needed'
+    - envVarA: 'An environment variable needed for the scenario (ie : a secret-key)',
+    - envVarB: 'Another environment variable needed'
 ```
 
 ## More Information / Troubleshooting
@@ -250,7 +250,7 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
     [--dockerdHost <value>] [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
     [--kubeContainers <value>] [--kubeDatabaseContainers <value>]
 
@@ -265,7 +265,6 @@ FLAGS
   -a, --useAdblock                  Use an adblocker during analysis
   -b, --branchName=<value>          Pass branch name manually
   -c, --commitMessage=<value>       Pass commit message manually
-  -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
   -e, --envVar=<value>...           List of environment vars to read in the scenarios
   -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
   -p, --projectName=<value>         Project name
