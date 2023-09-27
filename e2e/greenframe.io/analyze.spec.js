@@ -74,71 +74,6 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(error).toBeUndefined();
             });
         });
-        describe('distant analysis', () => {
-            it('should run an analysis command correctly', async () => {
-                const { error, stdout } = await exec(
-                    `${BASE_COMMAND} ../../src/examples/greenframe.js https://greenframe.io -p GreenFrame -d -s 2`
-                );
-
-                expect(stdout).toContain('✅ main scenario completed');
-                expect(stdout).toContain('The estimated footprint is');
-                expect(stdout).toContain('Check the details of your analysis at');
-                expect(error).toBeUndefined();
-            });
-
-            it('should run an analysis command below a threshold', async () => {
-                const { error, stdout } = await exec(
-                    `${BASE_COMMAND} ../../src/examples/greenframe.js https://greenframe.io -s 2 -p GreenFrame -d -t 0.1`
-                );
-                expect(stdout).toContain('✅ main scenario completed');
-                expect(stdout).toContain('The estimated footprint at');
-                expect(stdout).toContain(
-                    'is under the limit configured at 0.1 g eq. co2.'
-                );
-                expect(stdout).toContain('Check the details of your analysis at');
-                expect(error).toBeUndefined();
-            });
-
-            it('should run an analysis command with adblocker', async () => {
-                const { error, stdout } = await exec(
-                    `${BASE_COMMAND} ../../src/examples/greenframe.js https://greenframe.io -s 2 -p GreenFrame -d -a`
-                );
-                expect(stdout).toContain('✅ main scenario completed');
-                expect(stdout).toContain('The estimated footprint is');
-                expect(stdout).toContain('Check the details of your analysis at');
-                expect(error).toBeUndefined();
-            });
-
-            it('should run an analysis and fail with higher measure than threshold', async () => {
-                expect.assertions(3);
-                try {
-                    await exec(
-                        `${BASE_COMMAND} ../../src/examples/greenframe.js https://greenframe.io -s 2 -p GreenFrame -d -t 0.001`
-                    );
-                } catch (error) {
-                    expect(error.stderr).toContain('❌ main scenario failed');
-                    expect(error.stderr).toContain('The estimated footprint at');
-                    expect(error.stderr).toContain(
-                        'passes the limit configured at 0.001 g eq. co2.'
-                    );
-                }
-            });
-
-            it('should run an analysis with multiple scenario', async () => {
-                const { error, stdout } = await exec(
-                    `${BASE_COMMAND} -C ./e2e/.greenframe.single.multiple.distant.yml`
-                );
-                expect(stdout).toContain('✅ Scenario 1 completed');
-                expect(stdout).toContain(
-                    'is under the limit configured at 0.1 g eq. co2.'
-                );
-                expect(stdout).toContain('✅ Scenario 2 completed');
-                expect(stdout).toContain(
-                    'is under the limit configured at 0.05 g eq. co2.'
-                );
-                expect(error).toBeUndefined();
-            });
-        });
     });
 
     describe('full stack', () => {
@@ -251,20 +186,6 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(error).toBeUndefined();
             });
 
-            it('should fail because distant mode is not compatible with multi containers', async () => {
-                expect.assertions(2);
-                try {
-                    await exec(
-                        `${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.yml -d -s 2`
-                    );
-                } catch (error) {
-                    expect(error.stderr).toContain('❌ Failed!');
-                    expect(error.stderr).toContain(
-                        '"distant" mode is incompatible with parameters "containers" or "databaseContainers"'
-                    );
-                }
-            });
-
             it('should run a k8s analysis command correctly', async () => {
                 const { error, stdout } = await exec(
                     `${BASE_COMMAND} -C ./e2e/.greenframe.fullstack.k8s.yml`
@@ -274,20 +195,6 @@ describe.skip('[GREENFRAME.IO] greenframe analyze', () => {
                 expect(stdout).toContain('The estimated footprint is');
                 expect(stdout).toContain('Check the details of your analysis at');
                 expect(error).toBeUndefined();
-            });
-        });
-
-        describe('distant analysis', () => {
-            it('should fail because distant mode is not compatible with multi containers', async () => {
-                expect.assertions(2);
-                try {
-                    await exec(`${BASE_COMMAND} -C ./.greenframe.e2e.yml -d -s 2`);
-                } catch (error) {
-                    expect(error.stderr).toContain('❌ Failed!');
-                    expect(error.stderr).toContain(
-                        '"distant" mode is incompatible with parameters "containers" or "databaseContainers"'
-                    );
-                }
             });
         });
     });

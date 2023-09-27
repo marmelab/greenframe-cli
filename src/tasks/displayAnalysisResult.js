@@ -20,7 +20,7 @@ const formatTotal = (total, unit) => {
     return `${computeTotalMetric(total)} ${unit}`;
 };
 
-const displayAnalysisResults = (result, isFree, isDistant) => {
+const displayAnalysisResults = (result, isFree) => {
     console.info('\nAnalysis complete !\n');
     console.info('Result summary:');
     let maximumPrecision = 0;
@@ -73,7 +73,7 @@ Use greenframe open command to run your scenario in debug mode.`);
         }
     }
 
-    if (!isDistant && result.scenarios.length > 1) {
+    if (result.scenarios.length > 1) {
         const totalCo2 = formatTotal(result.computed.score?.co2?.total, 'g');
         const totalMWh = formatTotal(result.computed.score?.wh?.total, 'Wh');
 
@@ -90,11 +90,7 @@ Use greenframe open command to run your scenario in debug mode.`);
 
     /* prettier-ignore */
     process.exit(
-        isDistant
-            ? result.analysis.status === STATUS.FINISHED
-                ? 0
-                : 1
-            : result.computed.errorCode == null
+        result.computed.errorCode == null
                 ? 0
                 : 1
     );

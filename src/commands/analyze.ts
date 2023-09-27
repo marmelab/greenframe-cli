@@ -37,7 +37,6 @@ class AnalyzeCommand extends Command {
     static defaultFlags = {
         configFile: DEFAULT_CONFIG_FILE,
         samples: DEFAULT_SAMPLES,
-        distant: false,
         useAdblock: false,
         ignoreHTTPSErrors: false,
     };
@@ -75,10 +74,6 @@ class AnalyzeCommand extends Command {
         samples: Flags.string({
             char: 's',
             description: 'Number of runs done for the score computation',
-        }),
-        distant: Flags.boolean({
-            char: 'd',
-            description: 'Run a distant analysis on GreenFrame Server instead of locally',
         }),
         useAdblock: Flags.boolean({
             char: 'a',
@@ -140,7 +135,7 @@ class AnalyzeCommand extends Command {
                 commandParams
             );
 
-            const isDistant = flags.distant;
+            const isDistant = false;
             const isFree = process.env.GREENFRAME_SECRET_TOKEN == null;
             const tasks = new Listr(
                 [
@@ -219,7 +214,7 @@ class AnalyzeCommand extends Command {
                 }
             );
             const { result } = await tasks.run();
-            displayAnalysisResults(result, isFree, isDistant);
+            displayAnalysisResults(result, isFree);
         } catch (error: any) {
             console.error('\n❌ Failed!');
             console.error(error.name);

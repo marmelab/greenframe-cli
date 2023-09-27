@@ -184,7 +184,7 @@ scenarios:
       threshold: 0.1
 projectName: YOUR_PROJECT_NAME
 samples: 3
-distant: false
+//distant: "This option has been deprecated due to security issues"
 useAdblock: true
 ignoreHTTPSErrors: true
 locale: 'fr-FR',
@@ -193,7 +193,11 @@ containers:
     - 'CONTAINER_NAME'
     - 'ANOTHER_CONTAINER_NAME'
 databaseContainers:
-    - 'DATABASE_CONTAINER_NAME'
+    - 'DATABASE_CONTAINER_NAME',
+envFile: PATH_TO_YOUR_ENVIRONMENT_VAR_FILE
+envVar:
+    - envVarA: 'An environment variable needed for the scenario (ie : a secret-key)',
+    - envVarB: 'Another environment variable needed'
 ```
 
 ## More Information / Troubleshooting
@@ -233,10 +237,11 @@ This means that the lowest hanging fruit for optimizing the emissions of a web p
 # Commands
 
 <!-- commands -->
-* [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
-* [`greenframe kube-config`](#greenframe-kube-config)
-* [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
-* [`greenframe update [CHANNEL]`](#greenframe-update-channel)
+
+-   [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
+-   [`greenframe kube-config`](#greenframe-kube-config)
+-   [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
+-   [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
 ## `greenframe analyze [BASEURL] [SCENARIO]`
 
@@ -245,7 +250,7 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
     [--dockerdHost <value>] [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
     [--kubeContainers <value>] [--kubeDatabaseContainers <value>]
 
@@ -260,7 +265,6 @@ FLAGS
   -a, --useAdblock                  Use an adblocker during analysis
   -b, --branchName=<value>          Pass branch name manually
   -c, --commitMessage=<value>       Pass commit message manually
-  -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
   -e, --envVar=<value>...           List of environment vars to read in the scenarios
   -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
   -p, --projectName=<value>         Project name
@@ -348,6 +352,7 @@ DESCRIPTION
 ```
 
 _See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/update.ts)_
+
 <!-- commandsstop -->
 
 ## Development
