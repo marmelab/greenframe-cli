@@ -11,6 +11,7 @@ import logErrorOnSentry from '../services/errors/Sentry';
 import { DEFAULT_SAMPLES } from '../constants';
 export const DEFAULT_CONFIG_FILE = './.greenframe.yml';
 
+import checkGreenFrameSecretToken from '../tasks/checkGreenFrameSecretToken';
 import createNewAnalysis from '../tasks/createNewAnalysis';
 import detectDockerVersion from '../tasks/detectDockerVersion';
 import detectKubernetesVersion from '../tasks/detectKubernetesVersion';
@@ -20,7 +21,6 @@ import initializeKubeClient from '../tasks/initializeKubeClient';
 import retrieveGitInformations from '../tasks/retrieveGitInformations';
 import retrieveGreenFrameProject from '../tasks/retrieveGreenFrameProject';
 import runScenarioAndSaveResults from '../tasks/runScenariosAndSaveResult';
-import checkGreenFrameSecretToken from '../tasks/checkGreenFrameSecretToken';
 class AnalyzeCommand extends Command {
     static args = [
         {
@@ -122,6 +122,12 @@ class AnalyzeCommand extends Command {
 
     async run() {
         let analysisId;
+
+        process.on('SIGINT', async () => {
+            console.log("Vous avez appuyé sur Ctrl + C. L'événement a été déclenché.");
+            this.exit(0);
+        });
+
         try {
             const commandParams = await this.parse(AnalyzeCommand);
             const configFilePath =
