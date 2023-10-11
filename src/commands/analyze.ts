@@ -21,6 +21,26 @@ import initializeKubeClient from '../tasks/initializeKubeClient';
 import retrieveGitInformations from '../tasks/retrieveGitInformations';
 import retrieveGreenFrameProject from '../tasks/retrieveGreenFrameProject';
 import runScenarioAndSaveResults from '../tasks/runScenariosAndSaveResult';
+
+let analysisId: string | null = null;
+
+process.on('SIGINT' || 'SIGKILL' || 'SIGTERM' || 'SIGQUIT', async function () {
+    if (analysisId !== null) {
+        try {
+            await saveFailedAnalysis(analysisId, {
+                errorCode: ERROR_CODES.UNKNOWN_ERROR,
+                errorMessage: 'Analysis stopped with Ctrl+C',
+            });
+        } catch (error) {
+            console.log('error :', error);
+        }
+    }
+
+    setTimeout(() => {
+        process.exit(1);
+    }, 299);
+});
+
 class AnalyzeCommand extends Command {
     static args = [
         {
@@ -121,13 +141,6 @@ class AnalyzeCommand extends Command {
     };
 
     async run() {
-        let analysisId;
-
-        process.on('SIGINT', async () => {
-            console.log("Vous avez appuyé sur Ctrl + C. L'événement a été déclenché.");
-            this.exit(0);
-        });
-
         try {
             const commandParams = await this.parse(AnalyzeCommand);
             const configFilePath =
@@ -210,6 +223,7 @@ class AnalyzeCommand extends Command {
                             });
                             const tasks = task.newListr(tasksDefinition, {
                                 rendererOptions: { collapse: false },
+                                registerSignalListeners: false,
                             });
                             return tasks;
                         },
@@ -217,6 +231,7 @@ class AnalyzeCommand extends Command {
                 ],
                 {
                     renderer: process.env.DEBUG ? 'verbose' : 'default',
+                    registerSignalListeners: false,
                 }
             );
             const { result } = await tasks.run();
@@ -231,7 +246,7 @@ class AnalyzeCommand extends Command {
             }
 
             try {
-                if (analysisId) {
+                if (analysisId !== null) {
                     await saveFailedAnalysis(analysisId, {
                         errorCode: error.errorCode || ERROR_CODES.UNKNOWN_ERROR,
                         errorMessage: error.response?.data || error.message,
