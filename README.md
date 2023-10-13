@@ -54,19 +54,7 @@ You can run a custom scenario instead of the "visit" scenario by passing a scena
 $ greenframe analyze https://marmelab.com ./my-scenario.js
 ```
 
-GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. A custom PlayWright scenario looks like the following:
-
-```js
-// in my-scenario.js
-const scenario = async (page) => {
-    await page.goto('', { waitUntil: 'networkidle' }); // Go to the baseUrl
-    await page.waitForTimeout(3000); // Wait for 3 seconds
-    await page.scrollToElement('footer'); // Scroll to the footer (if present)
-    await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
-};
-
-module.exports = scenario;
-```
+GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. To discover what a custom PlayWright scenario looks alike, you can refer to our [documentation](https://docs.greenframe.io/scenario/).
 
 Check [the PlayWright documentation on writing tests](https://playwright.dev/docs/writing-tests) for more information.
 
