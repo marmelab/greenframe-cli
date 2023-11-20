@@ -1,6 +1,5 @@
-import getScopedPage from './scopedPage';
-
 const { chromium } = require('playwright');
+const cypress = require('cypress');
 const { PlaywrightBlocker } = require('@cliqz/adblocker-playwright');
 const fetch = require('cross-fetch'); // required 'fetch'
 
@@ -22,35 +21,35 @@ const executeScenario = async (scenario, options = {}) => {
         }
     }
 
-    const browser = await chromium.launch({
-        defaultViewport: {
-            width: 900,
-            height: 600,
-        },
-        args,
-        timeout: 10_000,
-        headless: !options.debug,
-        executablePath: options.executablePath,
-    });
+    // const browser = await chromium.launch({
+    //     defaultViewport: {
+    //         width: 900,
+    //         height: 600,
+    //     },
+    //     args,
+    //     timeout: 10_000,
+    //     headless: !options.debug,
+    //     executablePath: options.executablePath,
+    // });
 
-    const context = await browser.newContext({
-        userAgent:
-            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36',
-        ignoreHTTPSErrors: options.ignoreHTTPSErrors,
-        locale: options.locale,
-        timezoneId: options.timezoneId,
-    });
+    // const context = await browser.newContext({
+    //     userAgent:
+    //         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36',
+    //     ignoreHTTPSErrors: options.ignoreHTTPSErrors,
+    //     locale: options.locale,
+    //     timezoneId: options.timezoneId,
+    // });
 
-    context.setDefaultTimeout(60_000);
+    // context.setDefaultTimeout(60_000);
 
-    const page = getScopedPage(await context.newPage(), options.baseUrl);
+    // const page = getScopedPage(await context.newPage(), options.baseUrl);
 
-    if (options.useAdblock) {
-        const blocker = await PlaywrightBlocker.fromPrebuiltAdsAndTracking(fetch);
-        blocker.enableBlockingInPage(page);
-    }
+    // if (options.useAdblock) {
+    //     const blocker = await PlaywrightBlocker.fromPrebuiltAdsAndTracking(fetch);
+    //     blocker.enableBlockingInPage(page);
+    // }
 
-    await page.waitForTimeout(2000);
+    // await page.waitForTimeout(2000);
 
     const start = new Date();
     let success = false;
@@ -61,13 +60,20 @@ const executeScenario = async (scenario, options = {}) => {
             );
         }, SCENARIO_TIMEOUT);
 
-        await scenario(page);
+        // await scenario(page);
+        cypress.run({
+            spec: scenario,
+            browser: 'chromium',
+            config: {
+                baseUrl: options.baseUrl,
+            },
+        });
         clearTimeout(timeoutScenario);
 
         success = true;
     } finally {
         if (!options.debug || success) {
-            await browser.close();
+            // await browser.close();
         }
     }
 
@@ -79,7 +85,8 @@ const executeScenario = async (scenario, options = {}) => {
             start: start.toISOString(),
             end: end.toISOString(),
         },
-        milestones: relativizeMilestoneSamples(page.getMilestones(), start.getTime()),
+        // milestones: relativizeMilestoneSamples(page.getMilestones(), start.getTime()),
+        milestones: [],
     };
 };
 

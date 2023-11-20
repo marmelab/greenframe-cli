@@ -25,7 +25,8 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
     const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
     const volumeString = '-v "$(pwd)":/scenarios';
-    const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    // const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
+    const dockerCreateCommand = `docker create --entrypoint=/bin/bash --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} cypress/included:13.3.0`;
 
     const dockerStatCommand = `${dockerCleanPreviousCommand} &&  ${dockerCreateCommand}`;
     debug(`Docker command: ${dockerStatCommand}`);
@@ -75,11 +76,16 @@ const execScenarioContainer = async (
             command += ` --timezoneId=${timezoneId}`;
         }
 
-        const { stdout, stderr } = await exec(command);
+        debug(`Executing command: ${command}`);
 
-        if (stderr) {
-            throw new Error(stderr);
-        }
+        const { stdout, stderr } = await exec(command);
+        debug(`stdout: ${stdout}`);
+        debug(`stderr: ${stderr}`);
+
+        // Cypress is issuing false errors in stderr like "DevTools listening on ws://127.0.0.1"
+        // if (stderr) {
+        //     throw new Error(stderr);
+        // }
 
         const timelines = JSON.parse(stdout.split('=====TIMELINES=====')[1]);
         const milestones = JSON.parse(stdout.split('=====MILESTONES=====')[1] || '[]');
