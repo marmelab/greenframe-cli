@@ -8,7 +8,7 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
+const createContainer = async (extraHosts = [], envVars = [], envFile = '', scenario) => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -26,7 +26,7 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
     const volumeString = '-v "$(pwd)":/scenarios';
     // const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
-    const dockerCreateCommand = `docker create --entrypoint=/bin/bash --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} cypress/included:13.3.0`;
+    const dockerCreateCommand = `docker create --entrypoint=/bin/sh --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} cypress/included:13.3.0`;
 
     const dockerStatCommand = `${dockerCleanPreviousCommand} &&  ${dockerCreateCommand}`;
     debug(`Docker command: ${dockerStatCommand}`);
@@ -37,7 +37,13 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     debug(`Copying greenframe files to container ${CONTAINER_DEVICE_NAME}`);
     // For some reason, mounting the volume when you're doing docker in docker doesn't work, but the copy command does.
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
+    debug(`Copy command: ${dockerCopyCommand}`);
     await exec(dockerCopyCommand);
+    // Copy the scenario to cypress folder
+    const scenarioPath = path.resolve(PROJECT_ROOT, scenario);
+    const dockerCopyScenarioCommand = `docker cp ${scenarioPath} ${CONTAINER_DEVICE_NAME}:/greenframe/cypress/e2e`;
+    debug(`Copy command: ${dockerCopyScenarioCommand}`);
+    await exec(dockerCopyScenarioCommand);
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };
 
@@ -51,14 +57,13 @@ const startContainer = async () => {
 };
 
 const execScenarioContainer = async (
-    scenario,
     url,
     { useAdblock, ignoreHTTPSErrors, locale, timezoneId } = {}
 ) => {
     try {
-        let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
-            scenario
-        )}" --url="${encodeURIComponent(url)}"`;
+        let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --url="${encodeURIComponent(
+            url
+        )}"`;
 
         if (useAdblock) {
             command += ` --useAdblock`;

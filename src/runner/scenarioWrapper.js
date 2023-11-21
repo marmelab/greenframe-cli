@@ -11,7 +11,7 @@ const relativizeMilestoneSamples = (milestones, startTime) =>
         time: timestamp - startTime,
     }));
 
-const executeScenario = async (scenario, options = {}) => {
+const executeScenario = async (options = {}) => {
     let args = ['--disable-web-security'];
 
     if (options.hostIP) {
@@ -61,13 +61,18 @@ const executeScenario = async (scenario, options = {}) => {
         }, SCENARIO_TIMEOUT);
 
         // await scenario(page);
-        cypress.run({
-            spec: scenario,
-            browser: 'chromium',
-            config: {
-                baseUrl: options.baseUrl,
-            },
-        });
+        console.log('run options', options);
+        (async () => {
+            const results = await cypress.run({
+                browser: 'chrome',
+                project: '/greenframe',
+                config: {
+                    baseUrl: options.baseUrl,
+                },
+            });
+            console.log('results', results);
+        })();
+
         clearTimeout(timeoutScenario);
 
         success = true;

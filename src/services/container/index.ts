@@ -68,7 +68,7 @@ export const executeScenarioAndGetContainerStats = async ({
     try {
         debug('Starting container');
         await stopContainer();
-        await createContainer(extraHosts, envVars, envFile);
+        await createContainer(extraHosts, envVars, envFile, scenario);
         await startContainer();
         debug('Container started');
         let allContainers: {
@@ -136,7 +136,7 @@ export const executeScenarioAndGetContainerStats = async ({
 
             const stop = getPodsStats(nodes);
 
-            const { timelines, milestones } = await execScenarioContainer(scenario, url, {
+            const { timelines, milestones } = await execScenarioContainer(url, {
                 useAdblock,
                 ignoreHTTPSErrors,
                 locale,
