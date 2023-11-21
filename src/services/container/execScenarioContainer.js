@@ -37,12 +37,10 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '', scen
     debug(`Copying greenframe files to container ${CONTAINER_DEVICE_NAME}`);
     // For some reason, mounting the volume when you're doing docker in docker doesn't work, but the copy command does.
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
-    debug(`Copy command: ${dockerCopyCommand}`);
     await exec(dockerCopyCommand);
     // Copy the scenario to cypress folder
     const scenarioPath = path.resolve(PROJECT_ROOT, scenario);
     const dockerCopyScenarioCommand = `docker cp ${scenarioPath} ${CONTAINER_DEVICE_NAME}:/greenframe/cypress/e2e`;
-    debug(`Copy command: ${dockerCopyScenarioCommand}`);
     await exec(dockerCopyScenarioCommand);
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };
@@ -84,8 +82,6 @@ const execScenarioContainer = async (
         debug(`Executing command: ${command}`);
 
         const { stdout, stderr } = await exec(command);
-        debug(`stdout: ${stdout}`);
-        debug(`stderr: ${stderr}`);
 
         // Cypress is issuing false errors in stderr like "DevTools listening on ws://127.0.0.1"
         // if (stderr) {

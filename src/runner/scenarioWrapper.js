@@ -51,7 +51,9 @@ const executeScenario = async (options = {}) => {
 
     // await page.waitForTimeout(2000);
 
-    const start = new Date();
+    // const start = new Date();
+    let start;
+    let end;
     let success = false;
     try {
         const timeoutScenario = setTimeout(() => {
@@ -61,17 +63,16 @@ const executeScenario = async (options = {}) => {
         }, SCENARIO_TIMEOUT);
 
         // await scenario(page);
-        console.log('run options', options);
-        (async () => {
-            const results = await cypress.run({
-                browser: 'chrome',
-                project: '/greenframe',
-                config: {
-                    baseUrl: options.baseUrl,
-                },
-            });
-            console.log('results', results);
-        })();
+        const cypressResults = await cypress.run({
+            browser: 'chrome',
+            project: '/greenframe',
+            config: {
+                baseUrl: options.baseUrl,
+            },
+        });
+
+        start = cypressResults.runs[0].stats.startedAt;
+        end = cypressResults.runs[0].stats.endedAt;
 
         clearTimeout(timeoutScenario);
 
@@ -82,13 +83,13 @@ const executeScenario = async (options = {}) => {
         }
     }
 
-    const end = new Date();
+    // const end = new Date();
 
     return {
         timelines: {
             title: options.name,
-            start: start.toISOString(),
-            end: end.toISOString(),
+            start,
+            end,
         },
         // milestones: relativizeMilestoneSamples(page.getMilestones(), start.getTime()),
         milestones: [],
