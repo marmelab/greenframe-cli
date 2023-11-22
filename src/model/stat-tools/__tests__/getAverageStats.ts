@@ -1,5 +1,6 @@
 import { getAverageStats } from '../getAverageStats';
 import { addAvg, incrementalAverageStats } from '../getAverageStats';
+import { expect } from '@playwright/test';
 
 const incrementalStat = (n: any, statValue: any, boolValue: any) => {
     return {
@@ -269,7 +270,7 @@ describe('incrementalAverageStats', () => {
         /*
         Entry data
             Entries: [50, 10, 30, 50, 60]
-        
+
         Expected output
             Incremental average: [50, 30, 30, 35, 40]
         */
