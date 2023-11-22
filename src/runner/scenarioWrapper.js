@@ -8,7 +8,7 @@ const relativizeMilestoneSamples = (milestones, startTime) =>
         time: timestamp - startTime,
     }));
 
-const executeScenario = async (options = {}) => {
+const executeScenario = async (scenario, options = {}) => {
     let args = ['--disable-web-security'];
 
     if (options.hostIP) {
@@ -30,9 +30,10 @@ const executeScenario = async (options = {}) => {
     const cypressResults = await cypress.run({
         browser: 'chrome',
         project: '/greenframe',
+        spec: scenario,
         config: {
             baseUrl: options.baseUrl,
-            specPattern: 'cypress/e2e/**/*.{js,ts}',
+            specPattern: '/scenarios/**/*.{js,ts}',
         },
     });
 

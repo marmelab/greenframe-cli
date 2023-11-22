@@ -8,7 +8,7 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = [], envVars = [], envFile = '', scenario) => {
+const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -37,10 +37,6 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '', scen
     // For some reason, mounting the volume when you're doing docker in docker doesn't work, but the copy command does.
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
     await exec(dockerCopyCommand);
-    // Copy the scenario to cypress folder
-    const scenarioPath = path.resolve(process.cwd(), scenario);
-    const dockerCopyScenarioCommand = `docker cp ${scenarioPath} ${CONTAINER_DEVICE_NAME}:/greenframe/cypress/e2e`;
-    await exec(dockerCopyScenarioCommand);
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };
 
@@ -54,13 +50,14 @@ const startContainer = async () => {
 };
 
 const execScenarioContainer = async (
+    scenario,
     url,
     { useAdblock, ignoreHTTPSErrors, locale, timezoneId } = {}
 ) => {
     try {
-        let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --url="${encodeURIComponent(
-            url
-        )}"`;
+        let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
+            scenario
+        )}" --url="${encodeURIComponent(url)}"`;
 
         if (useAdblock) {
             command += ` --useAdblock`;
