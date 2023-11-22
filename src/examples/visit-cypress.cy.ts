@@ -1,6 +1,6 @@
 describe('template spec', () => {
     it('passes', () => {
-        cy.visit('https://greenframe.io');
+        cy.visit('');
         cy.scrollTo('bottom', { duration: 2000, ensureScrollable: false });
     });
 });

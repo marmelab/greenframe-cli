@@ -81,12 +81,13 @@ const execScenarioContainer = async (
 
         debug(`Executing command: ${command}`);
 
+        const GARBAGE_CYPRESS_ERROR = 'DevTools listening on ws://127.0.0.1';
+
         const { stdout, stderr } = await exec(command);
 
-        // Cypress is issuing false errors in stderr like "DevTools listening on ws://127.0.0.1"
-        // if (stderr) {
-        //     throw new Error(stderr);
-        // }
+        if (stderr && !stderr.includes(GARBAGE_CYPRESS_ERROR)) {
+            throw new Error(stderr);
+        }
 
         const timelines = JSON.parse(stdout.split('=====TIMELINES=====')[1]);
         const milestones = JSON.parse(stdout.split('=====MILESTONES=====')[1] || '[]');
