@@ -1,7 +1,4 @@
-const { chromium } = require('playwright');
 const cypress = require('cypress');
-const { PlaywrightBlocker } = require('@cliqz/adblocker-playwright');
-const fetch = require('cross-fetch'); // required 'fetch'
 
 const SCENARIO_TIMEOUT = 2 * 60 * 1000; // Global timeout for executing a scenario
 
@@ -21,69 +18,27 @@ const executeScenario = async (options = {}) => {
         }
     }
 
-    // const browser = await chromium.launch({
-    //     defaultViewport: {
-    //         width: 900,
-    //         height: 600,
-    //     },
-    //     args,
-    //     timeout: 10_000,
-    //     headless: !options.debug,
-    //     executablePath: options.executablePath,
-    // });
-
-    // const context = await browser.newContext({
-    //     userAgent:
-    //         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36',
-    //     ignoreHTTPSErrors: options.ignoreHTTPSErrors,
-    //     locale: options.locale,
-    //     timezoneId: options.timezoneId,
-    // });
-
-    // context.setDefaultTimeout(60_000);
-
-    // const page = getScopedPage(await context.newPage(), options.baseUrl);
-
-    // if (options.useAdblock) {
-    //     const blocker = await PlaywrightBlocker.fromPrebuiltAdsAndTracking(fetch);
-    //     blocker.enableBlockingInPage(page);
-    // }
-
-    // await page.waitForTimeout(2000);
-
-    // const start = new Date();
     let start;
     let end;
-    let success = false;
-    try {
-        const timeoutScenario = setTimeout(() => {
-            throw new Error(
-                `Timeout: Your scenario took more than ${SCENARIO_TIMEOUT / 1000}s`
-            );
-        }, SCENARIO_TIMEOUT);
 
-        // await scenario(page);
-        const cypressResults = await cypress.run({
-            browser: 'chrome',
-            project: '/greenframe',
-            config: {
-                baseUrl: options.baseUrl,
-            },
-        });
+    const timeoutScenario = setTimeout(() => {
+        throw new Error(
+            `Timeout: Your scenario took more than ${SCENARIO_TIMEOUT / 1000}s`
+        );
+    }, SCENARIO_TIMEOUT);
 
-        start = cypressResults.runs[0].stats.startedAt;
-        end = cypressResults.runs[0].stats.endedAt;
+    const cypressResults = await cypress.run({
+        browser: 'chrome',
+        project: '/greenframe',
+        config: {
+            baseUrl: options.baseUrl,
+        },
+    });
 
-        clearTimeout(timeoutScenario);
+    start = cypressResults.runs[0].stats.startedAt;
+    end = cypressResults.runs[0].stats.endedAt;
 
-        success = true;
-    } finally {
-        if (!options.debug || success) {
-            // await browser.close();
-        }
-    }
-
-    // const end = new Date();
+    clearTimeout(timeoutScenario);
 
     return {
         timelines: {
@@ -91,7 +46,7 @@ const executeScenario = async (options = {}) => {
             start,
             end,
         },
-        // milestones: relativizeMilestoneSamples(page.getMilestones(), start.getTime()),
+        // milestones: relativizeMilestoneSamples(page.getMilestones(), start),
         milestones: [],
     };
 };

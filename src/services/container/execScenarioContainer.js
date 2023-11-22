@@ -25,7 +25,6 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '', scen
     const dockerCleanPreviousCommand = `docker rm -f ${CONTAINER_DEVICE_NAME}`;
     const allEnvVars = ` -e HOSTIP=${HOSTIP}${extraHostsEnv}${envString}`;
     const volumeString = '-v "$(pwd)":/scenarios';
-    // const dockerCreateCommand = `docker create --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} mcr.microsoft.com/playwright:v1.30.0-focal`;
     const dockerCreateCommand = `docker create --entrypoint=/bin/sh --tty --name ${CONTAINER_DEVICE_NAME} --rm${allEnvVars} --add-host localhost:${HOSTIP} ${extraHostsFlags} ${volumeString} cypress/included:13.3.0`;
 
     const dockerStatCommand = `${dockerCleanPreviousCommand} &&  ${dockerCreateCommand}`;
