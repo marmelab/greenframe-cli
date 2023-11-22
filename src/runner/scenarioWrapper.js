@@ -32,8 +32,17 @@ const executeScenario = async (options = {}) => {
         project: '/greenframe',
         config: {
             baseUrl: options.baseUrl,
+            specPattern: 'cypress/e2e/**/*.{js,ts}',
         },
     });
+
+    if (cypressResults.status === 'failed') {
+        throw new Error(cypressResults.message);
+    }
+
+    if (cypressResults.runs[0].error) {
+        throw new Error(cypressResults.runs[0].error);
+    }
 
     start = cypressResults.runs[0].stats.startedAt;
     end = cypressResults.runs[0].stats.endedAt;

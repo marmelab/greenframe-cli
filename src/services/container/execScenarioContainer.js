@@ -38,7 +38,7 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '', scen
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
     await exec(dockerCopyCommand);
     // Copy the scenario to cypress folder
-    const scenarioPath = path.resolve(PROJECT_ROOT, scenario);
+    const scenarioPath = path.resolve(process.cwd(), scenario);
     const dockerCopyScenarioCommand = `docker cp ${scenarioPath} ${CONTAINER_DEVICE_NAME}:/greenframe/cypress/e2e`;
     await exec(dockerCopyScenarioCommand);
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
