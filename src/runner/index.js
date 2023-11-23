@@ -24,6 +24,7 @@ const getScenarioPath = (scenario) => {
         ignoreHTTPSErrors: args.ignoreHTTPSErrors,
         locale: args.locale,
         timezoneId: args.timezoneId,
+        timeout: args.timeout,
     });
     console.log('=====TIMELINES=====');
     console.log(JSON.stringify(timelines));

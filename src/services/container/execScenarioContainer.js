@@ -52,7 +52,7 @@ const startContainer = async () => {
 const execScenarioContainer = async (
     scenario,
     url,
-    { useAdblock, ignoreHTTPSErrors, locale, timezoneId } = {}
+    { useAdblock, ignoreHTTPSErrors, locale, timezoneId, timeout } = {}
 ) => {
     try {
         let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
@@ -73,6 +73,10 @@ const execScenarioContainer = async (
 
         if (timezoneId) {
             command += ` --timezoneId=${timezoneId}`;
+        }
+
+        if (timeout) {
+            command += ` --timeout=${timeout}`;
         }
 
         debug(`Executing command: ${command}`);

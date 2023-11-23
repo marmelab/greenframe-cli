@@ -47,6 +47,7 @@ export const executeScenarioAndGetContainerStats = async ({
     envFile = '',
     dockerdHost,
     dockerdPort,
+    timeout,
 }: {
     scenario: string;
     url: string;
@@ -64,6 +65,7 @@ export const executeScenarioAndGetContainerStats = async ({
     envFile?: string;
     dockerdHost?: string;
     dockerdPort?: number;
+    timeout?: number;
 }) => {
     try {
         debug('Starting container');
@@ -141,6 +143,7 @@ export const executeScenarioAndGetContainerStats = async ({
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
+                timeout,
             });
 
             allMilestones.push(milestones);

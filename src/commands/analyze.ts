@@ -138,6 +138,9 @@ class AnalyzeCommand extends Command {
         kubeDatabaseContainers: Flags.string({
             description: 'Pass kubebernetes database containers manually',
         }),
+        timeout: Flags.integer({
+            description: 'Timeout for scenario run in ms',
+        }),
     };
 
     async run() {
