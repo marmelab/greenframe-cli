@@ -27,26 +27,38 @@ const executeScenario = async (scenario, options = {}) => {
         );
     }, SCENARIO_TIMEOUT);
 
-    const cypressResults = await cypress.run({
-        browser: 'chrome',
-        project: '/greenframe',
-        spec: scenario,
-        config: {
-            baseUrl: options.baseUrl,
-            specPattern: '/scenarios/**/*.{js,ts}',
-        },
-    });
+    const cypressResults = await (options.debug
+        ? cypress.open({
+              config: {
+                  baseUrl: options.baseUrl,
+              },
+              spec: scenario,
+              browser: 'chrome',
+              headless: false,
+          })
+        : cypress.run({
+              browser: 'chrome',
+              headless: true,
+              project: '/greenframe',
+              spec: scenario,
+              config: {
+                  baseUrl: options.baseUrl,
+                  specPattern: '/scenarios/**/*.{js,ts}',
+              },
+          }));
 
     if (cypressResults.status === 'failed') {
         throw new Error(cypressResults.message);
     }
 
-    if (cypressResults.runs[0].error) {
+    if (cypressResults.runs && cypressResults.runs[0].error) {
         throw new Error(cypressResults.runs[0].error);
     }
 
-    start = cypressResults.runs[0].stats.startedAt;
-    end = cypressResults.runs[0].stats.endedAt;
+    if (cypressResults.runs) {
+        start = cypressResults.runs[0].stats.startedAt;
+        end = cypressResults.runs[0].stats.endedAt;
+    }
 
     clearTimeout(timeoutScenario);
 

@@ -64,9 +64,10 @@ class OpenCommand extends Command {
         for (let index = 0; index < args.scenarios.length; index++) {
             const scenario = args.scenarios[index];
             const scenarioPath = path.resolve(scenario.path);
-            const scenarioFile = require(scenarioPath);
+            console.log(`Scenario path: ${scenarioPath}`);
+            // const scenarioFile = require(scenarioPath);
             try {
-                const { timelines } = await executeScenario(scenarioFile, {
+                const { timelines } = await executeScenario(scenarioPath, {
                     debug: true,
                     baseUrl: args.baseURL,
                     executablePath,
@@ -90,10 +91,10 @@ class OpenCommand extends Command {
         }
 
         console.info(`
-GreenFrame scenarios finished successfully !
+        GreenFrame scenarios finished successfully !
 
-You can now run an analysis to estimate the consumption of your application.
-        `);
+        You can now run an analysis to estimate the consumption of your application.
+                `);
     }
 }
 

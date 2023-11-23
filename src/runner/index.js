@@ -16,6 +16,7 @@ const getScenarioPath = (scenario) => {
     const args = minimist(process.argv.slice(2));
     const scenarioPath = getScenarioPath(args.scenario);
     const { timelines, milestones } = await executeScenario(scenarioPath, {
+        debug: false,
         baseUrl: decodeURIComponent(args.url),
         hostIP: process.env.HOSTIP,
         extraHosts: process.env.EXTRA_HOSTS ? process.env.EXTRA_HOSTS.split(',') : [],
