@@ -64,8 +64,6 @@ class OpenCommand extends Command {
         for (let index = 0; index < args.scenarios.length; index++) {
             const scenario = args.scenarios[index];
             const scenarioPath = path.resolve(scenario.path);
-            console.log(`Scenario path: ${scenarioPath}`);
-            // const scenarioFile = require(scenarioPath);
             try {
                 const { timelines } = await executeScenario(scenarioPath, {
                     debug: true,
