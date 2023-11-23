@@ -37,6 +37,7 @@ export default async (ctx: any) => {
                     locale: flags.locale,
                     timezoneId: flags.timezoneId,
                     timeout: flags.timeout,
+                    cypressConfigFile: flags.cypressConfigFile,
                 });
 
             const data = computeScenarioResult({
