@@ -1,5 +1,6 @@
 const cypress = require('cypress');
-
+const path = require('node:path');
+const PROJECT_ROOT = path.resolve(__dirname, '../../');
 const SCENARIO_TIMEOUT = 2 * 60 * 1000; // Global timeout for executing a scenario
 
 const relativizeMilestoneSamples = (milestones, startTime) =>
@@ -29,12 +30,13 @@ const executeScenario = async (scenario, options = {}) => {
 
     const cypressResults = await cypress.run({
         browser: 'chrome',
-        project: '/greenframe',
+        testingType: 'e2e',
+        project: options.debug ? PROJECT_ROOT : '/greenframe',
         spec: scenario,
-        config: {
-            baseUrl: options.baseUrl,
-            specPattern: '/scenarios/**/*.{js,ts}',
-        },
+        config: { baseUrl: options.baseUrl, specPattern: scenario },
+        headless: !options.debug,
+        headed: options.debug,
+        quiet: true,
     });
 
     if (cypressResults.status === 'failed') {
