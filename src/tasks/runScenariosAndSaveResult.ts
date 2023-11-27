@@ -1,11 +1,11 @@
 import initDebug from 'debug';
 import { saveFinishedAnalysis } from '../services/api/analyses';
 
+import { computeAnalysisResult } from '../services/computeAnalysisResult';
 import { computeScenarioResult, ScenarioResult } from '../services/computeScenarioResult';
 import { executeScenarioAndGetContainerStats } from '../services/container';
 import ConfigurationError from '../services/errors/ConfigurationError';
 import ERROR_CODES from '../services/errors/errorCodes';
-import { computeAnalysisResult } from '../services/computeAnalysisResult';
 
 const debug = initDebug('greenframe:tasks:runScenarioAndSaveResults');
 
@@ -36,6 +36,8 @@ export default async (ctx: any) => {
                     ignoreHTTPSErrors: flags.ignoreHTTPSErrors,
                     locale: flags.locale,
                     timezoneId: flags.timezoneId,
+                    timeout: flags.timeout,
+                    cypressConfigFile: flags.cypressConfigFile,
                 });
 
             const data = computeScenarioResult({

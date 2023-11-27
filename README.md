@@ -239,7 +239,7 @@ USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
     [--commitId <value>] [-b <value>] [-s <value>] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
     [--dockerdHost <value>] [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
-    [--kubeContainers <value>] [--kubeDatabaseContainers <value>]
+    [--kubeContainers <value>] [--kubeDatabaseContainers <value>] [--timeout <value>] [--cypressConfigFile <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -264,6 +264,8 @@ FLAGS
   --dockerdPort=<value>             Docker daemon port
   --kubeContainers=<value>          Pass kubebernetes containers manually
   --kubeDatabaseContainers=<value>  Pass kubebernetes database containers manually
+  --timeout=<value>                 Timeout for the scenario run in milliseconds
+  --cypressConfigFile=<value>       Path to custom cypress config file
   --locale                          Set greenframe browser locale
   --timezoneId                      Set greenframe browser timezoneId
 

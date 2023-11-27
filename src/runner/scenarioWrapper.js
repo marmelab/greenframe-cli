@@ -1,7 +1,7 @@
 const cypress = require('cypress');
 const path = require('node:path');
 const PROJECT_ROOT = path.resolve(__dirname, '../../');
-const SCENARIO_TIMEOUT = 2 * 60 * 1000; // Global timeout for executing a scenario
+const DEFAULT_SCENARIO_TIMEOUT = 2 * 60 * 1000; // Global timeout for executing a scenario
 
 const relativizeMilestoneSamples = (milestones, startTime) =>
     milestones.map(({ timestamp, ...milestone }) => ({
@@ -22,21 +22,25 @@ const executeScenario = async (scenario, options = {}) => {
     let start;
     let end;
 
+    const timeout = options.timeout || DEFAULT_SCENARIO_TIMEOUT;
+
     const timeoutScenario = setTimeout(() => {
-        throw new Error(
-            `Timeout: Your scenario took more than ${SCENARIO_TIMEOUT / 1000}s`
-        );
-    }, SCENARIO_TIMEOUT);
+        throw new Error(`Timeout: Your scenario took more than ${timeout / 1000}s`);
+    }, timeout);
 
     const cypressResults = await cypress.run({
         browser: 'chrome',
         testingType: 'e2e',
-        project: options.debug ? PROJECT_ROOT : '/greenframe',
+        project: options.debug ? PROJECT_ROOT : '/scenarios',
         spec: scenario,
         config: { baseUrl: options.baseUrl, specPattern: scenario },
         headless: !options.debug,
         headed: options.debug,
         quiet: true,
+        configFile:
+            options.cypressConfigFile || options.debug
+                ? `${PROJECT_ROOT}/cypress/cypress.config.ts`
+                : '/scenarios/default-greenframe-config/cypress.config.ts',
     });
 
     if (cypressResults.status === 'failed') {

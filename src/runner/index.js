@@ -2,19 +2,24 @@ const minimist = require('minimist');
 
 const executeScenario = require('./scenarioWrapper');
 
-const getScenarioPath = (scenario) => {
-    const scenarioPath = decodeURIComponent(scenario);
-
-    if (scenarioPath.startsWith('./')) {
-        return scenarioPath.replace('.', '/scenarios');
+const getFilePath = (file) => {
+    if (!file) {
+        return;
     }
 
-    return scenarioPath;
+    const filePath = decodeURIComponent(file);
+
+    if (filePath.startsWith('./')) {
+        return filePath.replace('.', '/scenarios');
+    }
+
+    return filePath;
 };
 
 (async () => {
     const args = minimist(process.argv.slice(2));
-    const scenarioPath = getScenarioPath(args.scenario);
+    const scenarioPath = getFilePath(args.scenario);
+    const cypressConfigFile = getFilePath(args.cypressConfigFile);
     const { timelines, milestones } = await executeScenario(scenarioPath, {
         debug: false,
         baseUrl: decodeURIComponent(args.url),
@@ -24,6 +29,8 @@ const getScenarioPath = (scenario) => {
         ignoreHTTPSErrors: args.ignoreHTTPSErrors,
         locale: args.locale,
         timezoneId: args.timezoneId,
+        timeout: args.timeout,
+        cypressConfigFile: cypressConfigFile,
     });
     console.log('=====TIMELINES=====');
     console.log(JSON.stringify(timelines));

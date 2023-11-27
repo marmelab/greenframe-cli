@@ -46,6 +46,8 @@ const parseConfigFile = async (path) => {
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
+                cypressConfigFile,
+                timeout,
             } = fileContent;
 
             return {
@@ -72,6 +74,8 @@ const parseConfigFile = async (path) => {
                     ignoreHTTPSErrors,
                     locale,
                     timezoneId,
+                    cypressConfigFile,
+                    timeout,
                 },
             };
         }

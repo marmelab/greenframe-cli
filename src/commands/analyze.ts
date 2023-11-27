@@ -138,6 +138,12 @@ class AnalyzeCommand extends Command {
         kubeDatabaseContainers: Flags.string({
             description: 'Pass kubebernetes database containers manually',
         }),
+        timeout: Flags.integer({
+            description: 'Timeout for scenario run in ms',
+        }),
+        cypressConfigFile: Flags.string({
+            description: 'Path to custom cypress config file',
+        }),
     };
 
     async run() {

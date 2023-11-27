@@ -8,7 +8,12 @@ const initDebug = require('debug');
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
+const createContainer = async (
+    extraHosts = [],
+    envVars = [],
+    envFile = '',
+    isCypressConfigFile
+) => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -37,6 +42,12 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     // For some reason, mounting the volume when you're doing docker in docker doesn't work, but the copy command does.
     const dockerCopyCommand = `docker cp ${PROJECT_ROOT} ${CONTAINER_DEVICE_NAME}:/greenframe`;
     await exec(dockerCopyCommand);
+    // If there is no cypressConfigFile, copy the /greenframe/cypress folder to /scenarios/default-greenframe-config
+    if (!isCypressConfigFile) {
+        const copyCypressConfig = `docker cp ${PROJECT_ROOT}/cypress/. ${CONTAINER_DEVICE_NAME}:/scenarios/default-greenframe-config`;
+        await exec(copyCypressConfig);
+    }
+
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };
 
@@ -52,7 +63,7 @@ const startContainer = async () => {
 const execScenarioContainer = async (
     scenario,
     url,
-    { useAdblock, ignoreHTTPSErrors, locale, timezoneId } = {}
+    { useAdblock, ignoreHTTPSErrors, locale, timezoneId, timeout, cypressConfigFile } = {}
 ) => {
     try {
         let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
@@ -73,6 +84,14 @@ const execScenarioContainer = async (
 
         if (timezoneId) {
             command += ` --timezoneId=${timezoneId}`;
+        }
+
+        if (timeout) {
+            command += ` --timeout=${timeout}`;
+        }
+
+        if (cypressConfigFile) {
+            command += ` --cypressConfigFile=${cypressConfigFile}`;
         }
 
         debug(`Executing command: ${command}`);

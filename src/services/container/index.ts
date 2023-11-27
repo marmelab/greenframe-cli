@@ -47,6 +47,8 @@ export const executeScenarioAndGetContainerStats = async ({
     envFile = '',
     dockerdHost,
     dockerdPort,
+    timeout,
+    cypressConfigFile,
 }: {
     scenario: string;
     url: string;
@@ -64,11 +66,13 @@ export const executeScenarioAndGetContainerStats = async ({
     envFile?: string;
     dockerdHost?: string;
     dockerdPort?: number;
+    timeout?: number;
+    cypressConfigFile?: string;
 }) => {
     try {
         debug('Starting container');
         await stopContainer();
-        await createContainer(extraHosts, envVars, envFile);
+        await createContainer(extraHosts, envVars, envFile, Boolean(cypressConfigFile));
         await startContainer();
         debug('Container started');
         let allContainers: {
@@ -141,6 +145,8 @@ export const executeScenarioAndGetContainerStats = async ({
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
+                timeout,
+                cypressConfigFile,
             });
 
             allMilestones.push(milestones);
