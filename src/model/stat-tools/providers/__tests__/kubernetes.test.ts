@@ -1,5 +1,6 @@
 import type { CadvisorContainerStats } from '../../../../types';
 import { kubernetes } from '../kubernetes';
+import { expect } from '@playwright/test';
 
 test('computeGenericStats', () => {
     const stats: CadvisorContainerStats[] = [

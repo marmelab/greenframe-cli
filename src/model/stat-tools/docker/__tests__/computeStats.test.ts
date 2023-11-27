@@ -1,6 +1,7 @@
 import { CONTAINER_TYPES } from '../../../../constants';
 import { GenericStat } from '../../../../types';
 import { computeStats } from '../computeStats';
+import { expect } from '@playwright/test';
 
 test('computeStats', () => {
     const stats: GenericStat[] = [

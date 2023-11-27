@@ -6,6 +6,7 @@ import { CONTAINER_TYPES } from '../../../../constants';
 import { mergePodStatsWithNetworkStats } from '../mergePodStatsWithNetworkStats';
 import { Stat } from '../stats';
 import { Nodes } from '../structureNodes';
+import { expect } from '@playwright/test';
 
 const emptyStat = {
     network: {
