@@ -28,12 +28,6 @@ const executeScenario = async (scenario, options = {}) => {
         );
     }, SCENARIO_TIMEOUT);
 
-    console.log('Running scenario', scenario);
-
-    // - TODO: OPEN -> check with my scenarios -------> DONE
-    // - TODO: OPEN -> check with many scenarios -----> todo
-    // - TODO: OPEN -> check with failed scenario ----> todo
-
     const cypressResults = await cypress.run({
         browser: 'chrome',
         testingType: 'e2e',
