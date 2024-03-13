@@ -1,6 +1,5 @@
 import getScopedPage from './scopedPage';
 
-const { VM } = require('vm2');
 const { chromium } = require('playwright');
 const { PlaywrightBlocker } = require('@cliqz/adblocker-playwright');
 const fetch = require('cross-fetch'); // required 'fetch'
@@ -14,10 +13,6 @@ const relativizeMilestoneSamples = (milestones, startTime) =>
     }));
 
 const executeScenario = async (scenario, options = {}) => {
-    const vm = new VM({
-        wasm: false,
-        timeout: SCENARIO_TIMEOUT, // 2 min timeout for synchronous script only
-    });
     let args = ['--disable-web-security'];
 
     if (options.hostIP) {
@@ -56,7 +51,6 @@ const executeScenario = async (scenario, options = {}) => {
     }
 
     await page.waitForTimeout(2000);
-    vm.freeze(page, 'page');
 
     const start = new Date();
     let success = false;
@@ -66,12 +60,8 @@ const executeScenario = async (scenario, options = {}) => {
                 `Timeout: Your scenario took more than ${SCENARIO_TIMEOUT / 1000}s`
             );
         }, SCENARIO_TIMEOUT);
-        await vm.run(
-            `(async () => { 
-                const scenario = ${scenario};
-                await scenario(page);
-            })()`
-        );
+
+        await scenario(page);
         clearTimeout(timeoutScenario);
 
         success = true;

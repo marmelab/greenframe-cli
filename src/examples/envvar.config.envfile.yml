@@ -1,0 +1,7 @@
+scenarios:
+    - path: '../../src/examples/envvar.config.envfile.js'
+      name: 'Visit'
+      threshold: 0.03
+baseURL: 'https://www.google.fr'
+envFile: './src/examples/.envfile'
+projectName: 'test_visit'

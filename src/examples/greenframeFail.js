@@ -1,4 +1,4 @@
-async (page) => {
+const greenframeFail = async (page) => {
     await page.goto('', {
         waitUntil: 'networkidle',
     });
@@ -16,3 +16,5 @@ async (page) => {
         waitUntil: 'networkidle',
     });
 };
+
+module.exports = greenframeFail;

@@ -1,0 +1,7 @@
+GREENFRAME_MY_VAR_ONE=inline_value_one greenframe analyze https://www.google.fr ../../src/examples/envvar.inline.isolated.js -e GREENFRAME_MY_VAR_ONE -e GREENFRAME_MY_VAR_TWO=${GREENFRAME_MY_VAR_TWO}
+
+greenframe analyze https://www.google.fr ../../src/examples/envvar.inline.envfile.js -E ./src/examples/.envfile
+
+GREENFRAME_MY_VAR_ONE=inline_value_one greenframe analyze -C ./src/examples/envvar.config.isolated.yml
+
+greenframe analyze -C ./src/examples/envvar.config.envfile.yml

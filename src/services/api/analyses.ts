@@ -10,7 +10,6 @@ export const createAnalysis = async ({
     scenarios,
     baseURL,
     samples,
-    distant,
     useAdblock,
     projectName,
     gitInfos,
@@ -26,7 +25,6 @@ export const createAnalysis = async ({
         scenarios,
         url: baseURL,
         samples,
-        distant,
         useAdblock,
         projectName,
         gitCommitMessage: commitMessage,
@@ -61,7 +59,7 @@ export const saveFailedAnalysis = async (
     { errorCode, errorMessage }: { errorCode: string; errorMessage: string }
 ) => {
     debug('saveFailedAnalysis', analysisId);
-    return instance.post(`/analyses/${analysisId}/fail`, {
+    return instance.post(`/analyses/${analysisId}/failed`, {
         errorCode,
         errorMessage: errorMessage.toString(),
     });

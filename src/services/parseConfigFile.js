@@ -1,21 +1,35 @@
 const fs = require('node:fs');
 const yaml = require('js-yaml');
-const path = require('node:path');
 const util = require('node:util');
 const ConfigurationError = require('./errors/ConfigurationError');
+const analyze = require('../commands/analyze');
+const FILE_NOT_FOUND = 'ENOENT';
 
 const readFile = util.promisify(fs.readFile);
+
+const isMissingDefaultConfigFile = (path, error) => {
+    return path === analyze.DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;
+};
 
 const parseConfigFile = async (path) => {
     try {
         const file = await readFile(path, 'utf8');
+        let fileContent;
+
         if (file) {
+            fileContent = yaml.load(file);
+        }
+
+        if (typeof fileContent !== 'object') {
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
+        }
+
+        if (fileContent) {
             const {
                 scenario,
                 scenarios,
                 baseURL,
                 samples,
-                distant,
                 useAdblock,
                 threshold,
                 projectName,
@@ -24,13 +38,16 @@ const parseConfigFile = async (path) => {
                 kubeContainers,
                 kubeDatabaseContainers,
                 extraHosts,
+                envVar,
+                envFile,
                 kubeConfig,
                 dockerdHost,
                 dockerdPort,
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
-            } = yaml.load(file);
+            } = fileContent;
+
             return {
                 args: {
                     scenarios,
@@ -39,7 +56,6 @@ const parseConfigFile = async (path) => {
                 },
                 flags: {
                     samples,
-                    distant,
                     useAdblock,
                     threshold,
                     projectName,
@@ -48,6 +64,8 @@ const parseConfigFile = async (path) => {
                     kubeContainers,
                     kubeDatabaseContainers,
                     extraHosts,
+                    envVar,
+                    envFile,
                     kubeConfig,
                     dockerdHost,
                     dockerdPort,
@@ -57,8 +75,12 @@ const parseConfigFile = async (path) => {
                 },
             };
         }
-    } catch {
-        // Do Nothing
+    } catch (error) {
+        if (error.name === 'YAMLException') {
+            throw new yaml.YAMLException(`${path} is not a valid yaml`);
+        } else if (!isMissingDefaultConfigFile(path, error)) {
+            throw error;
+        }
     }
 };
 
@@ -104,7 +126,7 @@ const resolveParams = (
     if (!args.scenarios) {
         args.scenarios = [
             {
-                path: path.resolve(__dirname, '..', '..', 'src', 'examples', 'visit.js'),
+                path: '../../src/examples/visit.js',
                 name: 'main scenario',
                 threshold: flags.threshold,
             },
@@ -113,24 +135,6 @@ const resolveParams = (
 
     if (!args.baseURL) {
         throw new ConfigurationError('You must provide a "baseURL" argument.');
-    }
-
-    if (flags.free && flags.distant) {
-        throw new ConfigurationError(
-            'You cannot use both "free" and "distant" flags at the same time.'
-        );
-    }
-
-    if (
-        Boolean(flags.distant) &&
-        (flags.containers ||
-            flags.databaseContainers ||
-            flags.kubeContainers ||
-            flags.kubeDatabaseContainers)
-    ) {
-        throw new ConfigurationError(
-            '"distant" mode is incompatible with parameters "containers" or "databaseContainers" or "kubeContainers" or "kubeDatabaseContainers".'
-        );
     }
 
     return { flags, args };

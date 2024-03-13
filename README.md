@@ -54,17 +54,7 @@ You can run a custom scenario instead of the "visit" scenario by passing a scena
 $ greenframe analyze https://marmelab.com ./my-scenario.js
 ```
 
-GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. A custom PlayWright scenario looks like the following:
-
-```js
-// in my-scenario.js
-async (page) => {
-    await page.goto('', { waitUntil: 'networkidle' }); // Go to the baseUrl
-    await page.waitForTimeout(3000); // Wait for 3 seconds
-    await page.scrollToElement('footer'); // Scroll to the footer (if present)
-    await page.waitForNetworkIdle(); // Wait every request has been answered as a normal user.
-};
-```
+GreenFrame uses [PlayWright](https://playwright.dev/) to run scenarios. To discover what a custom PlayWright scenario looks alike, you can refer to our [documentation](https://docs.greenframe.io/scenario/).
 
 Check [the PlayWright documentation on writing tests](https://playwright.dev/docs/writing-tests) for more information.
 
@@ -182,7 +172,7 @@ scenarios:
       threshold: 0.1
 projectName: YOUR_PROJECT_NAME
 samples: 3
-distant: false
+//distant: "This option has been deprecated due to security issues"
 useAdblock: true
 ignoreHTTPSErrors: true
 locale: 'fr-FR',
@@ -191,7 +181,11 @@ containers:
     - 'CONTAINER_NAME'
     - 'ANOTHER_CONTAINER_NAME'
 databaseContainers:
-    - 'DATABASE_CONTAINER_NAME'
+    - 'DATABASE_CONTAINER_NAME',
+envFile: PATH_TO_YOUR_ENVIRONMENT_VAR_FILE
+envVar:
+    - envVarA: 'An environment variable needed for the scenario (ie : a secret-key)',
+    - envVarB: 'Another environment variable needed'
 ```
 
 ## More Information / Troubleshooting
@@ -243,9 +237,9 @@ Create an analysis on GreenFrame server.
 ```
 USAGE
   $ greenframe analyze [BASEURL] [SCENARIO] [-C <value>] [-K <value>] [-t <value>] [-p <value>] [-c <value>]
-    [--commitId <value>] [-b <value>] [-s <value>] [-d] [-a] [-i] [--locale] [--timezoneId] [--dockerdHost <value>]
-    [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>] [--kubeContainers <value>]
-    [--kubeDatabaseContainers <value>]
+    [--commitId <value>] [-b <value>] [-s <value>] [-a] [-i] [--locale] [--timezoneId] [-e <value>] [-E <value>]
+    [--dockerdHost <value>] [--dockerdPort <value>] [--containers <value>] [--databaseContainers <value>]
+    [--kubeContainers <value>] [--kubeDatabaseContainers <value>]
 
 ARGUMENTS
   BASEURL   Your baseURL website
@@ -253,11 +247,12 @@ ARGUMENTS
 
 FLAGS
   -C, --configFile=<value>          Path to config file
+  -E, --envFile=<value>             File of environment vars
   -K, --kubeConfig=<value>          Path to kubernetes client config file
   -a, --useAdblock                  Use an adblocker during analysis
   -b, --branchName=<value>          Pass branch name manually
   -c, --commitMessage=<value>       Pass commit message manually
-  -d, --distant                     Run a distant analysis on GreenFrame Server instead of locally
+  -e, --envVar=<value>...           List of environment vars to read in the scenarios
   -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
   -p, --projectName=<value>         Project name
   -s, --samples=<value>             Number of runs done for the score computation
@@ -276,7 +271,7 @@ DESCRIPTION
   Create an analysis on GreenFrame server.
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/analyze.ts)_
+_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/analyze.ts)_
 
 ## `greenframe kube-config`
 
@@ -293,13 +288,11 @@ FLAGS
 
 DESCRIPTION
   Configure kubernetes cluster to collect greenframe metrics
-
   ...
-
   greenframe kube-config
 ```
 
-_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/kube-config.ts)_
+_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/kube-config.ts)_
 
 ## `greenframe open [BASEURL] [SCENARIO]`
 
@@ -322,13 +315,11 @@ FLAGS
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
-
   ...
-
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/open.ts)_
+_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/open.ts)_
 
 ## `greenframe update [CHANNEL]`
 
@@ -343,13 +334,11 @@ ARGUMENTS
 
 DESCRIPTION
   Update GreenFrame to the latest version
-
   ...
-
   greenframe update
 ```
 
-_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.6.8/dist/commands/update.ts)_
+_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/update.ts)_
 <!-- commandsstop -->
 
 ## Development

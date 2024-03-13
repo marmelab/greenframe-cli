@@ -1,4 +1,4 @@
-async (page) => {
+const greenframe = async (page) => {
     await page.goto('', {
         waitUntil: 'networkidle',
     });
@@ -7,8 +7,8 @@ async (page) => {
         page.waitForNavigation({
             /* url: 'https://greenframe.io/', */ waitUntil: 'networkidle',
         }),
-        page.scrollToElement('text=Try for free'),
-        page.click('text=Try for free'),
+        page.scrollToElement('text=Try it for free'),
+        page.click('text=Try it for free'),
     ]);
     await page.addMilestone('Go Back home');
 
@@ -16,3 +16,5 @@ async (page) => {
         waitUntil: 'networkidle',
     });
 };
+
+module.exports = greenframe;

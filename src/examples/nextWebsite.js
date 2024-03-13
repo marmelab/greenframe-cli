@@ -1,4 +1,4 @@
-async (page) => {
+const nextWebsite = async (page) => {
     // Go to https://nextjs.org/
     await page.goto('', {
         waitUntil: 'networkidle',
@@ -42,3 +42,5 @@ async (page) => {
         page.click('text=Start Now →'),
     ]);
 };
+
+module.exports = nextWebsite;

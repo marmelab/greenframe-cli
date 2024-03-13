@@ -1,18 +1,8 @@
 const ConfigurationError = require('../services/errors/ConfigurationError');
 
-const { readFileToString } = require('../services/readFileToString');
 const { createAnalysis } = require('../services/api/analyses');
 const createNewAnalysis = async (ctx) => {
-    const { args, flags, configFilePath } = ctx;
-    if (flags.distant) {
-        for (let index = 0; index < args.scenarios.length; index++) {
-            const scenario = args.scenarios[index];
-            args.scenarios[index].content = await readFileToString(
-                configFilePath,
-                scenario.path
-            );
-        }
-    }
+    const { args, flags } = ctx;
 
     try {
         const { data } = await createAnalysis({
@@ -20,7 +10,6 @@ const createNewAnalysis = async (ctx) => {
             baseURL: args.baseURL,
             threshold: flags.threshold,
             samples: flags.samples,
-            distant: flags.distant,
             useAdblock: flags.useAdblock,
             locale: flags.locale,
             timezoneId: flags.timezoneId,

@@ -1,4 +1,4 @@
-async (page) => {
+const raDemo = async (page) => {
     // Go to http://localhost:3000/
     await page.goto('#/login', {
         waitUntil: 'networkidle',
@@ -120,3 +120,5 @@ async (page) => {
     await page.click('[aria-label="Delete"]');
     await page.waitForNetworkIdle();
 };
+
+module.exports = raDemo;

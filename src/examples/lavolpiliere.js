@@ -1,4 +1,4 @@
-async (page) => {
+const lavolpiliere = async (page) => {
     // Go to https://la-volpiliere.com/blog/chambre-dhotes/
     await page.goto('/blog/chambre-dhotes/', {
         waitUntil: 'networkidle',
@@ -18,3 +18,5 @@ async (page) => {
     ]);
     // assert.equal(page.url(), 'https://la-volpiliere.com/blog/1ere-balade-de-lannee-2021/');
 };
+
+module.exports = lavolpiliere;
