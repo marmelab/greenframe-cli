@@ -1,6 +1,7 @@
-import type { TimeFrameWithMeta } from '../../../types';
-import type { TimeFrameStore } from '../timeframeStore';
-import { createTimeFrameStore, getTitles } from '../timeframeStore';
+import { beforeEach, expect, test } from 'vitest';
+import type { TimeFrameWithMeta } from '../../../types.js';
+import type { TimeFrameStore } from '../timeframeStore.js';
+import { createTimeFrameStore, getTitles } from '../timeframeStore.js';
 
 const generator = [
     [0, 0, '00:00:00Z', '00:00:01Z', 'title 0 0 - milestone 1'],

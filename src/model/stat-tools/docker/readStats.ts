@@ -4,10 +4,10 @@ import type {
     Meta,
     IntervalJSON,
     ComputedStatWithMeta,
-} from '../../../types';
+} from '../../../types.js';
 
-import { docker } from '../providers/docker';
-import { computeStats } from './computeStats';
+import { docker } from '../providers/docker.js';
+import { computeStats } from './computeStats.js';
 
 export const readDockerStats = (filename: string, meta: Meta): ComputedStatWithMeta[] => {
     const rawdata = fs.readFileSync(filename, 'utf8');

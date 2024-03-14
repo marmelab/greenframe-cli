@@ -1,4 +1,5 @@
-import { getAverageMilestones } from '../getAverageMilestones';
+import { describe, expect, it } from 'vitest';
+import { getAverageMilestones } from '../getAverageMilestones.js';
 
 describe('#getAverageMilestones', () => {
     it('Should return min milestones for each samples', () => {

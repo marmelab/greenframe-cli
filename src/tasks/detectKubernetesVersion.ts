@@ -1,10 +1,11 @@
-import { TaskWrapper } from 'listr2/dist/lib/task-wrapper';
-import { getKubernetesVersion } from '../services/container/kubernetes/client';
+import { ListrRenderer, ListrTaskWrapper } from 'listr2';
+import { getKubernetesVersion } from '../services/container/kubernetes/client.js';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
 
-import ConfigurationError from '../services/errors/ConfigurationError';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function (_: any, task: TaskWrapper<unknown, any>) {
+export default async function (
+    _: unknown,
+    task: ListrTaskWrapper<unknown, typeof ListrRenderer>
+) {
     try {
         task.title = await getKubernetesVersion();
     } catch (error) {

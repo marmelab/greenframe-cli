@@ -1,8 +1,8 @@
 import initDebug from 'debug';
-import { STATUS } from '../../status';
-import { Analysis } from '../../types';
-import { AnalysisResult } from '../computeAnalysisResult';
-import instance from './instance';
+import { STATUS } from '../../status.js';
+import { Analysis } from '../../types.js';
+import { AnalysisResult } from '../computeAnalysisResult.js';
+import instance from './instance.js';
 
 const debug = initDebug('greenframe:services:api:analyses');
 
@@ -21,7 +21,7 @@ export const createAnalysis = async ({
         gitInfos;
 
     debug('createAnalysis');
-    return instance.post('/analyses', {
+    return instance.post<any, { data: { id: string } }>('/analyses', {
         scenarios,
         url: baseURL,
         samples,

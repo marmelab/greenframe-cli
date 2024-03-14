@@ -1,8 +1,8 @@
 import { access } from 'node:fs';
-import util from 'node:util';
-import ConfigurationError from './errors/ConfigurationError';
+import { promisify } from 'node:util';
+import ConfigurationError from './errors/ConfigurationError.js';
 
-const accessPromise = util.promisify(access);
+const accessPromise = promisify(access);
 
 const PATHS = [
     '/usr/bin/chromium',

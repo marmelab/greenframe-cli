@@ -4,15 +4,19 @@ import {
     execScenarioContainer,
     startContainer,
     stopContainer,
-} from './execScenarioContainer';
-import getContainerStatsIfRunning from './getContainerStats';
+} from './execScenarioContainer.js';
+import getContainerStatsIfRunning from './getContainerStats.js';
 
-import { CONTAINER_DEVICE_NAME, CONTAINER_TYPES, DEFAULT_SAMPLES } from '../../constants';
-import type { ValueOf } from '../../types';
-import { getPodsStats } from './getPodsStats';
-import { mergePodStatsWithNetworkStats } from './kubernetes/mergePodStatsWithNetworkStats';
-import { CadvisorContainerStats } from './kubernetes/stats';
-import { getNodes } from './kubernetes/structureNodes';
+import {
+    CONTAINER_DEVICE_NAME,
+    CONTAINER_TYPES,
+    DEFAULT_SAMPLES,
+} from '../../constants.js';
+import type { ValueOf } from '../../types.js';
+import { getPodsStats } from './getPodsStats.js';
+import { mergePodStatsWithNetworkStats } from './kubernetes/mergePodStatsWithNetworkStats.js';
+import { CadvisorContainerStats } from './kubernetes/stats.js';
+import { getNodes } from './kubernetes/structureNodes.js';
 
 const debug = initDebug('greenframe:services:container');
 

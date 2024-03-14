@@ -1,5 +1,6 @@
-import type { DockerStatsJSON } from '../../../../types';
-import { docker, sumBlkioStats } from '../docker';
+import { expect, test } from 'vitest';
+import type { DockerStatsJSON } from '../../../../types.js';
+import { docker, sumBlkioStats } from '../docker.js';
 
 test('computeGenericStats', () => {
     const stats: DockerStatsJSON[] = [

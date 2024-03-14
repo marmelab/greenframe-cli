@@ -1,5 +1,5 @@
-import { getAverageStats } from '../getAverageStats';
-import { addAvg, incrementalAverageStats } from '../getAverageStats';
+import { describe, expect, it } from 'vitest';
+import { addAvg, getAverageStats, incrementalAverageStats } from '../getAverageStats.js';
 
 const incrementalStat = (n: any, statValue: any, boolValue: any) => {
     return {

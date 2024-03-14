@@ -1,15 +1,18 @@
 import initDebug from 'debug';
-import { saveFinishedAnalysis } from '../services/api/analyses';
-
-import { computeScenarioResult, ScenarioResult } from '../services/computeScenarioResult';
-import { executeScenarioAndGetContainerStats } from '../services/container';
-import ConfigurationError from '../services/errors/ConfigurationError';
-import ERROR_CODES from '../services/errors/errorCodes';
-import { computeAnalysisResult } from '../services/computeAnalysisResult';
+import { ListrContext } from 'listr2';
+import { saveFinishedAnalysis } from '../services/api/analyses.js';
+import { computeAnalysisResult } from '../services/computeAnalysisResult.js';
+import {
+    computeScenarioResult,
+    ScenarioResult,
+} from '../services/computeScenarioResult.js';
+import { executeScenarioAndGetContainerStats } from '../services/container/index.js';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
+import ERROR_CODES from '../services/errors/errorCodes.js';
 
 const debug = initDebug('greenframe:tasks:runScenarioAndSaveResults');
 
-export default async (ctx: any) => {
+export default async (ctx: ListrContext) => {
     const { analysisId, args, flags } = ctx;
     const resultScenarios: ScenarioResult[] = [];
     for (let index = 0; index < args.scenarios.length; index++) {

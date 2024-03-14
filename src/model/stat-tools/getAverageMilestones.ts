@@ -1,4 +1,4 @@
-import { Milestone } from '../../types';
+import { Milestone } from '../../types.js';
 
 export const getAverageMilestones = (milestonesPerSamples: Milestone[][]) => {
     const samples = milestonesPerSamples.length;

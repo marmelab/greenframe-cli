@@ -1,4 +1,4 @@
-import type { TimeFrameWithMeta } from '../../types';
+import type { TimeFrameWithMeta } from '../../types.js';
 
 // map: containerName -> TimeFrameWithMeta[]
 export type TimeFrameStore = Map<string, TimeFrameWithMeta[]>;

@@ -1,10 +1,10 @@
 import initDebug from 'debug';
 import { V1Pod } from '@kubernetes/client-node';
-import { getCadvisorPods } from './cadvisor';
-import { getPodName, getNodeName, getPodsByLabel } from './pods';
-import { CONTAINER_TYPES } from '../../../constants';
-import { getContainerStats } from './getContainerStats';
-import { ValueOf } from '../../../types';
+import { getCadvisorPods } from './cadvisor.js';
+import { getPodName, getNodeName, getPodsByLabel } from './pods.js';
+import { CONTAINER_TYPES } from '../../../constants.js';
+import { getContainerStats } from './getContainerStats.js';
+import { ValueOf } from '../../../types.js';
 
 const debug = initDebug('greenframe:services:container:structureNodes');
 

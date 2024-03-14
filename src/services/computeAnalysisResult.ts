@@ -1,7 +1,7 @@
-import { ERROR_CODES } from '../constants';
-import { mergeScores } from '../index';
-import { MetricsContainer, ValueOf } from '../types';
-import { ScenarioResult } from './computeScenarioResult';
+import { ERROR_CODES } from '../constants.js';
+import { mergeScores } from '../index.js';
+import { MetricsContainer, ValueOf } from '../types.js';
+import { ScenarioResult } from './computeScenarioResult.js';
 
 export type AnalysisResult = {
     score?: MetricsContainer;

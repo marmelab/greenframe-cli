@@ -1,13 +1,13 @@
 import { Command, Flags } from '@oclif/core';
 import { Listr } from 'listr2';
-import { parseConfigFile, resolveParams } from '../services/parseConfigFile';
-import { addKubeGreenframeDaemonset } from '../tasks/addKubeGreenframeDaemonset';
-import { addKubeGreenframeNamespace } from '../tasks/addKubeGreenframeNamespace';
-import { deleteKubeGreenframeNamespace } from '../tasks/deleteKubeGreenframeNamespace';
-import initializeKubeClient from '../tasks/initializeKubeClient';
+import { parseConfigFile, resolveParams } from '../services/parseConfigFile.js';
+import { addKubeGreenframeDaemonset } from '../tasks/addKubeGreenframeDaemonset.js';
+import { addKubeGreenframeNamespace } from '../tasks/addKubeGreenframeNamespace.js';
+import { deleteKubeGreenframeNamespace } from '../tasks/deleteKubeGreenframeNamespace.js';
+import initializeKubeClient from '../tasks/initializeKubeClient.js';
 
 class KubeConfigCommand extends Command {
-    static args = [];
+    static args = {};
 
     static flags = {
         configFile: Flags.string({
@@ -93,4 +93,4 @@ KubeConfigCommand.description = `Configure kubernetes cluster to collect greenfr
 greenframe kube-config
 `;
 
-module.exports = KubeConfigCommand;
+export default KubeConfigCommand;

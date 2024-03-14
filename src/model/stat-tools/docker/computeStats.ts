@@ -4,9 +4,9 @@ import type {
     TimeFrame,
     Meta,
     ComputedStatWithMeta,
-} from '../../../types';
+} from '../../../types.js';
 
-import { getTimeframe, intersection } from '../intervals';
+import { getTimeframe, intersection } from '../intervals.js';
 
 const computeStat = (
     previousComputed: ComputedStat,

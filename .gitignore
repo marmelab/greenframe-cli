@@ -10,6 +10,7 @@ package-lock.json
 .envrc
 .env
 .greenframe
+oclif.manifest.json
 
 .pnp.*
 .yarn/*

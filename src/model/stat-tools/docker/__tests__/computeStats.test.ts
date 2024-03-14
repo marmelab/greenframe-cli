@@ -1,6 +1,7 @@
-import { CONTAINER_TYPES } from '../../../../constants';
-import { GenericStat } from '../../../../types';
-import { computeStats } from '../computeStats';
+import { expect, test } from 'vitest';
+import { CONTAINER_TYPES } from '../../../../constants.js';
+import { GenericStat } from '../../../../types.js';
+import { computeStats } from '../computeStats.js';
 
 test('computeStats', () => {
     const stats: GenericStat[] = [

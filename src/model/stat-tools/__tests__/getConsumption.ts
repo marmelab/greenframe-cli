@@ -1,4 +1,5 @@
-import { getStandardError } from '../getConsumption';
+import { describe, expect, it } from 'vitest';
+import { getStandardError } from '../getConsumption.js';
 
 describe('getStandardError', () => {
     it('Should return good standard error in percentage (~5)', () => {

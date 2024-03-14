@@ -6,9 +6,9 @@ import {
     getContainerType,
     getSamples,
     StatStore,
-} from '../stores/statStore';
+} from '../stores/statStore.js';
 
-import { getTitles, TimeFrameStore } from '../stores/timeframeStore';
+import { getTitles, TimeFrameStore } from '../stores/timeframeStore.js';
 
 import type {
     EnergyProfile,
@@ -17,9 +17,9 @@ import type {
     ValueOf,
     WhPerTimeFrame,
     // WhSummary,
-} from '../../types';
+} from '../../types.js';
 
-import { CONTAINER_TYPES } from '../../constants';
+import { CONTAINER_TYPES } from '../../constants.js';
 
 const CARBON_INTENSITY = 442; // unit: g/kWh
 export const whToCO2 = (wh: number): number => (wh * CARBON_INTENSITY) / 1000; // unit: g

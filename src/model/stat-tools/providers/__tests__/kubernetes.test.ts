@@ -1,5 +1,6 @@
-import type { CadvisorContainerStats } from '../../../../types';
-import { kubernetes } from '../kubernetes';
+import { expect, test } from 'vitest';
+import type { CadvisorContainerStats } from '../../../../types.js';
+import { kubernetes } from '../kubernetes.js';
 
 test('computeGenericStats', () => {
     const stats: CadvisorContainerStats[] = [
