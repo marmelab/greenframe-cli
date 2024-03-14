@@ -17,7 +17,7 @@ jest.mock('node:http', () => ({
 }));
 
 import http from 'node:http';
-import getContainerStatsIfRunning from '../getContainerStats';
+import getContainerStatsIfRunning from '../getContainerStats.js';
 
 describe('getContainerStats', () => {
     beforeEach(() => {

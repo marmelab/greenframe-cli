@@ -1,6 +1,6 @@
 import { access } from 'node:fs';
 import util from 'node:util';
-import ConfigurationError from './errors/ConfigurationError';
+import ConfigurationError from './errors/ConfigurationError.js';
 
 const accessPromise = util.promisify(access);
 

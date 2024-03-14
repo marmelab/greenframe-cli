@@ -226,8 +226,10 @@ This means that the lowest hanging fruit for optimizing the emissions of a web p
 
 <!-- commands -->
 * [`greenframe analyze [BASEURL] [SCENARIO]`](#greenframe-analyze-baseurl-scenario)
+* [`greenframe autocomplete [SHELL]`](#greenframe-autocomplete-shell)
+* [`greenframe help [COMMAND]`](#greenframe-help-command)
 * [`greenframe kube-config`](#greenframe-kube-config)
-* [`greenframe open [BASEURL] [SCENARIO]`](#greenframe-open-baseurl-scenario)
+* [`greenframe open [BASEURL] [SCENARIOS]`](#greenframe-open-baseurl-scenarios)
 * [`greenframe update [CHANNEL]`](#greenframe-update-channel)
 
 ## `greenframe analyze [BASEURL] [SCENARIO]`
@@ -246,32 +248,83 @@ ARGUMENTS
   SCENARIO  Path to your GreenFrame scenario
 
 FLAGS
-  -C, --configFile=<value>          Path to config file
-  -E, --envFile=<value>             File of environment vars
-  -K, --kubeConfig=<value>          Path to kubernetes client config file
-  -a, --useAdblock                  Use an adblocker during analysis
-  -b, --branchName=<value>          Pass branch name manually
-  -c, --commitMessage=<value>       Pass commit message manually
-  -e, --envVar=<value>...           List of environment vars to read in the scenarios
-  -i, --ignoreHTTPSErrors           Ignore HTTPS errors during analysis
-  -p, --projectName=<value>         Project name
-  -s, --samples=<value>             Number of runs done for the score computation
-  -t, --threshold=<value>           Consumption threshold
-  --commitId=<value>                Pass commit id manually
-  --containers=<value>              Pass containers manually
-  --databaseContainers=<value>      Pass database containers manually
-  --dockerdHost=<value>             Docker daemon host
-  --dockerdPort=<value>             Docker daemon port
-  --kubeContainers=<value>          Pass kubebernetes containers manually
-  --kubeDatabaseContainers=<value>  Pass kubebernetes database containers manually
-  --locale                          Set greenframe browser locale
-  --timezoneId                      Set greenframe browser timezoneId
+  -C, --configFile=<value>              Path to config file
+  -E, --envFile=<value>                 File of environment vars
+  -K, --kubeConfig=<value>              Path to kubernetes client config file
+  -a, --useAdblock                      Use an adblocker during analysis
+  -b, --branchName=<value>              Pass branch name manually
+  -c, --commitMessage=<value>           Pass commit message manually
+  -e, --envVar=<value>...               List of environment vars to read in the scenarios
+  -i, --ignoreHTTPSErrors               Ignore HTTPS errors during analysis
+  -p, --projectName=<value>             Project name
+  -s, --samples=<value>                 Number of runs done for the score computation
+  -t, --threshold=<value>               Consumption threshold
+      --commitId=<value>                Pass commit id manually
+      --containers=<value>              Pass containers manually
+      --databaseContainers=<value>      Pass database containers manually
+      --dockerdHost=<value>             Docker daemon host
+      --dockerdPort=<value>             Docker daemon port
+      --kubeContainers=<value>          Pass kubebernetes containers manually
+      --kubeDatabaseContainers=<value>  Pass kubebernetes database containers manually
+      --locale                          Set greenframe browser locale
+      --timezoneId                      Set greenframe browser timezoneId
 
 DESCRIPTION
   Create an analysis on GreenFrame server.
 ```
 
-_See code: [dist/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/analyze.ts)_
+_See code: [src/commands/analyze.ts](https://github.com/marmelab/greenframe-cli/blob/v2.0.0/src/commands/analyze.ts)_
+
+## `greenframe autocomplete [SHELL]`
+
+Display autocomplete installation instructions.
+
+```
+USAGE
+  $ greenframe autocomplete [SHELL] [-r]
+
+ARGUMENTS
+  SHELL  (zsh|bash|powershell) Shell type
+
+FLAGS
+  -r, --refresh-cache  Refresh cache (ignores displaying instructions)
+
+DESCRIPTION
+  Display autocomplete installation instructions.
+
+EXAMPLES
+  $ greenframe autocomplete
+
+  $ greenframe autocomplete bash
+
+  $ greenframe autocomplete zsh
+
+  $ greenframe autocomplete powershell
+
+  $ greenframe autocomplete --refresh-cache
+```
+
+_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v3.0.13/src/commands/autocomplete/index.ts)_
+
+## `greenframe help [COMMAND]`
+
+Display help for greenframe.
+
+```
+USAGE
+  $ greenframe help [COMMAND...] [-n]
+
+ARGUMENTS
+  COMMAND...  Command to show help for.
+
+FLAGS
+  -n, --nested-commands  Include all nested commands in the output.
+
+DESCRIPTION
+  Display help for greenframe.
+```
+
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.18/src/commands/help.ts)_
 
 ## `greenframe kube-config`
 
@@ -292,26 +345,26 @@ DESCRIPTION
   greenframe kube-config
 ```
 
-_See code: [dist/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/kube-config.ts)_
+_See code: [src/commands/kube-config.ts](https://github.com/marmelab/greenframe-cli/blob/v2.0.0/src/commands/kube-config.ts)_
 
-## `greenframe open [BASEURL] [SCENARIO]`
+## `greenframe open [BASEURL] [SCENARIOS]`
 
 Open browser to develop your GreenFrame scenario
 
 ```
 USAGE
-  $ greenframe open [BASEURL] [SCENARIO] [-C <value>] [-a] [--ignoreHTTPSErrors] [--locale] [--timezoneId]
+  $ greenframe open [BASEURL] [SCENARIOS] [-C <value>] [-a] [--ignoreHTTPSErrors] [--locale] [--timezoneId]
 
 ARGUMENTS
-  BASEURL   Your baseURL website
-  SCENARIO  Path to your GreenFrame scenario
+  BASEURL    Your baseURL website
+  SCENARIOS  Path to your GreenFrame scenario
 
 FLAGS
   -C, --configFile=<value>  Path to config file
   -a, --useAdblock          Use an adblocker during analysis
-  --ignoreHTTPSErrors       Ignore HTTPS errors during analysis
-  --locale                  Set greenframe browser locale
-  --timezoneId              Set greenframe browser timezoneId
+      --ignoreHTTPSErrors   Ignore HTTPS errors during analysis
+      --locale              Set greenframe browser locale
+      --timezoneId          Set greenframe browser timezoneId
 
 DESCRIPTION
   Open browser to develop your GreenFrame scenario
@@ -319,7 +372,7 @@ DESCRIPTION
   greenframe analyze ./yourScenario.js https://greenframe.io
 ```
 
-_See code: [dist/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/open.ts)_
+_See code: [src/commands/open.ts](https://github.com/marmelab/greenframe-cli/blob/v2.0.0/src/commands/open.ts)_
 
 ## `greenframe update [CHANNEL]`
 
@@ -338,7 +391,7 @@ DESCRIPTION
   greenframe update
 ```
 
-_See code: [dist/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v1.7.0/dist/commands/update.ts)_
+_See code: [src/commands/update.ts](https://github.com/marmelab/greenframe-cli/blob/v2.0.0/src/commands/update.ts)_
 <!-- commandsstop -->
 
 ## Development
@@ -358,7 +411,7 @@ $ yarn build
 Then you can run the CLI:
 
 ```sh
-$ ./bin/run analyze https://greenframe.io ./src/examples/visit.js
+$ ./bin/run analyze https://greenframe.io ./src/examples/visit.cjs
 ```
 
 While developing, instead of running `yarn build` each time you make a change, you can watch for changes and automatically recompile with:

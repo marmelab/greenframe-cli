@@ -1,7 +1,7 @@
-import { createStatStore, getComputedStat, getContainers } from '../statStore';
-import type { StatStore } from '../statStore';
-import { ComputedStatWithMeta } from '../../../types';
-import { CONTAINER_TYPES } from '../../../constants';
+import { createStatStore, getComputedStat, getContainers } from '../statStore.js';
+import type { StatStore } from '../statStore.js';
+import { ComputedStatWithMeta } from '../../../types.js';
+import { CONTAINER_TYPES } from '../../../constants.js';
 
 const generator: Array<[number, number, string, number]> = [
     [0, 0, '00Z', 1e3],

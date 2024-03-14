@@ -1,4 +1,4 @@
-import ConfigurationError from '../services/errors/ConfigurationError';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
 
 export default async () => {
     if (!process.env.GREENFRAME_SECRET_TOKEN) {

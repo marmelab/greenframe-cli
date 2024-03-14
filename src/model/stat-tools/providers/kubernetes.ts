@@ -3,7 +3,7 @@ import type {
     GenericStat,
     IoServiceByte,
     Provider,
-} from '../../../types';
+} from '../../../types.js';
 
 const computeGenericStats = (stats: CadvisorContainerStats[]): GenericStat[] => {
     const result: GenericStat[] = [];

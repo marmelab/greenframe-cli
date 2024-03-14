@@ -1,10 +1,13 @@
-const ERROR_CODES = require('../services/errors/errorCodes');
-const STATUS = require('../status').STATUS;
+import { AnalysisResult } from '../services/computeAnalysisResult.js';
+import { ScenarioResult } from '../services/computeScenarioResult.js';
+
+import ERROR_CODES from '../services/errors/errorCodes.js';
+import { STATUS } from '../status.js';
 
 const APP_BASE_URL = process.env.APP_URL ?? 'https://app.greenframe.io';
 
-const computeTotalMetric = (metric) => Math.round(metric * 1000) / 1000;
-const formatTotal = (total, unit) => {
+const computeTotalMetric = (metric: number) => Math.round(metric * 1000) / 1000;
+const formatTotal = (total: number, unit: string) => {
     if (total >= 1_000_000 && unit === 'g') {
         return `${computeTotalMetric(total / 1_000_000)} t`;
     }
@@ -20,15 +23,30 @@ const formatTotal = (total, unit) => {
     return `${computeTotalMetric(total)} ${unit}`;
 };
 
-const displayAnalysisResults = (result, isFree) => {
+const displayAnalysisResults = (
+    result: {
+        analysis: { id: string };
+        scenarios: ScenarioResult[];
+        computed: AnalysisResult;
+    },
+    isFree: boolean
+) => {
     console.info('\nAnalysis complete !\n');
     console.info('Result summary:');
     let maximumPrecision = 0;
     for (const scenario of result.scenarios) {
         console.info('\n');
-        const totalCo2 = formatTotal(scenario.score?.co2?.total, 'g');
-        const totalMWh = formatTotal(scenario.score?.wh?.total, 'Wh');
-        const precision = Math.round(scenario.precision * 10) / 10;
+        const totalCo2 = formatTotal(
+            scenario.score?.co2?.total ?? Number.POSITIVE_INFINITY,
+            'g'
+        );
+        const totalMWh = formatTotal(
+            scenario.score?.wh?.total ?? Number.POSITIVE_INFINITY,
+            'Wh'
+        );
+        const precision = scenario.precision
+            ? Math.round(scenario.precision * 10) / 10
+            : 0;
         if (precision > maximumPrecision) {
             maximumPrecision = precision;
         }
@@ -74,8 +92,14 @@ Use greenframe open command to run your scenario in debug mode.`);
     }
 
     if (result.scenarios.length > 1) {
-        const totalCo2 = formatTotal(result.computed.score?.co2?.total, 'g');
-        const totalMWh = formatTotal(result.computed.score?.wh?.total, 'Wh');
+        const totalCo2 = formatTotal(
+            result.computed.score?.co2?.total ?? Number.POSITIVE_INFINITY,
+            'g'
+        );
+        const totalMWh = formatTotal(
+            result.computed.score?.wh?.total ?? Number.POSITIVE_INFINITY,
+            'Wh'
+        );
 
         console.info(
             `\nThe sum of estimated footprint is ${totalCo2} eq. co2 ± ${maximumPrecision}% (${totalMWh}).`
@@ -96,4 +120,4 @@ Use greenframe open command to run your scenario in debug mode.`);
     );
 };
 
-module.exports = displayAnalysisResults;
+export default displayAnalysisResults;

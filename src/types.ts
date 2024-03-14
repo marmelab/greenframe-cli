@@ -1,4 +1,4 @@
-import { CONTAINER_TYPES } from './constants';
+import { CONTAINER_TYPES } from './constants.js';
 
 export type ValueOf<T> = T[keyof T];
 export type SubObjects<T> = {

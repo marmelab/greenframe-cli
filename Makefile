@@ -23,7 +23,7 @@ typecheck: ## Typecheck the project
 	yarn typecheck
 
 build: clean-dist ## Create tarballs of CLI
-	yarn build && yarn set version classic && npx oclif pack tarballs -t $(BUILD_TARGETS)
+	yarn oclif pack tarballs -t $(BUILD_TARGETS)
 	$(MAKE) generate-wsl-cli
 
 generate-wsl-cli: ## Generate WSL version of CLI
@@ -33,19 +33,19 @@ generate-wsl-cli: ## Generate WSL version of CLI
 	sed -i 's/linux/wsl/g' ./dist/greenframe-v$(PACKAGE_VERSION)-$(SHORT_HASH)-wsl-x64-buildmanifest
 
 upload: ## Upload tarballs to S3 bucket
-	npx oclif upload tarballs -t $(DEPLOY_TARGETS)
+	yarn oclif upload tarballs -t $(DEPLOY_TARGETS)
 
 promote-staging: ## Publish uploaded tarballs on a staging channel
-	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel staging -t $(DEPLOY_TARGETS) && yarn set version stable
+	yarn oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel staging -t $(DEPLOY_TARGETS)
 
 promote-prerelease: ## Publish uploaded tarballs on a prerelease channel
-	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel prerelease -t $(DEPLOY_TARGETS) && yarn set version stable
+	yarn oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) --channel prerelease -t $(DEPLOY_TARGETS)
 
 upload-installation-scripts: ## Publish on the bucket installion bash scripts
 	yarn upload-installation-scripts
 
 promote-production: upload-installation-scripts ## Publish uploaded tarballs on a stable channel
-	npx oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS) && yarn set version stable
+	yarn oclif promote --version $(PACKAGE_VERSION) --sha $(SHORT_HASH) -t $(DEPLOY_TARGETS)
 
 test: test-unit test-e2e ## Launch all tests
 

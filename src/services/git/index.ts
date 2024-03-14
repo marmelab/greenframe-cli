@@ -1,14 +1,22 @@
-const {
+import {
     getCommitMessage,
     getBranchName,
     getCommitId,
     getDirectCommitAncestor,
     getCommitAncestorWithDefaultBranch,
-} = require('./utils');
+} from './utils.js';
 
-const retrieveGitInformations = async (
-    { commitMessage, branchName, commitId } = {},
-    defaultBranch
+export const retrieveGitInformations = async (
+    {
+        commitMessage,
+        branchName,
+        commitId,
+    }: {
+        commitMessage?: string;
+        branchName?: string;
+        commitId?: string;
+    } = {},
+    defaultBranch?: string
 ) => {
     // If we are on master (default branch), then commit reference is the N-1
     // Else commit reference is the commit origin of the current branch from master
@@ -17,16 +25,10 @@ const retrieveGitInformations = async (
             ? await getCommitAncestorWithDefaultBranch(defaultBranch)
             : await getDirectCommitAncestor();
 
-    let gitInfos = {
+    return {
         commitMessage: commitMessage ?? (await getCommitMessage()),
         branchName: branchName ?? (await getBranchName()),
         commitId: commitId ?? (await getCommitId()),
         defaultBranchCommitReference,
     };
-
-    return gitInfos;
-};
-
-module.exports = {
-    retrieveGitInformations,
 };

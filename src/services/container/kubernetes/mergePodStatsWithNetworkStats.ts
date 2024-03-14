@@ -1,7 +1,7 @@
-import { KubernetesRuns, kubernetesStats } from '..';
-import { SubObjects } from '../../../types';
-import { Network } from './stats';
-import { Nodes } from './structureNodes';
+import { KubernetesRuns, kubernetesStats } from '../index.js';
+import { SubObjects } from '../../../types.js';
+import { Network } from './stats.js';
+import { Nodes } from './structureNodes.js';
 
 /**
  * Merge pods stats with the network stats
@@ -9,6 +9,7 @@ import { Nodes } from './structureNodes';
  * Delete the network stats
  * @param nodes
  * @param runs
+ * @returns void
  */
 export const mergePodStatsWithNetworkStats = (nodes: Nodes, runs: KubernetesRuns) => {
     for (const node of Object.keys(nodes)) {

@@ -1,4 +1,4 @@
-import type { TimeFrame } from '../../types';
+import type { TimeFrame } from '../../types.js';
 
 // Intersection of two intervals [aStart,aEnd] and [bStart,bEnd]
 // Note that we use named-tuples here!

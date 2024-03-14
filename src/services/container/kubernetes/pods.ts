@@ -1,5 +1,5 @@
 import * as kube from '@kubernetes/client-node';
-import { kubeApi } from './client';
+import { kubeApi } from './client.js';
 
 export const getPodsByLabel = async (label: string, namespace = 'default') => {
     const response = await kubeApi.listNamespacedPod(

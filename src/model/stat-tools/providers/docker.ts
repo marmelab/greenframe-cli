@@ -3,7 +3,7 @@ import type {
     DockerStatsJSON,
     GenericStat,
     Provider,
-} from '../../../types';
+} from '../../../types.js';
 
 const computeGenericStats = (stats: DockerStatsJSON[]): GenericStat[] => {
     const result: GenericStat[] = [];

@@ -1,12 +1,15 @@
 import * as kube from '@kubernetes/client-node';
 import axios from 'axios';
 import https from 'node:https';
-
+import request from 'request';
 export const kc = new kube.KubeConfig();
 export let kubeClient: kube.KubernetesObjectApi;
 export let kubeApi: kube.CoreV1Api;
 export let exec: kube.Exec;
-const opts: https.AgentOptions = {};
+const opts: {
+    auth?: string;
+    servername?: string;
+} = {};
 let httpsAgent: https.Agent;
 
 export const initKubeConfig = async (configFile?: string) => {
@@ -35,7 +38,10 @@ export const getKubernetesVersion = async () => {
         compiler: string;
         platform: string;
     }>(`${currentCluster.server}/version?timeout=32s`, {
-        ...opts,
+        auth: {
+            username: kc.getCurrentUser()?.username ?? '',
+            password: kc.getCurrentUser()?.password ?? '',
+        },
         httpsAgent,
     });
     const data = res.data;

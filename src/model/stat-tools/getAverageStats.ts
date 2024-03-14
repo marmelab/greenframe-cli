@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash';
+import groupBy from 'lodash/groupBy.js';
 
 export const getAverageStats = (computedStats: any) => {
     // Groupe stats by sample

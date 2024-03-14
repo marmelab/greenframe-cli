@@ -1,4 +1,4 @@
-import { MetricsContainer } from '../../types';
+import { MetricsContainer } from '../../types.js';
 
 export const mergeScores = (
     score: MetricsContainer,

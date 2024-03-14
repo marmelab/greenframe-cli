@@ -1,9 +1,9 @@
 import initDebug from 'debug';
-import { CONTAINER_TYPES } from '../../constants';
-import type { ValueOf } from '../../types';
-import { getContainerStats } from './kubernetes/getContainerStats';
-import { CadvisorContainerStats } from './kubernetes/stats';
-import { Nodes } from './kubernetes/structureNodes';
+import { CONTAINER_TYPES } from '../../constants.js';
+import type { ValueOf } from '../../types.js';
+import { getContainerStats } from './kubernetes/getContainerStats.js';
+import { CadvisorContainerStats } from './kubernetes/stats.js';
+import { Nodes } from './kubernetes/structureNodes.js';
 const debug = initDebug('greenframe:services:container:getPodsStats');
 export type PodStat = {
     podName: string;

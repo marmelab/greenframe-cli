@@ -1,26 +1,30 @@
-import { Command, Flags } from '@oclif/core';
-import { Listr } from 'listr2';
+import { Args, Command, Flags } from '@oclif/core';
+import { Listr, ListrContext, ListrRenderer, ListrTaskWrapper } from 'listr2';
 
-import { saveFailedAnalysis } from '../services/api/analyses';
+import { saveFailedAnalysis } from '../services/api/analyses.js';
 
-import { parseConfigFile, resolveParams } from '../services/parseConfigFile';
+import { parseConfigFile, resolveParams } from '../services/parseConfigFile.js';
 
-import ERROR_CODES from '../services/errors/errorCodes';
-import logErrorOnSentry from '../services/errors/Sentry';
+import ERROR_CODES from '../services/errors/errorCodes.js';
+import logErrorOnSentry from '../services/errors/Sentry.js';
 
-import { DEFAULT_SAMPLES } from '../constants';
+import { DEFAULT_SAMPLES } from '../constants.js';
+
+import checkGreenFrameSecretToken from '../tasks/checkGreenFrameSecretToken.js';
+import createNewAnalysis from '../tasks/createNewAnalysis.js';
+import detectDockerVersion from '../tasks/detectDockerVersion.js';
+import detectKubernetesVersion from '../tasks/detectKubernetesVersion.js';
+import displayAnalysisResults from '../tasks/displayAnalysisResult.js';
+import executeDistantAnalysis from '../tasks/executeDistantAnalysis.js';
+import initializeKubeClient from '../tasks/initializeKubeClient.js';
+import retrieveGitInformations from '../tasks/retrieveGitInformations.js';
+import retrieveGreenFrameProject from '../tasks/retrieveGreenFrameProject.js';
+import runScenarioAndSaveResults from '../tasks/runScenariosAndSaveResult.js';
+import axios from 'axios';
+import { ScenarioResult } from '../services/computeScenarioResult.js';
+import { AnalysisResult } from '../services/computeAnalysisResult.js';
+
 export const DEFAULT_CONFIG_FILE = './.greenframe.yml';
-
-import checkGreenFrameSecretToken from '../tasks/checkGreenFrameSecretToken';
-import createNewAnalysis from '../tasks/createNewAnalysis';
-import detectDockerVersion from '../tasks/detectDockerVersion';
-import detectKubernetesVersion from '../tasks/detectKubernetesVersion';
-import displayAnalysisResults from '../tasks/displayAnalysisResult';
-import executeDistantAnalysis from '../tasks/executeDistantAnalysis';
-import initializeKubeClient from '../tasks/initializeKubeClient';
-import retrieveGitInformations from '../tasks/retrieveGitInformations';
-import retrieveGreenFrameProject from '../tasks/retrieveGreenFrameProject';
-import runScenarioAndSaveResults from '../tasks/runScenariosAndSaveResult';
 
 let analysisId: string | null = null;
 
@@ -42,17 +46,17 @@ process.on('SIGINT' || 'SIGKILL' || 'SIGTERM' || 'SIGQUIT', async function () {
 });
 
 class AnalyzeCommand extends Command {
-    static args = [
-        {
+    static args = {
+        baseURL: Args.string({
             name: 'baseURL',
             description: 'Your baseURL website',
-        },
-        {
+        }),
+        scenario: Args.string({
             name: 'scenario', // name of arg to show in help and reference with args[name]
             description: 'Path to your GreenFrame scenario', // help description
             required: false,
-        },
-    ];
+        }),
+    };
 
     static defaultFlags = {
         configFile: DEFAULT_CONFIG_FILE,
@@ -160,7 +164,7 @@ class AnalyzeCommand extends Command {
                 [
                     {
                         title: 'Check configuration file',
-                        task: (ctx) => {
+                        task: (ctx: ListrContext) => {
                             ctx.args = args;
                             ctx.flags = flags;
                             ctx.configFilePath = configFilePath;
@@ -184,7 +188,7 @@ class AnalyzeCommand extends Command {
                     {
                         title: 'Creating new analysis',
                         enabled: () => !isFree,
-                        task: async (ctx) => {
+                        task: async (ctx: ListrContext) => {
                             await createNewAnalysis(ctx);
                             analysisId = ctx.analysisId;
                         },
@@ -197,7 +201,10 @@ class AnalyzeCommand extends Command {
                     {
                         title: `Analysis is in progress locally`,
                         enabled: () => !isDistant,
-                        task: async (ctx, task) => {
+                        task: async (
+                            ctx: ListrContext,
+                            task: ListrTaskWrapper<unknown, typeof ListrRenderer>
+                        ) => {
                             const tasksDefinition = [
                                 {
                                     title: 'Detect docker version',
@@ -234,12 +241,25 @@ class AnalyzeCommand extends Command {
                     registerSignalListeners: false,
                 }
             );
-            const { result } = await tasks.run();
+            const { result } = (await tasks.run()) as {
+                result: {
+                    analysis: { id: string };
+                    scenarios: ScenarioResult[];
+                    computed: AnalysisResult;
+                };
+            };
             displayAnalysisResults(result, isFree);
         } catch (error: any) {
             console.error('\n❌ Failed!');
-            console.error(error.name);
-            console.error(error.response?.data || error.message);
+            if (error instanceof Error) {
+                console.error(error.name);
+                if (axios.isAxiosError(error)) {
+                    console.error(error.response?.data || error.message);
+                } else {
+                    console.error(error.message);
+                }
+            }
+
             console.error('\nContact us for support: contact@greenframe.io');
             if (!error.errorCode) {
                 logErrorOnSentry(error);
@@ -263,4 +283,4 @@ class AnalyzeCommand extends Command {
 
 AnalyzeCommand.description = `Create an analysis on GreenFrame server.`;
 
-module.exports = AnalyzeCommand;
+export default AnalyzeCommand;

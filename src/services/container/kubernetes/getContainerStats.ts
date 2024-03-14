@@ -1,7 +1,7 @@
 import initDebug from 'debug';
-import { getCadvisorMetrics } from './cadvisor';
-import { CadvisorContainerStats } from './stats';
-import { AugmentedPod } from './structureNodes';
+import { getCadvisorMetrics } from './cadvisor.js';
+import { CadvisorContainerStats } from './stats.js';
+import { AugmentedPod } from './structureNodes.js';
 
 const debug = initDebug('greenframe:services:container:kubernetes:getContainerStats');
 export const getContainerStats = async (

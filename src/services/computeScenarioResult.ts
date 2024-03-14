@@ -1,11 +1,11 @@
-import { ERROR_CODES, SCENARIO_STATUS } from '../constants';
+import { ERROR_CODES, SCENARIO_STATUS } from '../constants.js';
 import {
     getAverageMilestones,
     getAverageStats,
     getScenarioConsumption,
     getStats,
-} from '../index';
-import { MetricsContainer, Milestone, ValueOf } from '../types';
+} from '../index.js';
+import { MetricsContainer, Milestone, ValueOf } from '../types.js';
 
 export type ScenarioResult = {
     name: string;

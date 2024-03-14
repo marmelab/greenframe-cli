@@ -1,5 +1,5 @@
 import initDebug from 'debug';
-import instance from './instance';
+import instance from './instance.js';
 
 const debug = initDebug('greenframe:services:api:scenarios');
 

@@ -1,8 +1,8 @@
 import { Page } from 'playwright';
 import { URL } from 'node:url';
-import ConfigurationError from '../services/errors/ConfigurationError';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
 
-const getScopedPage = (page: Page, baseUrl: string) => {
+const getScopedPage = (page: Page, baseUrl?: string) => {
     if (!baseUrl) {
         throw new ConfigurationError('You must provide a base url!');
     }

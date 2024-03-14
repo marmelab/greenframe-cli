@@ -1,16 +1,17 @@
-const axios = require('axios');
-const util = require('node:util');
-const exec = util.promisify(require('node:child_process').exec);
+import { Args, Command } from '@oclif/core';
+import axios from 'axios';
+import { exec as execSync } from 'node:child_process';
+import util from 'node:util';
+const exec = util.promisify(execSync);
 
-const { Command } = require('@oclif/core');
 class UpdateCommand extends Command {
-    static args = [
-        {
+    static args = {
+        channel: Args.string({
             name: 'channel',
             description: 'Release channel',
             default: 'stable',
-        },
-    ];
+        }),
+    };
 
     async run() {
         try {
@@ -20,11 +21,13 @@ class UpdateCommand extends Command {
                 `channels/${args.channel}/${bin}-${platform}-${arch}-buildmanifest`
             );
 
-            const { data } = await axios.get(manifestUrl).catch(() => {
-                throw new Error(
-                    'Channel release was not found try with: greenframe update'
-                );
-            });
+            const { data } = await axios
+                .get<{ version: string; gz: string }>(manifestUrl)
+                .catch(() => {
+                    throw new Error(
+                        'Channel release was not found try with: greenframe update'
+                    );
+                });
 
             if (data.version === version) {
                 console.log(`${bin}-${version} ${platform}-${arch}`);
@@ -42,7 +45,7 @@ class UpdateCommand extends Command {
                     rm -f $HOME/.local/bin/greenframe &&
                     ln -s $HOME/.local/lib/greenframe/bin/greenframe $HOME/.local/bin/greenframe
                 `,
-                { shell: true }
+                { shell: 'sh' }
             );
             if (stderr) {
                 throw new Error(stderr);
@@ -51,7 +54,10 @@ class UpdateCommand extends Command {
             console.log(`✅ Done !`);
         } catch (error) {
             console.error('\n❌ Update failed!');
-            console.error(error.message);
+            if (error instanceof Error) {
+                console.error(error.message);
+            }
+
             process.exit(1);
         }
     }
@@ -62,4 +68,4 @@ UpdateCommand.description = `Update GreenFrame to the latest version
 greenframe update
 `;
 
-module.exports = UpdateCommand;
+export default UpdateCommand;

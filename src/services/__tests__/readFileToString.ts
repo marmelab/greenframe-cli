@@ -4,13 +4,13 @@ jest.mock('node:fs', () => {
     };
 });
 
-const { readFile } = require('node:fs');
+import { readFile } from 'node:fs';
 jest.mock('node:util', () => ({
-    promisify: (cb) => cb,
+    promisify: (cb: CallableFunction) => cb,
 }));
-const path = require('node:path');
+import path from 'node:path';
 const cwd = process.cwd();
-const { readFileToString } = require('../readFileToString');
+import { readFileToString } from '../readFileToString.js';
 
 describe('#readFileToString', () => {
     test('Should call readFile with correctly resolved scenario path', () => {

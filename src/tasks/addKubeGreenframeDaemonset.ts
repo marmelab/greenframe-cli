@@ -1,6 +1,6 @@
-import { TaskWrapper } from 'listr2/dist/lib/task-wrapper';
-import { GREENFRAME_NAMESPACE } from '../constants';
-import { kubeClient } from '../services/container/kubernetes/client';
+import { ListrTaskWrapper } from 'listr2';
+import { GREENFRAME_NAMESPACE } from '../constants.js';
+import { kubeClient } from '../services/container/kubernetes/client.js';
 
 const greenframeDaemonset = {
     apiVersion: 'apps/v1',
@@ -142,7 +142,7 @@ export const addKubeGreenframeDaemonset = async (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     _: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    task: TaskWrapper<unknown, any>
+    task: ListrTaskWrapper<unknown, any>
 ) => {
     const { body } = await kubeClient.list('apps/v1', 'DaemonSet', GREENFRAME_NAMESPACE);
     if (body.items.some((item) => item.metadata?.name === 'cadvisor')) {

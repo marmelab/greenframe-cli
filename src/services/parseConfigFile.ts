@@ -1,17 +1,17 @@
-const fs = require('node:fs');
-const yaml = require('js-yaml');
-const util = require('node:util');
-const ConfigurationError = require('./errors/ConfigurationError');
-const analyze = require('../commands/analyze');
+import yaml from 'js-yaml';
+import fs from 'node:fs';
+import util from 'node:util';
+import { DEFAULT_CONFIG_FILE } from '../commands/analyze.js';
+import ConfigurationError from './errors/ConfigurationError.js';
 const FILE_NOT_FOUND = 'ENOENT';
 
 const readFile = util.promisify(fs.readFile);
 
-const isMissingDefaultConfigFile = (path, error) => {
-    return path === analyze.DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;
+const isMissingDefaultConfigFile = (path: string, error: any) => {
+    return path === DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;
 };
 
-const parseConfigFile = async (path) => {
+export const parseConfigFile = async (path: string) => {
     try {
         const file = await readFile(path, 'utf8');
         let fileContent;
@@ -46,7 +46,28 @@ const parseConfigFile = async (path) => {
                 ignoreHTTPSErrors,
                 locale,
                 timezoneId,
-            } = fileContent;
+            } = fileContent as {
+                scenario?: string;
+                scenarios?: string[];
+                baseURL?: string;
+                samples?: number;
+                useAdblock?: boolean;
+                threshold?: number;
+                projectName?: string;
+                containers?: string[];
+                databaseContainers?: string[];
+                kubeContainers?: string[];
+                kubeDatabaseContainers?: string[];
+                extraHosts?: string[];
+                envVar?: string[];
+                envFile?: string;
+                kubeConfig?: string;
+                dockerdHost?: string;
+                dockerdPort?: number;
+                ignoreHTTPSErrors?: boolean;
+                locale?: string;
+                timezoneId?: string;
+            };
 
             return {
                 args: {
@@ -75,7 +96,7 @@ const parseConfigFile = async (path) => {
                 },
             };
         }
-    } catch (error) {
+    } catch (error: any) {
         if (error.name === 'YAMLException') {
             throw new yaml.YAMLException(`${path} is not a valid yaml`);
         } else if (!isMissingDefaultConfigFile(path, error)) {
@@ -84,10 +105,10 @@ const parseConfigFile = async (path) => {
     }
 };
 
-const definedProps = (obj) =>
+const definedProps = (obj: object) =>
     Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
 
-const resolveParams = (
+export const resolveParams = (
     defaultFlags = {},
     configFileParams = { args: {}, flags: {} },
     commandParams = { args: {}, flags: {} }
@@ -126,7 +147,7 @@ const resolveParams = (
     if (!args.scenarios) {
         args.scenarios = [
             {
-                path: '../../src/examples/visit.js',
+                path: '../../src/examples/visit.cjs',
                 name: 'main scenario',
                 threshold: flags.threshold,
             },
@@ -139,5 +160,3 @@ const resolveParams = (
 
     return { flags, args };
 };
-
-module.exports = { parseConfigFile, resolveParams };

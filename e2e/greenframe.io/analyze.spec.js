@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
-const util = require('node:util');
-const exec = util.promisify(require('node:child_process').exec);
+import { promisify } from 'node:util';
+import { exec as execSync } from 'node:child_process';
+const exec = promisify(execSync);
 
 const BASE_COMMAND = `GREENFRAME_SECRET_TOKEN=API_TOKEN API_URL=http://localhost:3006 ./bin/run analyze`;
 

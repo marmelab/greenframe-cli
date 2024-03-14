@@ -1,5 +1,5 @@
-import { CONTAINER_TYPES } from '../../constants';
-import type { Meta, ComputedStatWithMeta, ValueOf } from '../../types';
+import { CONTAINER_TYPES } from '../../constants.js';
+import type { Meta, ComputedStatWithMeta, ValueOf } from '../../types.js';
 
 // map: containerName -> ComputedStatWithMeta[]
 export type StatStore = Map<string, Array<ComputedStatWithMeta>>;

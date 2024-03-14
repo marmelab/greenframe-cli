@@ -3,17 +3,17 @@ jest.mock('node:child_process', () => ({
 }));
 
 jest.mock('node:util', () => ({
-    promisify: (cb) => cb,
+    promisify: (cb: CallableFunction) => cb,
 }));
 
-const { exec } = require('node:child_process');
-const {
+import { exec } from 'node:child_process';
+import {
     buildEnvVarList,
     createContainer,
     startContainer,
     execScenarioContainer,
     stopContainer,
-} = require('../execScenarioContainer');
+} from '../execScenarioContainer.js';
 
 describe('#buildEnvVarList', () => {
     const env = process.env;
@@ -29,7 +29,7 @@ describe('#buildEnvVarList', () => {
     });
 
     it('Should return empty string with empty params', async () => {
-        const envVars = [];
+        const envVars: string[] = [];
         const envFile = '';
         const envString = buildEnvVarList(envVars, envFile);
         expect(envString).toBe('');
@@ -52,7 +52,7 @@ describe('#buildEnvVarList', () => {
     });
 
     it('Should return correct string with only envFile', async () => {
-        const envVars = [];
+        const envVars: string[] = [];
         const envFile = './.env.local';
         const envString = buildEnvVarList(envVars, envFile);
         expect(envString).toBe(' --env-file ./.env.local');
@@ -73,48 +73,58 @@ describe('#buildEnvVarList', () => {
 
 describe('#createContainer', () => {
     it('Should call exec with good command', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
         await createContainer();
         expect(exec).toHaveBeenCalledTimes(3);
+        // @ts-expect-error jest mock
         expect(exec.mock.calls[1][0]).toContain(
             'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP --add-host localhost:HOST_IP'
         );
     });
 
     it('Should call exec with extraHosts', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
         await createContainer(['example.com', 'another-example.com']);
         expect(exec).toHaveBeenCalledTimes(3);
+        // @ts-expect-error jest mock
         expect(exec.mock.calls[1][0]).toContain(
             'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP -e EXTRA_HOSTS=example.com,another-example.com --add-host localhost:HOST_IP  --add-host example.com:HOST_IP --add-host another-example.com:HOST_IP'
         );
     });
 
     it('Should call exec with env vars', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
         await createContainer([], ['VAR_ONE=one', 'VAR_TWO=two']);
         expect(exec).toHaveBeenCalledTimes(3);
+        // @ts-expect-error jest mock
         expect(exec.mock.calls[1][0]).toContain(
             'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP -e VAR_ONE=one -e VAR_TWO=two '
         );
     });
 
     it('Should call exec with env file', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValueOnce({ stdout: 'HOST_IP' });
         await createContainer([], [], './.env.local');
         expect(exec).toHaveBeenCalledTimes(3);
+        // @ts-expect-error jest mock
         expect(exec.mock.calls[1][0]).toContain(
             'docker create --tty --name greenframe-runner --rm -e HOSTIP=HOST_IP --env-file ./.env.local '
         );
     });
 
     afterEach(() => {
+        // @ts-expect-error jest mock
         exec.mockClear();
     });
 });
 
 describe('#startContainer', () => {
     it('Should call exec with good command', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({});
 
         await startContainer();
@@ -123,17 +133,20 @@ describe('#startContainer', () => {
     });
 
     it('Should throw an error', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({ stderr: 'TEST ERROR' });
 
         await expect(startContainer()).rejects.toThrow('TEST ERROR');
     });
     afterEach(() => {
+        // @ts-expect-error jest mock
         exec.mockClear();
     });
 });
 
 describe('#execScenarioContainer', () => {
     it('Should call exec with good command and return timelines', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({
             stdout: `=====TIMELINES=====
 {"start": "START_DATE", "end": "END_DATE", "elapsed": "ELAPSED_TIME"}
@@ -161,6 +174,7 @@ describe('#execScenarioContainer', () => {
     });
 
     it('Should call exec with good command and also return milestones if provided', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({
             stdout: `=====TIMELINES=====
 {"start": "START_DATE", "end": "END_DATE", "elapsed": "ELAPSED_TIME"}
@@ -191,6 +205,7 @@ describe('#execScenarioContainer', () => {
     });
 
     it('Should call exec with useAdblocker', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({
             stdout: `=====TIMELINES=====
 {"start": "START_DATE", "end": "END_DATE", "elapsed": "ELAPSED_TIME"}
@@ -222,6 +237,7 @@ describe('#execScenarioContainer', () => {
     });
 
     it('Should throw an error because exec throw an error', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({
             stdout: `=====TIMELINES=====
                     {"start": "START_DATE", "end": "END_DATE", "elapsed": "ELAPSED_TIME"}
@@ -236,6 +252,7 @@ describe('#execScenarioContainer', () => {
     });
 
     it('Should throw an error because JSON.parse thrown an error', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({
             stdout: `=====TIMELINES=====
                     INVALID JSON
@@ -249,12 +266,14 @@ describe('#execScenarioContainer', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error jest mock
         exec.mockClear();
     });
 });
 
 describe('#stopContainer', () => {
     it('Should call exec with good command', async () => {
+        // @ts-expect-error jest mock
         exec.mockReturnValue({});
 
         await stopContainer();
@@ -265,6 +284,7 @@ describe('#stopContainer', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error jest mock
         exec.mockClear();
     });
 });

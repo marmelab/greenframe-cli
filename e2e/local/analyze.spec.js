@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
-const util = require('node:util');
-const exec = util.promisify(require('node:child_process').exec);
+import { promisify } from 'node:util';
+import { exec as execSync } from 'node:child_process';
+const exec = promisify(execSync);
 
 const BASE_COMMAND = `./bin/run analyze`;
 
@@ -38,6 +39,15 @@ describe('[LOCAL] greenframe analyze', () => {
             it('should run an analysis command with adblocker', async () => {
                 const { error, stdout } = await exec(
                     `${BASE_COMMAND} -C ./e2e/.greenframe.single.adblock.yml`
+                );
+                expect(stdout).toContain('✅ main scenario completed');
+                expect(stdout).toContain('The estimated footprint is');
+                expect(error).toBeUndefined();
+            });
+
+            it('should support analysis with esm', async () => {
+                const { error, stdout } = await exec(
+                    `${BASE_COMMAND} -C ./e2e/.greenframe.single.esm.yml`
                 );
                 expect(stdout).toContain('✅ main scenario completed');
                 expect(stdout).toContain('The estimated footprint is');

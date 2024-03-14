@@ -1,14 +1,14 @@
 import { HttpError } from '@kubernetes/client-node';
-import { TaskWrapper } from 'listr2/dist/lib/task-wrapper';
-import { GREENFRAME_NAMESPACE } from '../constants';
-import { kubeApi } from '../services/container/kubernetes/client';
-import ConfigurationError from '../services/errors/ConfigurationError';
+import { ListrTaskWrapper } from 'listr2';
+import { GREENFRAME_NAMESPACE } from '../constants.js';
+import { kubeApi } from '../services/container/kubernetes/client.js';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
 
 export const addKubeGreenframeNamespace = async (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     _: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    task: TaskWrapper<unknown, any>
+    task: ListrTaskWrapper<unknown, any>
 ) => {
     const namespace = {
         metadata: {

@@ -1,4 +1,4 @@
-const Sentry = require('@sentry/node');
+import * as Sentry from '@sentry/node';
 
 Sentry.init({
     dsn: 'https://ef45583ebb964bc485f37ef92d01609f@o956285.ingest.sentry.io/5905652',
@@ -9,8 +9,6 @@ Sentry.init({
     tracesSampleRate: 1,
 });
 
-const logErrorOnSentry = (e) => {
+export default (e: Error) => {
     Sentry.captureException(e);
 };
-
-module.exports = logErrorOnSentry;

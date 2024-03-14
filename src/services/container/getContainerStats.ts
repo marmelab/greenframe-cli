@@ -1,12 +1,28 @@
-const http = require('node:http');
-const ConfigurationError = require('../errors/ConfigurationError');
-const initDebug = require('debug');
+import http from 'node:http';
+import ConfigurationError from '../errors/ConfigurationError.js';
+import initDebug from 'debug';
 
 const debug = initDebug('greenframe:services:contaiener:getContainerStats');
 
-const getIsContainerRunning = (containerName, dockerdOptions) => {
-    return new Promise((resolve, reject) => {
-        const options = {
+export type DockerdOptions = {
+    dockerdHost?: string;
+    dockerdPort?: number;
+};
+
+type Options = {
+    path: string;
+    method: string;
+    host?: string;
+    port?: number;
+    socketPath?: string;
+};
+
+const getIsContainerRunning = (
+    containerName: string,
+    dockerdOptions?: DockerdOptions
+) => {
+    return new Promise<void>((resolve, reject) => {
+        const options: Options = {
             path: `/containers/${containerName}/json`,
             method: 'GET',
         };
@@ -18,7 +34,7 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
         }
 
         try {
-            const callback = (res) => {
+            const callback = (res: http.IncomingMessage) => {
                 if (res.statusCode !== 200) {
                     reject(
                         `${containerName} container may has encountered an issue. Status code:${res.statusCode}. Status message:${res.statusMessage}`
@@ -41,8 +57,8 @@ const getIsContainerRunning = (containerName, dockerdOptions) => {
     });
 };
 
-const getContainerStats = (containerName, dockerdOptions) => {
-    const options = {
+const getContainerStats = (containerName: string, dockerdOptions?: DockerdOptions) => {
+    const options: Options = {
         path: `/containers/${containerName}/stats`,
         method: 'GET',
     };
@@ -53,9 +69,9 @@ const getContainerStats = (containerName, dockerdOptions) => {
         options.socketPath = '/var/run/docker.sock';
     }
 
-    const stats = [];
-    const callback = (res) => {
-        res.on('data', (data) => {
+    const stats: string[] = [];
+    const callback = (res: http.IncomingMessage) => {
+        res.on('data', (data: ArrayBuffer) => {
             try {
                 const stat = JSON.parse(Buffer.from(data).toString());
                 stats.push(stat);
@@ -64,7 +80,7 @@ const getContainerStats = (containerName, dockerdOptions) => {
             }
         });
 
-        res.on('error', (e) => {
+        res.on('error', (e: any) => {
             // This code is fired when we call clientRequest.destroy();
             if (e.code !== 'ECONNRESET') {
                 console.error(e);
@@ -83,13 +99,24 @@ const getContainerStats = (containerName, dockerdOptions) => {
     return stopContainerStats;
 };
 
-const getContainerStatsIfRunning = async (containerName, dockerdOptions) => {
+const getContainerStatsIfRunning = async (
+    containerName: string,
+    dockerdOptions?: DockerdOptions
+) => {
     try {
         await getIsContainerRunning(containerName, dockerdOptions);
         return getContainerStats(containerName, dockerdOptions);
     } catch (error) {
-        throw new ConfigurationError(error);
+        if (error instanceof Error) {
+            throw new ConfigurationError(error.message);
+        }
+
+        if (typeof error === 'string') {
+            throw new ConfigurationError(error);
+        }
+
+        throw new ConfigurationError('Unknown error');
     }
 };
 
-module.exports = getContainerStatsIfRunning;
+export default getContainerStatsIfRunning;

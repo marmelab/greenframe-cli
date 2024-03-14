@@ -1,14 +1,15 @@
-const ConfigurationError = require('../services/errors/ConfigurationError');
+import { ListrContext } from 'listr2';
+import { createAnalysis } from '../services/api/analyses.js';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
+import axios from 'axios';
 
-const { createAnalysis } = require('../services/api/analyses');
-const createNewAnalysis = async (ctx) => {
+const createNewAnalysis = async (ctx: ListrContext) => {
     const { args, flags } = ctx;
 
     try {
         const { data } = await createAnalysis({
             scenarios: args.scenarios,
             baseURL: args.baseURL,
-            threshold: flags.threshold,
             samples: flags.samples,
             useAdblock: flags.useAdblock,
             locale: flags.locale,
@@ -18,7 +19,11 @@ const createNewAnalysis = async (ctx) => {
             gitInfos: ctx.gitInfos,
         });
         ctx.analysisId = data.id;
-    } catch (error_) {
+    } catch (error_: unknown) {
+        if (!axios.isAxiosError(error_)) {
+            throw error_;
+        }
+
         const error =
             error_.response?.status === 401
                 ? new ConfigurationError(
@@ -32,4 +37,4 @@ const createNewAnalysis = async (ctx) => {
     }
 };
 
-module.exports = createNewAnalysis;
+export default createNewAnalysis;

@@ -3,21 +3,21 @@ jest.mock('node:child_process', () => ({
 }));
 
 jest.mock('node:util', () => ({
-    promisify: (cb) => cb,
+    promisify: (cb: CallableFunction) => cb,
 }));
 
-const { exec } = require('node:child_process');
-
-const {
+import { exec } from 'node:child_process';
+import {
     getCommitMessage,
     getBranchName,
     getCommitId,
     getDirectCommitAncestor,
     getCommitAncestorWithDefaultBranch,
-} = require('../utils');
+} from '../utils.js';
 
 describe('#getCommitMessage', () => {
     it('Should call exec', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({ stdout: 'COMMIT MESSAGE' });
         const commitMessage = await getCommitMessage();
         expect(exec).toHaveBeenCalledTimes(1);
@@ -25,12 +25,14 @@ describe('#getCommitMessage', () => {
         expect(commitMessage).toBe('COMMIT MESSAGE');
     });
     afterEach(() => {
+        // @ts-expect-error Jest mock
         exec.mockClear();
     });
 });
 
 describe('#getBranchName', () => {
     it('Should call exec', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({ stdout: 'BRANCH NAME' });
         const branchMessage = await getBranchName();
         expect(exec).toHaveBeenCalledTimes(1);
@@ -38,12 +40,14 @@ describe('#getBranchName', () => {
         expect(branchMessage).toBe('BRANCH NAME');
     });
     afterEach(() => {
+        // @ts-expect-error Jest mock
         exec.mockClear();
     });
 });
 
 describe('#getCommitId', () => {
     it('Should call exec', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({ stdout: 'COMMIT ID' });
         const commitMessage = await getCommitId();
         expect(exec).toHaveBeenCalledTimes(1);
@@ -51,12 +55,14 @@ describe('#getCommitId', () => {
         expect(commitMessage).toBe('COMMIT ID');
     });
     afterEach(() => {
+        // @ts-expect-error Jest mock
         exec.mockClear();
     });
 });
 
 describe('#getDirectCommitAncestor', () => {
     it('Should call exec', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({ stdout: 'DIRECT COMMIT ANCESTOR' });
         const commitMessage = await getDirectCommitAncestor();
         expect(exec).toHaveBeenCalledTimes(1);
@@ -65,6 +71,7 @@ describe('#getDirectCommitAncestor', () => {
     });
 
     it('Should throw an error because exec print in stderr', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({
             stdout: 'DIRECT COMMIT ANCESTOR',
             stderr: 'SOMETHING WENT WRONG',
@@ -76,12 +83,14 @@ describe('#getDirectCommitAncestor', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error Jest mock
         exec.mockClear();
     });
 });
 
 describe('#getCommitAncestorWithDefaultBranch', () => {
     it('Should call exec', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({ stdout: 'COMMIT ANCESTOR' });
         const commitMessage = await getCommitAncestorWithDefaultBranch('mybranch');
         expect(exec).toHaveBeenCalledTimes(1);
@@ -92,6 +101,7 @@ describe('#getCommitAncestorWithDefaultBranch', () => {
     });
 
     it('Should throw an error because exec print in stderr', async () => {
+        // @ts-expect-error Jest mock
         exec.mockReturnValue({
             stdout: 'COMMIT ANCESTOR',
             stderr: 'SOMETHING WENT WRONG',
@@ -105,6 +115,7 @@ describe('#getCommitAncestorWithDefaultBranch', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error Jest mock
         exec.mockClear();
     });
 });

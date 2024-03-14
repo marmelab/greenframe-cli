@@ -1,18 +1,21 @@
 jest.mock('../utils');
-const {
+import {
     getCommitMessage,
     getBranchName,
     getCommitId,
     getCommitAncestorWithDefaultBranch,
-} = require('../utils');
-
-const { retrieveGitInformations } = require('../index');
+} from '../utils.js';
+import { retrieveGitInformations } from '../index.js';
 
 describe('#retrieveGitInformations', () => {
     beforeEach(() => {
+        // @ts-expect-error Jest mock
         getCommitMessage.mockResolvedValue('DEFAULT COMMIT MESSAGE');
+        // @ts-expect-error Jest mock
         getBranchName.mockResolvedValue('default_branch_name');
+        // @ts-expect-error Jest mock
         getCommitId.mockResolvedValue('default-commit-id');
+        // @ts-expect-error Jest mock
         getCommitAncestorWithDefaultBranch.mockResolvedValue('default-branch-commit-id');
     });
 
@@ -75,9 +78,13 @@ describe('#retrieveGitInformations', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error Jest mock
         getCommitMessage.mockReset();
+        // @ts-expect-error Jest mock
         getBranchName.mockReset();
+        // @ts-expect-error Jest mock
         getCommitId.mockReset();
+        // @ts-expect-error Jest mock
         getCommitAncestorWithDefaultBranch.mockReset();
     });
 });

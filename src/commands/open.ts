@@ -1,23 +1,23 @@
-const { Command, Flags } = require('@oclif/core');
-const path = require('node:path');
+import { Args, Command, Flags } from '@oclif/core';
+import path from 'node:path';
 
-const { parseConfigFile, resolveParams } = require('../services/parseConfigFile');
+import { parseConfigFile, resolveParams } from '../services/parseConfigFile.js';
 
-const executeScenario = require('../runner/scenarioWrapper.js');
+import executeScenario from '../runner/scenarioWrapper.js';
 
-const { detectExecutablePath } = require('../services/detectExecutablePath');
+import { detectExecutablePath } from '../services/detectExecutablePath.js';
 class OpenCommand extends Command {
-    static args = [
-        {
+    static args = {
+        baseURl: Args.string({
             name: 'baseURL', // name of arg to show in help and reference with args[name]
             description: 'Your baseURL website', // help description
-        },
-        {
-            name: 'scenario', // name of arg to show in help and reference with args[name]
+        }),
+        scenarios: Args.string({
+            name: 'scenarios', // name of arg to show in help and reference with args[name]
             description: 'Path to your GreenFrame scenario', // help description
             required: false,
-        },
-    ];
+        }),
+    };
 
     static defaultFlags = {
         configFile: './.greenframe.yml',
@@ -64,7 +64,9 @@ class OpenCommand extends Command {
         for (let index = 0; index < args.scenarios.length; index++) {
             const scenario = args.scenarios[index];
             const scenarioPath = path.resolve(scenario.path);
-            const scenarioFile = require(scenarioPath);
+            const scenarioFile = await import(scenarioPath).then(
+                (module) => module.default
+            );
             try {
                 const { timelines } = await executeScenario(scenarioFile, {
                     debug: true,
@@ -82,7 +84,7 @@ class OpenCommand extends Command {
                         new Date(timelines.start).getTime()
                     } ms`
                 );
-            } catch (error) {
+            } catch (error: any) {
                 console.error(`❌ Error : ${scenario.name}`);
                 console.error(error.message);
                 process.exit(0);
@@ -102,4 +104,4 @@ OpenCommand.description = `Open browser to develop your GreenFrame scenario
 greenframe analyze ./yourScenario.js https://greenframe.io
 `;
 
-module.exports = OpenCommand;
+export default OpenCommand;

@@ -1,7 +1,7 @@
-import { initKubeConfig } from '../services/container/kubernetes/client';
+import { ListrContext } from 'listr2';
+import { initKubeConfig } from '../services/container/kubernetes/client.js';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async (ctx: any) => {
+export default async (ctx: ListrContext) => {
     const { flags } = ctx;
     await initKubeConfig(flags.kubeConfig);
 };

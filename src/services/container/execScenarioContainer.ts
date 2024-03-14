@@ -1,14 +1,23 @@
-const util = require('node:util');
-const path = require('node:path');
-const exec = util.promisify(require('node:child_process').exec);
-const { CONTAINER_DEVICE_NAME } = require('../../constants');
-const ScenarioError = require('../errors/ScenarioError');
-const initDebug = require('debug');
+import initDebug from 'debug';
+import { exec as execSync } from 'node:child_process';
+import path from 'node:path';
+import util from 'node:util';
+import { CONTAINER_DEVICE_NAME } from '../../constants.js';
+import ScenarioError from '../errors/ScenarioError.js';
+const exec = util.promisify(execSync);
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PROJECT_ROOT = path.resolve(__dirname, '../../../');
 const debug = initDebug('greenframe:services:container:execScenarioContainer');
 
-const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
+export const createContainer = async (
+    extraHosts: string[] = [],
+    envVars: string[] = [],
+    envFile = ''
+) => {
     const { stdout } = await exec(`${PROJECT_ROOT}/dist/bash/getHostIP.sh`);
     const HOSTIP = stdout;
     const extraHostsFlags = extraHosts
@@ -40,7 +49,7 @@ const createContainer = async (extraHosts = [], envVars = [], envFile = '') => {
     debug(`Files copied to container ${CONTAINER_DEVICE_NAME}`);
 };
 
-const startContainer = async () => {
+export const startContainer = async () => {
     const { stderr } = await exec(`docker start ${CONTAINER_DEVICE_NAME}`);
     if (stderr) {
         throw new Error(stderr);
@@ -49,10 +58,20 @@ const startContainer = async () => {
     return 'OK';
 };
 
-const execScenarioContainer = async (
-    scenario,
-    url,
-    { useAdblock, ignoreHTTPSErrors, locale, timezoneId } = {}
+export const execScenarioContainer = async (
+    scenario: string,
+    url: string,
+    {
+        useAdblock,
+        ignoreHTTPSErrors,
+        locale,
+        timezoneId,
+    }: {
+        useAdblock?: boolean;
+        ignoreHTTPSErrors?: boolean;
+        locale?: string;
+        timezoneId?: string;
+    } = {}
 ) => {
     try {
         let command = `docker exec ${CONTAINER_DEVICE_NAME} node /greenframe/dist/runner/index.js --scenario="${encodeURIComponent(
@@ -85,12 +104,12 @@ const execScenarioContainer = async (
         const milestones = JSON.parse(stdout.split('=====MILESTONES=====')[1] || '[]');
 
         return { timelines, milestones };
-    } catch (error) {
+    } catch (error: any) {
         throw new ScenarioError(error.stderr || error.message);
     }
 };
 
-const stopContainer = async () => {
+export const stopContainer = async () => {
     try {
         // The container might take a while to stop.
         // We rename it to avoid conflicts when recreating it (if it is still removing while we try to create it again, it will fail).
@@ -106,7 +125,7 @@ const stopContainer = async () => {
     return 'OK';
 };
 
-const buildEnvVarList = (envVars = [], envFile = '') => {
+export const buildEnvVarList = (envVars: string[] = [], envFile = '') => {
     const envVarString =
         envVars.length > 0
             ? envVars.reduce((list, envVarName) => {
@@ -122,12 +141,4 @@ const buildEnvVarList = (envVars = [], envFile = '') => {
     const envVarFileString = envFile ? ` --env-file ${envFile}` : '';
 
     return `${envVarString}${envVarFileString ? envVarFileString : ''}`;
-};
-
-module.exports = {
-    buildEnvVarList,
-    createContainer,
-    startContainer,
-    execScenarioContainer,
-    stopContainer,
 };

@@ -1,8 +1,12 @@
-const ConfigurationError = require('../services/errors/ConfigurationError');
+import axios from 'axios';
+import { ListrContext, ListrRenderer, ListrTaskWrapper } from 'listr2';
+import { getProject } from '../services/api/projects.js';
+import ConfigurationError from '../services/errors/ConfigurationError.js';
 
-const { getProject } = require('../services/api/projects');
-
-module.exports = async (ctx, task) => {
+export default async (
+    ctx: ListrContext,
+    task: ListrTaskWrapper<unknown, typeof ListrRenderer>
+) => {
     const projectName =
         ctx.flags.projectName ??
         process.env.GREENFRAME_PROJECT_NAME ??
@@ -16,7 +20,11 @@ module.exports = async (ctx, task) => {
     try {
         const { data } = await getProject(projectName);
         ctx.project = data;
-    } catch (error) {
+    } catch (error: any) {
+        if (!axios.isAxiosError(error)) {
+            throw error;
+        }
+
         if (error.response?.status === 404) {
             task.title = `Creating a new project ${projectName}`;
         } else if (error.response?.status === 401) {

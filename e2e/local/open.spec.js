@@ -1,5 +1,6 @@
-const util = require('node:util');
-const exec = util.promisify(require('node:child_process').exec);
+import { promisify } from 'node:util';
+import { exec as execSync } from 'node:child_process';
+const exec = promisify(execSync);
 
 const BASE_COMMAND = `./bin/run open`;
 

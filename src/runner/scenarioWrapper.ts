@@ -1,28 +1,42 @@
-import getScopedPage from './scopedPage';
-
-const { chromium } = require('playwright');
-const { PlaywrightBlocker } = require('@cliqz/adblocker-playwright');
-const fetch = require('cross-fetch'); // required 'fetch'
+import { PlaywrightBlocker } from '@cliqz/adblocker-playwright';
+import fetch from 'cross-fetch'; // required 'fetch'
+import { Milestone, chromium } from 'playwright';
+import getScopedPage from './scopedPage.js';
 
 const SCENARIO_TIMEOUT = 2 * 60 * 1000; // Global timeout for executing a scenario
 
-const relativizeMilestoneSamples = (milestones, startTime) =>
+const relativizeMilestoneSamples = (milestones: Milestone[], startTime: number) =>
     milestones.map(({ timestamp, ...milestone }) => ({
         ...milestone,
         time: timestamp - startTime,
     }));
 
-const executeScenario = async (scenario, options = {}) => {
-    let args = ['--disable-web-security'];
+const executeScenario = async (
+    scenario: CallableFunction,
+    options: {
+        hostIP?: string;
+        extraHosts?: string[];
+        debug?: boolean;
+        executablePath?: string;
+        ignoreHTTPSErrors?: boolean;
+        locale?: string;
+        timezoneId?: string;
+        useAdblock?: boolean;
+        baseUrl?: string;
+        name?: string;
+    } = {}
+) => {
+    const args: string[] = ['--disable-web-security'];
 
     if (options.hostIP) {
         args.push(`--host-rules=MAP localhost ${options.hostIP}`);
-        for (const extraHost of options.extraHosts) {
+        for (const extraHost of options.extraHosts ?? []) {
             args.push(`--host-rules=MAP ${extraHost} ${options.hostIP}`);
         }
     }
 
     const browser = await chromium.launch({
+        // @ts-expect-error TODO look into this
         defaultViewport: {
             width: 900,
             height: 600,
@@ -91,4 +105,4 @@ process.on('unhandledRejection', (err) => {
     throw err;
 });
 
-module.exports = executeScenario;
+export default executeScenario;

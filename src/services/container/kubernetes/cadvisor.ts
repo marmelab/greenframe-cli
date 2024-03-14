@@ -1,8 +1,8 @@
 import { Writable } from 'node:stream';
-import { GREENFRAME_NAMESPACE } from '../../../constants';
-import { exec } from './client';
-import { getPodsByLabel } from './pods';
-import type { CadvisorContainerStats } from './stats';
+import { GREENFRAME_NAMESPACE } from '../../../constants.js';
+import { exec } from './client.js';
+import { getPodsByLabel } from './pods.js';
+import type { CadvisorContainerStats } from './stats.js';
 
 const CADVISOR_LABEL = 'app=cadvisor';
 

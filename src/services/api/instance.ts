@@ -7,5 +7,4 @@ const instance = axios.create({
     headers: { 'Content-Type': 'application/json', authorization: `Bearer ${apiToken}` },
 });
 
-module.exports = instance;
 export default instance;

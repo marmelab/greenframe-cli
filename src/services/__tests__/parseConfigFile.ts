@@ -1,4 +1,4 @@
-const { resolveParams } = require('../parseConfigFile');
+import { resolveParams } from '../parseConfigFile.js';
 
 describe('#resolveParams', () => {
     test('Should return flags default values', () => {

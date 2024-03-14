@@ -1,13 +1,13 @@
 import { std } from 'mathjs';
-import { computeStats } from './docker/computeStats';
+import { computeStats } from './docker/computeStats.js';
 import {
     getMetricsPerContainerPerSamples,
     getMetricsPerContainer,
     addMetricsContainer,
-} from './getWh';
-import { docker } from './providers/docker';
-import { kubernetes } from './providers/kubernetes';
-import { createStatStore } from '../stores/statStore';
+} from './getWh.js';
+import { docker } from './providers/docker.js';
+import { kubernetes } from './providers/kubernetes.js';
+import { createStatStore } from '../stores/statStore.js';
 import type {
     CadvisorContainerStats,
     ComputedStatWithMeta,
@@ -15,8 +15,8 @@ import type {
     MetricsContainer,
     TimeFrame,
     ValueOf,
-} from '../../types';
-import type { CONTAINER_TYPES } from '../../constants';
+} from '../../types.js';
+import type { CONTAINER_TYPES } from '../../constants.js';
 const getStandardError = (totalWhBySamples: number[], totalWhMean: number) => {
     // Calculate the standard deviation and divide it by the sqrt of number of samples.
     // Compute it in percentage of the totalScore
@@ -221,5 +221,4 @@ const getStats = (
     );
 };
 
-module.exports = { getStandardError, getComputedStats, getScenarioConsumption, getStats };
 export { getStandardError, getComputedStats, getScenarioConsumption, getStats };

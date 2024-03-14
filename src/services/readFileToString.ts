@@ -1,9 +1,9 @@
-const fs = require('node:fs');
-const util = require('node:util');
+import fs from 'node:fs';
+import util from 'node:util';
 const readFile = util.promisify(fs.readFile);
-const path = require('node:path');
+import path from 'node:path';
 
-const readFileToString = async (configFilePath, scenarioPath) => {
+export const readFileToString = async (configFilePath: string, scenarioPath: string) => {
     const configFileFolder = path.dirname(configFilePath);
 
     // Resolve path regarding where you launch the command and where the config file is located.
@@ -14,8 +14,4 @@ const readFileToString = async (configFilePath, scenarioPath) => {
     );
     const scenarioBuffered = await readFile(resolvedScenarioPath);
     return Buffer.from(scenarioBuffered).toString();
-};
-
-module.exports = {
-    readFileToString,
 };
