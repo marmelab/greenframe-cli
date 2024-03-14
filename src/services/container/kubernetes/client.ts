@@ -1,7 +1,6 @@
 import * as kube from '@kubernetes/client-node';
 import axios from 'axios';
 import https from 'node:https';
-import request from 'request';
 export const kc = new kube.KubeConfig();
 export let kubeClient: kube.KubernetesObjectApi;
 export let kubeApi: kube.CoreV1Api;
