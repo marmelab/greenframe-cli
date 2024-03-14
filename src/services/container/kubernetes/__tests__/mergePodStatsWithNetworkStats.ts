@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-expect-error polyfill
 import structuredClone from 'core-js-pure/actual/structured-clone';
-import { KubernetesRuns } from '../../index.js';
+import { describe, expect, it } from 'vitest';
 import { CONTAINER_TYPES } from '../../../../constants.js';
+import { KubernetesRuns } from '../../index.js';
 import { mergePodStatsWithNetworkStats } from '../mergePodStatsWithNetworkStats.js';
 import { Stat } from '../stats.js';
 import { Nodes } from '../structureNodes.js';

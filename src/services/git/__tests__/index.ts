@@ -1,21 +1,34 @@
-jest.mock('../utils');
-import {
-    getCommitMessage,
-    getBranchName,
-    getCommitId,
-    getCommitAncestorWithDefaultBranch,
-} from '../utils.js';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('../utils.js', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../utils.js')>();
+    return {
+        ...actual,
+        getCommitMessage: vi.fn(),
+        getBranchName: vi.fn(),
+        getCommitId: vi.fn(),
+        getCommitAncestorWithDefaultBranch: vi.fn(),
+        getDirectCommitAncestor: vi.fn(),
+    };
+});
+
 import { retrieveGitInformations } from '../index.js';
+import {
+    getBranchName,
+    getCommitAncestorWithDefaultBranch,
+    getCommitId,
+    getCommitMessage,
+} from '../utils.js';
 
 describe('#retrieveGitInformations', () => {
     beforeEach(() => {
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitMessage.mockResolvedValue('DEFAULT COMMIT MESSAGE');
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getBranchName.mockResolvedValue('default_branch_name');
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitId.mockResolvedValue('default-commit-id');
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitAncestorWithDefaultBranch.mockResolvedValue('default-branch-commit-id');
     });
 
@@ -78,13 +91,13 @@ describe('#retrieveGitInformations', () => {
     });
 
     afterEach(() => {
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitMessage.mockReset();
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getBranchName.mockReset();
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitId.mockReset();
-        // @ts-expect-error Jest mock
+        // @ts-expect-error vi mock
         getCommitAncestorWithDefaultBranch.mockReset();
     });
 });

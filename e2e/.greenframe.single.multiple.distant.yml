@@ -1,5 +1,5 @@
 scenarios:
-    - path: '../src/examples/greenframe.js'
+    - path: '../src/examples/greenframe.cjs'
       name: 'Scenario 1'
       threshold: 0.1
     - path: '../src/examples/greenframe2.js'

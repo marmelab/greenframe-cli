@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import type { DockerStatsJSON } from '../../../../types.js';
 import { docker, sumBlkioStats } from '../docker.js';
 

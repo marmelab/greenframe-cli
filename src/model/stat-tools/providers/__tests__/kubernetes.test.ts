@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import type { CadvisorContainerStats } from '../../../../types.js';
 import { kubernetes } from '../kubernetes.js';
 

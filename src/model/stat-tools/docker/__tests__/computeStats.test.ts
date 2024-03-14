@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { CONTAINER_TYPES } from '../../../../constants.js';
 import { GenericStat } from '../../../../types.js';
 import { computeStats } from '../computeStats.js';

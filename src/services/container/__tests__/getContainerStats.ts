@@ -1,27 +1,29 @@
-jest.mock('node:http', () => ({
-    request: jest
-        .fn()
-        .mockImplementation(
-            (
-                _: unknown,
-                callback: (res: { statusCode: number; on: (data: any) => void }) => void
-            ) => {
-                callback({ statusCode: 200, on: jest.fn() });
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('node:http', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('node:http')>();
+    return {
+        ...actual,
+        default: {
+            ...actual,
+            request: vi.fn().mockImplementation((_: any, callback: any) => {
+                callback({ statusCode: 200, on: vi.fn() });
                 return {
-                    on: jest.fn(),
-                    write: jest.fn(),
-                    end: jest.fn(),
+                    on: vi.fn(),
+                    write: vi.fn(),
+                    end: vi.fn(),
                 };
-            }
-        ),
-}));
+            }),
+        },
+    };
+});
 
 import http from 'node:http';
 import getContainerStatsIfRunning from '../getContainerStats.js';
 
 describe('getContainerStats', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
     it('should use the dockerd options if given', async () => {
         await getContainerStatsIfRunning('containerId', {

@@ -1,4 +1,5 @@
 import { promisify } from 'node:util';
+import { describe, expect, it } from 'vitest';
 import { exec as execSync } from 'node:child_process';
 const exec = promisify(execSync);
 
@@ -6,7 +7,7 @@ const BASE_COMMAND = `./bin/run open`;
 
 // This is disabled because popping chrome in CI doesn't seem to work as-is
 // the test works locally though
-// eslint-disable-next-line jest/no-disabled-tests
+
 describe.skip('[LOCAL] greenframe open', () => {
     describe('single page', () => {
         it('should run correctly', async () => {
@@ -21,7 +22,7 @@ describe.skip('[LOCAL] greenframe open', () => {
         });
     });
     // we need to setup a mock dev environment to enable this test
-    // eslint-disable-next-line jest/no-disabled-tests
+
     describe.skip('full stack', () => {
         // ...
     });

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getAverageMilestones } from '../getAverageMilestones.js';
 
 describe('#getAverageMilestones', () => {

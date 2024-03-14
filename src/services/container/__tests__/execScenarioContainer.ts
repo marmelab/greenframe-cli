@@ -1,11 +1,20 @@
-jest.mock('node:child_process', () => ({
-    exec: jest.fn(),
-}));
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-jest.mock('node:util', () => ({
-    promisify: (cb: CallableFunction) => cb,
-}));
+vi.mock('node:child_process', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('node:child_process')>();
+    return {
+        ...actual,
+        exec: vi.fn(),
+    };
+});
 
+vi.mock('node:util', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('node:util')>();
+    return {
+        ...actual,
+        promisify: (cb: CallableFunction) => cb,
+    };
+});
 import { exec } from 'node:child_process';
 import {
     buildEnvVarList,
@@ -19,7 +28,7 @@ describe('#buildEnvVarList', () => {
     const env = process.env;
 
     beforeEach(() => {
-        jest.resetModules();
+        vi.resetModules();
         process.env = { ...env };
     });
 
@@ -262,7 +271,7 @@ describe('#execScenarioContainer', () => {
 
         await expect(
             execScenarioContainer('path_to_scenario', 'http://example.com')
-        ).rejects.toThrow('Unexpected token I in JSON at position 21');
+        ).rejects.toThrow(/Unexpected token/);
     });
 
     afterEach(() => {

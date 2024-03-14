@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { getStandardError } from '../getConsumption.js';
 
 describe('getStandardError', () => {

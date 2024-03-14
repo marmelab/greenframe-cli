@@ -1,12 +1,12 @@
-/* eslint-disable jest/no-conditional-expect */
-import { promisify } from 'node:util';
 import { exec as execSync } from 'node:child_process';
+import { promisify } from 'node:util';
+import { describe, expect, it } from 'vitest';
 const exec = promisify(execSync);
 
 const BASE_COMMAND = `GREENFRAME_SECRET_TOKEN=API_TOKEN API_URL=http://localhost:3006 ./bin/run open`;
 
 // we need to setup a mock greenframe.io environment to enable this test
-// eslint-disable-next-line jest/no-disabled-tests
+
 describe.skip('[GREENFRAME.IO] greenframe open', () => {
     describe('single page', () => {
         it('should raise and error on non HTTPS websites', async () => {

@@ -1,11 +1,11 @@
 import yaml from 'js-yaml';
 import fs from 'node:fs';
-import util from 'node:util';
+import { promisify } from 'node:util';
 import { DEFAULT_CONFIG_FILE } from '../commands/analyze.js';
 import ConfigurationError from './errors/ConfigurationError.js';
 const FILE_NOT_FOUND = 'ENOENT';
 
-const readFile = util.promisify(fs.readFile);
+const readFile = promisify(fs.readFile);
 
 const isMissingDefaultConfigFile = (path: string, error: any) => {
     return path === DEFAULT_CONFIG_FILE && error.code === FILE_NOT_FOUND;

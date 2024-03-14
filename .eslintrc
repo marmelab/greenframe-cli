@@ -14,16 +14,9 @@
         "eslint:recommended",
         "plugin:prettier/recommended",
         "prettier",
-        "plugin:jest/recommended",
-        "plugin:jest/style",
         "plugin:@typescript-eslint/recommended"
     ],
     "plugins": ["prettier", "@typescript-eslint"],
-    "settings": {
-        "jest": {
-            "version": 26
-        }
-    },
     "rules": {
         "no-return-await": "error",
         "unicorn/filename-case": "off",

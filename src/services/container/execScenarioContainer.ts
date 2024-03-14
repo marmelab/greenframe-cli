@@ -1,10 +1,10 @@
 import initDebug from 'debug';
 import { exec as execSync } from 'node:child_process';
 import path from 'node:path';
-import util from 'node:util';
+import { promisify } from 'node:util';
 import { CONTAINER_DEVICE_NAME } from '../../constants.js';
 import ScenarioError from '../errors/ScenarioError.js';
-const exec = util.promisify(execSync);
+const exec = promisify(execSync);
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

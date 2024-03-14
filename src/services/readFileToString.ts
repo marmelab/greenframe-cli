@@ -1,6 +1,6 @@
-import fs from 'node:fs';
-import util from 'node:util';
-const readFile = util.promisify(fs.readFile);
+import { readFile as readfileThen } from 'node:fs';
+import { promisify } from 'node:util';
+const readFile = promisify(readfileThen);
 import path from 'node:path';
 
 export const readFileToString = async (configFilePath: string, scenarioPath: string) => {
