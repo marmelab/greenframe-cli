@@ -56,6 +56,7 @@
         "unicorn/consistent-function-scoping": "off",
         "unicorn/prefer-top-level-await": "off",
         "no-promise-executor-return": "off",
-        "node/no-extraneous-require": "off"
+        "node/no-extraneous-require": "off",
+        "node/shebang": "off"
     }
 }
