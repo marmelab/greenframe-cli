@@ -1,8 +1,8 @@
 import { Args, Command } from '@oclif/core';
 import axios from 'axios';
-import { exec as execSync } from 'node:child_process';
+import { exec as execThen } from 'node:child_process';
 import { promisify } from 'node:util';
-const exec = promisify(execSync);
+const exec = promisify(execThen);
 
 class UpdateCommand extends Command {
     static args = {

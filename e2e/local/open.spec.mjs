@@ -1,7 +1,7 @@
 import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
-import { exec as execSync } from 'node:child_process';
-const exec = promisify(execSync);
+import { exec as execThen } from 'node:child_process';
+const exec = promisify(execThen);
 
 const BASE_COMMAND = `./bin/run open`;
 

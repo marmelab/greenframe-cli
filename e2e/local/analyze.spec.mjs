@@ -1,8 +1,8 @@
-import { exec as execSync } from 'node:child_process';
+import { exec as execThen } from 'node:child_process';
 import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
 
-const exec = promisify(execSync);
+const exec = promisify(execThen);
 
 const BASE_COMMAND = `./bin/run.js analyze`;
 
