@@ -1,7 +1,7 @@
 {
     "name": "greenframe-cli",
     "description": "Official GreenFrame CLI",
-    "version": "1.7.0",
+    "version": "2.0.0",
     "author": "Marmelab",
     "bin": {
         "greenframe": "./bin/run"
@@ -24,6 +24,9 @@
         "minimist": "^1.2.5",
         "oclif": "^2.4.3",
         "playwright": "1.30.0"
+    },
+    "resolutions": {
+        "oclif/**/isbinaryfile": "5.0.0"
     },
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.36.0",
@@ -63,7 +66,7 @@
         "xo": "^0.52.3"
     },
     "engines": {
-        "node": ">=14.0.0"
+        "node": ">=18.0.0"
     },
     "files": [
         "/bin",
