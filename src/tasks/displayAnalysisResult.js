@@ -20,6 +20,29 @@ const formatTotal = (total, unit) => {
     return `${computeTotalMetric(total)} ${unit}`;
 };
 
+const toBytes = (metrics) =>
+    Object.fromEntries(
+        Object.entries(metrics).map(([key, value]) => [
+            key,
+            Math.round(value * 1024 ** 3),
+        ])
+    );
+const toPrecision = (metrics, precision) =>
+    Object.fromEntries(
+        Object.entries(metrics).map(([key, value]) => [key, value.toPrecision(precision)])
+    );
+const withUnits = (metrics) =>
+    Object.fromEntries(
+        Object.entries(metrics).map(([key, value], i) => [
+            key + (i < 3 ? ' (s)' : ' (B)'),
+            value,
+        ])
+    );
+const withWh = (metrics) =>
+    Object.fromEntries(
+        Object.entries(metrics).map(([key, value]) => [`${key} (Wh)`, value])
+    );
+
 const displayAnalysisResults = (result, isFree) => {
     console.info('\nAnalysis complete !\n');
     console.info('Result summary:');
@@ -35,6 +58,25 @@ const displayAnalysisResults = (result, isFree) => {
 
         if (scenario.status === STATUS.FINISHED) {
             console.info(`✅ ${scenario.name} completed`);
+
+            console.info('\nMEASUREMENTS');
+            const measurements = Object.fromEntries(
+                scenario.containers.map(({ name, score }) => [
+                    name,
+                    withUnits(toPrecision({ ...score.s, ...toBytes(score.gb) }, 3)),
+                ])
+            );
+            console.table(measurements);
+
+            console.info('\nESTIMATES');
+            const estimates = Object.fromEntries(
+                scenario.containers.map(({ name, score }) => [
+                    name,
+                    withWh(toPrecision(score.wh, 2)),
+                ])
+            );
+            console.table(estimates);
+
             if (scenario.threshold) {
                 console.info(
                     `The estimated footprint at ${totalCo2} eq. co2 ± ${precision}% (${totalMWh}) is under the limit configured at ${scenario.threshold} g eq. co2.`
